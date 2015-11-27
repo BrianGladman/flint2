@@ -54,6 +54,7 @@ run_ok = 0
 run_fail = 0
 print(len(exe))
 
+fails = []
 for ef in exe:
   fdn, fx = splitext(ef)
   fd, fn = split(fdn)
@@ -67,8 +68,12 @@ for ef in exe:
     run_fail += 1
     continue
   output = prc.communicate()[0]
+  if output:
+    op = output.decode().replace('\n', '')
   if prc.returncode:
-    print(fd, 'ERROR {}'.format(prc.returncode), end=' ')
+    t = fd + ' ' + 'ERROR {}'.format(prc.returncode)
+    print(t, end=' ')
+    fails += [t + ' ' + op]
     run_fail += 1
   else:
     run_ok += 1
@@ -92,6 +97,10 @@ if run_ok > 0:
   print("\t{0} ran correctly".format(run_ok))
 if run_fail > 0:
   print("\t{0} failed".format(run_fail))
+
+for t in fails:
+  print(t)
+
 if len(sys.argv) == 1:
   try:
     input(".. completed - press ENTER")
