@@ -4,10 +4,11 @@ if /i %2 EQU LIB (set two=lib)
 if /i %2 EQU DLL (set two=dll)
 
 if not exist ..\..\%two% (md ..\..\%two%)
-call :copy_files %1 ..\..\%two%\%1 %two%
+call :copy_hdr_files %1 ..\..\%two% %two%
+call :copy_bin_files %1 ..\..\%two%\%1 %two%
 exit /b 0
 
-:copy_files
+:copy_hdr_files
 call :copy_rename ..\..\flint.h %2 > nul 2>&1
 call :copy_rename ..\config.h %2 > nul 2>&1
 
@@ -15,7 +16,11 @@ rem copy C/C++ header files
 for %%i in ("..\..\*.h") do (call :copy_rename %%i %2 %%~nxi > nul 2>&1)
 
 rem copy C++ headers in flintxx
-rem for %%i in ("..\..\flintxx\*.h") do (call :copy_rename %%i %2 %%~nxi > nul 2>&1)
+for %%i in ("..\..\flintxx\*.h") do (call :copy_rename %%i %2 %%~nxi > nul 2>&1)
+
+exit /b 0
+
+:copy_bin_files
 
 rem copy the FLINT static library and related files
 if /i %3 EQU LIB (
@@ -43,6 +48,7 @@ if /i %3 EQU DLL (
             )
         )
 )
+
 exit /b 0
 
 rem copy rename 'in_file_name directory out_file_name'

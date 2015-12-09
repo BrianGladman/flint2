@@ -81,7 +81,7 @@
     <ClCompile>
     <Optimization>Full</Optimization>
     <IntrinsicFunctions>true</IntrinsicFunctions>
-    <AdditionalIncludeDirectories>..\;..\..\;..\..\..\mpir\dll\$(IntDir);..\..\..\mpfr\dll\$(IntDir);..\..\..\pthreads\dll\$(IntDir);</AdditionalIncludeDirectories>
+    <AdditionalIncludeDirectories>..\;..\..\;..\..\..\mpir\dll;..\..\..\mpfr\dll;..\..\..\pthreads\dll;</AdditionalIncludeDirectories>
     <PreprocessorDefinitions>NDEBUG;WIN32;HAVE_CONFIG_H;MSC_BUILD_DLL;PTW32_BUILD;FLINT_REENTRANT=0;HAVE_TLS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     <ProgramDataBaseFileName>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFileName>
@@ -106,7 +106,7 @@
     <ClCompile>
     <Optimization>Disabled</Optimization>
     <IntrinsicFunctions>true</IntrinsicFunctions>
-    <AdditionalIncludeDirectories>..\;..\..\;..\..\..\mpir\dll\$(IntDir);..\..\..\mpfr\dll\$(IntDir);..\..\..\pthreads\dll\$(IntDir);</AdditionalIncludeDirectories>
+    <AdditionalIncludeDirectories>..\;..\..\;..\..\..\mpir\dll;..\..\..\mpfr\dll;..\..\..\pthreads\dll;</AdditionalIncludeDirectories>
     <PreprocessorDefinitions>_DEBUG;WIN32;HAVE_CONFIG_H;MSC_BUILD_DLL;PTW32_BUILD;FLINT_REENTRANT=0;HAVE_TLS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     <ProgramDataBaseFileName>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFileName>
@@ -131,7 +131,7 @@
     <ClCompile>
     <Optimization>Full</Optimization>
     <IntrinsicFunctions>true</IntrinsicFunctions>
-    <AdditionalIncludeDirectories>..\;..\..\;..\..\..\mpir\dll\$(IntDir);..\..\..\mpfr\dll\$(IntDir);..\..\..\pthreads\dll\$(IntDir);</AdditionalIncludeDirectories>
+    <AdditionalIncludeDirectories>..\;..\..\;..\..\..\mpir\dll;..\..\..\mpfr\dll;..\..\..\pthreads\dll;</AdditionalIncludeDirectories>
     <PreprocessorDefinitions>NDEBUG;WIN32;HAVE_CONFIG_H;MSC_BUILD_DLL;PTW32_BUILD;FLINT_REENTRANT=0;HAVE_TLS=1;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     <ProgramDataBaseFileName>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFileName>
@@ -156,7 +156,7 @@
     <ClCompile>
     <Optimization>Disabled</Optimization>
     <IntrinsicFunctions>true</IntrinsicFunctions>
-    <AdditionalIncludeDirectories>..\;..\..\;..\..\..\mpir\dll\$(IntDir);..\..\..\mpfr\dll\$(IntDir);..\..\..\pthreads\dll\$(IntDir);</AdditionalIncludeDirectories>
+    <AdditionalIncludeDirectories>..\;..\..\;..\..\..\mpir\dll;..\..\..\mpfr\dll;..\..\..\pthreads\dll;</AdditionalIncludeDirectories>
     <PreprocessorDefinitions>_DEBUG;WIN32;HAVE_CONFIG_H;MSC_BUILD_DLL;PTW32_BUILD;FLINT_REENTRANT=0;HAVE_TLS=1;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     <ProgramDataBaseFileName>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFileName>

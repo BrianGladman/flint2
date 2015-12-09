@@ -18,7 +18,7 @@ from uuid import uuid4
 from time import sleep
 
 from _msvccompiler import MSVCCompiler
-   
+
 # for script debugging
 debug = False
 
@@ -131,9 +131,9 @@ for l2, fp in t:
   inc_dirs = [
     '..\\',
     '..\\..\\',
-    '..\\..\\..\\mpir\\lib' + intd,
-    '..\\..\\..\\mpfr\\lib' + intd,
-    '..\\..\\..\\pthreads\\lib' + intd
+    '..\\..\\..\\mpir\\lib',
+    '..\\..\\..\\mpfr\\lib',
+    '..\\..\\..\\pthreads\\lib'
     ]
   libs = [
     '..\\..\\lib' + intd + 'lib_flint',

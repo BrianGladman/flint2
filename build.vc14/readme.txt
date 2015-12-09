@@ -14,7 +14,7 @@ GIT from:
     git@github.com:BrianGladman/flint2.git
 
 FLINT2 depends on the MPIR, MPFR and PTHREADS libraries that have
-to be installed and built using Vissual Studio before FLINT2 can
+to be installed and built using Visual Studio before FLINT2 can
 be built.  The application directories are assumed to be in the
 same root directory with the names and layouts:
    
@@ -82,7 +82,7 @@ start of flint_config.py:
     build_lib = False
     build_dll = False
     build_tests = Tru
-     build_profiles = True
+    build_profiles = True
 
 Rebuilding the library build files in this way may be necessary
 if FLINT2 has been updated since it was first downloaded. 
