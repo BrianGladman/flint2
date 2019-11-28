@@ -3,19 +3,10 @@
 %
 %   This file is part of FLINT.
 %
-%   FLINT is free software; you can redistribute it and/or modify
-%   it under the terms of the GNU General Public License as published by
-%   the Free Software Foundation; either version 2 of the License, or
-%   (at your option) any later version.
-%
-%   FLINT is distributed in the hope that it will be useful,
-%   but WITHOUT ANY WARRANTY; without even the implied warranty of
-%   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-%   GNU General Public License for more details.
-%
-%   You should have received a copy of the GNU General Public License
-%   along with FLINT; if not, write to the Free Software
-%   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
+%    FLINT is free software: you can redistribute it and/or modify it under
+%    the terms of the GNU Lesser General Public License (LGPL) as published
+%    by the Free Software Foundation; either version 2.1 of the License, or
+%    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -313,9 +304,12 @@ in an appropriately named test file.  For example, the function
 \code{fmpz_poly_add} located in\\ \code{fmpz_poly/add.c} has test code in the
 file \code{fmpz_poly/test/t-add.c}.
 
+FLINT is distributed under the GNU Lesser General Public License (LGPL).
+There is a copy of the license included with this document.
+
 \chapter{Configuring FLINT}
 
-The easiest way to use FLINT is to build a shared library.  Simply download
+The easiest way to use FLINT is to build a shared library. Simply download
 the FLINT tarball and untar it on your system.
 
 FLINT requires either MPIR (version 2.6.0 or later) or GMP
@@ -326,28 +320,23 @@ Some of the input/output tests require
 \code{fork} and \code{pipe}, however these are disabled on MinGW which
 does not provide a posix implementation.
 
-To configure FLINT you must specify where GMP/MPIR and MPFR are on
-your system. FLINT can work with the libraries installed as usual,
-e.g. in \code{/usr/local} or it can work with the libraries built
-from source in their standard source trees.
-
-In the case that a library is installed in say \code{/usr}
-in the \code{lib} and \code{include} directories as usual, simply
-specify the top level location, e.g. \code{/usr} when
-configuring FLINT. If a library is built in its source tree,
-specify the top level directory, e.g.
-\code{/home/user1/mpir/}.
-
-To specify the directories where the libraries reside, you must
-pass the directories as parameters to FLINT's configure, e.g.\
+If it happens that GMP/MPIR and MPFR are not in a standard location
+on your system (e.g. not in /usr/include/ and /usr/lib/), you need
+to tell the configure script where they are with the options
+\code{--with-gmp}, \code{--with-mpir} or \code{--with-mpfr}.
+For example
 \begin{lstlisting}[language=bash]
-./configure --with-mpir=/usr --with-mpfr=/home/user1/mpfr/
+./configure --with-gmp=/my/directory/ --with-mpfr=/my/directory/
 \end{lstlisting}
-If no directories are specified, FLINT assumes it will find the
-libraries it needs in \code{/usr/local}.
-
-If you wish to use GMP, you can pass the configure option
-\code{--with-gmp} instead of \code{--with-mpir}.
+or alternatively when using MPIR
+\begin{lstlisting}[language=bash]
+./configure --with-mpir=/my/directory/ --with-mpfr=/my/directory/
+\end{lstlisting}
+FLINT can also handle source build of GMP/MPIR and MPFR. Though
+programs using FLINT will require GMP/MPIR and MPFR to be
+installed (via \code{make install} if built from sources). This is
+in particular true for the test code for FLINT: running \code{make check}
+requires GMP/MPIR and MPFR to be installed.
 
 Note that FLINT builds static and shared libraries by default, except
 on platforms where this is not supported. If you do not require either
@@ -534,6 +523,18 @@ this option is selected. It is disabled by default (\code{--disable-cxx})
 because some \code{C++} compilers internally segfault when compiling the
 tests, or exhaust memory due to the complexity of the \code{C++} code.
 
+\chapter{Exceptions}
+
+When FLINT encounters a problem, mostly illegal input, it currently aborts.
+There is an experimental interface for generating proper exceptions
+\code{flint_throw}, but this is almost nowhere used (currently) and
+experimental - you should expect for this to change.
+
+At the end, all of FLINT's exceptions call \code{abort()} to terminate
+the program. Using \code{flint_set_abort(void (*abort_func)(void))}, the
+user can install a function that will be called instead. Similar
+to the exceptions, this should be regarded as experimental.
+
 \chapter{Garbage collection}
 
 If building FLINT as part of an application that uses the
@@ -556,13 +557,22 @@ make
 make check
 \end{lstlisting}
 
-GNU make is required to build FLINT. This is simply \code{make} on
-Linux, Darwin, MinGW and Cygwin systems. However, on some unixes the
-command is \code{gmake}.
+GNU make or CMake is required to build FLINT. For GNU make, this is
+simply \code{make} on Linux, Darwin, MinGW and Cygwin systems. However,
+on some unixes the command is \code{gmake}. For CMake, this is
+\code{cmake}, which which may need to be installed with your package
+manager.
 
-If you wish to install FLINT, simply type:
+If you wish to install FLINT with GNU make, simply type:
 \begin{lstlisting}[language=bash]
 make install
+\end{lstlisting}
+
+If you wish to install FLINT with CMake, simply type:
+\begin{lstlisting}[language=bash]
+mkdir build && cd build
+cmake .. -DBUILD_SHARED_LIBS=ON
+cmake --build . --target install
 \end{lstlisting}
 
 Now to use FLINT, simply include the appropriate header files for
@@ -817,7 +827,7 @@ Weiferich prime search. (Funded by the Nuffield Foundation)
 
 $\bullet$ Brian Gladman -- MSVC support
 
-$\bullet$ Dana Jacobsen -- test BPSW primality code up to $2^64$ against
+$\bullet$ Dana Jacobsen -- test BPSW primality code up to $2^{64}$ against
 Feitma's tables and sped up and corrected \code{n_is_prime} and
 \code{n_is_probabprime}. Improvements to \code{n_nextprime} and
 \code{n_isprime}.
@@ -835,14 +845,38 @@ functions.
 
 $\bullet$ Kushagra Singh contributed fast cube root and nth root code for word
 sized integers, including magic number, Newton iteration, Kahan iteration and
-Chebyshev approximation code.
+Chebyshev approximation code, he also contributed ECM and Pollard's Rho
+factoring algorithm implementations as part of a Google Summer of Code.
 
 $\bullet$ Andreas Enge help with a port to MIPS64.
 
-$\bullet$ Tommy Hofmann supplied some inline functions.
+$\bullet$ Tommy Hofmann implemented Howell and strong echelon form and supplied
+some inline functions.
 
 $\bullet$ Ashish Kedia contributed an implementation of the Paterson-Stockmeyer
 algorithm
+
+$\bullet$ Nitin Kumar contributed under a Google Summer of Code project to the
+quadratic sieve
+
+$\bullet$ Vladimir Glazachev contributed an implementation of the APRCL
+primality testing algorithm and Shoup multiplication as part of a Google Summer
+of Code
+
+$\bullet$ Dan Roche contributed randprime and nextprime functions for the fmpz
+module
+
+$\bullet$ Shivin Shrivastava contributed Fibonacci polynomials and some Taylor
+shift improvements
+
+$\bullet$ Alex Griffing contributed integer factor refinement and numerous small
+patches
+
+$\bullet$ Vincent Delecroix contributed power sums and some patches
+
+$\bullet$ Aaditya Thakkar contributed Strassen multiplication over Z
+
+$\bullet$ Ralf Stephan contributed Hermite polynomials
 
 $\bullet$ Patches and bug reports have been made by Michael Abshoff,
 Didier Deshommes, Craig Citro, Timothy Abbot, Carl Witty, Gonzalo Tornaria,
@@ -852,7 +886,7 @@ Fr\'{e}d\'{e}ric Chyzak, Julien Puydt, Dana Jacobsen, Michael Jacobson Jr.,
 Mike Stillman, Jan Englehardt, Jean-Pierre Flori, Jeroen Demeyer, Shi Bai,
 Qingwen Guan, Frithjof Schulze, Robert Baillie, Oleksandr Motsak, Hans
 Schoenemann, Janko Boehm, Ahmed Soliman, Francois Bissey, Anton Mellit, Daniel
-Roche, Denis Kryskov, Vladimir Glazachev, Daniel Fabian, Julien Ospald, mgkurtz, Max Goldfar, Vincent Delecroix and others.
+Roche, Denis Kryskov, Daniel Fabian, Julien Ospald, mgkurtz, Max Goldfar, Max
 
 $\bullet$ In addition Michael Abshoff, William Stein and Robert Bradshaw have
 contributed to the build system of FLINT.
@@ -1011,6 +1045,13 @@ The user can register additional cleanup functions to be invoked
 by \code{flint_cleanup()} by passing a pointer
 to a function with signature \code{void cleanup_function(void)}
 to \code{flint_register_cleanup_function()}.
+
+Flint also makes use of \code{malloc}, \code{realloc}, \code{calloc} and
+\code{free} by default to allocate memory internally. The user is able to
+override this behaviour by calling \code{__flint_set_memory_functions}
+passing the \code{malloc}, \code{realloc}, \code{calloc} and
+\code{free} function pointers as parameters (see \code{flint.h} for the
+exact prototype).
 
 \chapter{Temporary allocation}
 
@@ -1343,11 +1384,16 @@ We now describe the functions available in \code{fmpz_poly}.
 \chapter{fmpz\_poly\_factor: Polynomial factorisation over $\Z$}
 \epigraph{Factorisation of polynomials over $\Z$}{}
 
-The \code{fmpz_poly_factor} module is included automatically with
-\code{fmpz_poly.h}. One should not try to include \code{fmpz_poly_factor.h}
-directly.
-
 \input{input/fmpz_poly_factor.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Multivariate integer polynomials
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{fmpz\_mpoly: Multivariate polynomials over arbitrary precision integers}
+\epigraph{Multivariate polynomials over $\Z$}{}
+
+\input{input/fmpz_mpoly.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Rational numbers                                                             %
@@ -1543,6 +1589,15 @@ The output is:
 \end{lstlisting}
 
 \input{input/fmpz_poly_q.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Multivariate integer polynomials
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{fmpq\_mpoly: Multivariate polynomials over the rationals}
+\epigraph{Multivariate polynomials over $\Q$}{}
+
+\input{input/fmpq_mpoly.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Matrices over integer polynomials                                            %
@@ -1900,6 +1955,7 @@ be chosen for $f(X)$.  Additionally, the user is able to supply their
 own $f(X)$.
 
 \input{input/fq.tex}
+\input{input/fq_embed.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % fq_vec                                                                       %
@@ -1971,6 +2027,7 @@ be chosen for $f(X)$.  Additionally, the user is able to supply their
 own $f(X)$.
 
 \input{input/fq_nmod.tex}
+\input{input/fq_nmod_embed.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % fq_nmod_vec                                                                  %
@@ -2018,7 +2075,7 @@ polynomial.
 \epigraph{Factorisation of polynomials over finite fields of
   word-sized characteristic}
 
-The \code{fq_nmod__poly_factor} module is included automatically when
+The \code{fq_nmod_poly_factor} module is included automatically when
 one includes \code{fq_nmod_poly.h}. One should not try to include
 \code{fq_nmod_poly_factor.h} directly.
 
@@ -2032,7 +2089,7 @@ one includes \code{fq_nmod_poly.h}. One should not try to include
 
 We represent an element of the finite field as a power of a generator
 for the multiplicative group of the finite field.  In particular, we
-use a root of $f(x))$, where $f(X) \in \mathbf{F}_p[X]$ is a monic,
+use a root of $f(x)$, where $f(X) \in \mathbf{F}_p[X]$ is a monic,
 irreducible polynomial of degree~$n$, as a polynomial in
 $\mathbf{F}_p[X]$ of degree less than $n$.  The underlying data
 structure is just an \code{mp_limb_t}.
@@ -2049,6 +2106,7 @@ We required that the order of the field fits inside of an
 to the time and memory needed to compute the Zech logarithm table.
 
 \input{input/fq_zech.tex}
+\input{input/fq_zech_embed.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % fq_zech_vec                                                                  %
@@ -2095,7 +2153,7 @@ polynomial.
 \epigraph{Factorisation of polynomials over finite fields in Zech
   logarithm representation}
 
-The \code{fq_zech__poly_factor} module is included automatically when
+The \code{fq_zech_poly_factor} module is included automatically when
 one includes \code{fq_zech_poly.h}. One should not try to include
 \code{fq_zech_poly_factor.h} directly.
 
@@ -2151,6 +2209,31 @@ output variable.
 
 \chapter{qadic: Unramified extensions of $\Q_p$}
 \input{input/qadic.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% APRCL primality test                                                         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{aprcl: Primality test for \texttt{fmpz}}
+\epigraph{APR-CL primality test}{}
+
+\section{Introduction}
+
+This module provides the APR-CL primality test implementation for \code{fmpz_t}
+numbers.
+
+The APR-CL test uses the Jacobi sums that belong $\mathbb{Z}[\zeta]/(n)$, 
+so we have \code{unity_zp} struct and some useful operations. \code{unity_zp} 
+is just a wrapper over \code{fmpz_mod_poly} with aditional fields.
+
+Also provides Gauss sum test, which is not very useful in practice, but can be
+useful for people who want to see an implementation of these. Gauss sums 
+belong $\mathbb{Z}[\zeta_q, \zeta_p]/(n)$ and implemented in \code{unity_zpq} 
+struct.
+
+We now describe the functions available in the \code{aprcl} module.
+
+\input{input/aprcl.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Arithmetic functions                                                         %
@@ -3303,6 +3386,9 @@ in most situations one needs to write \code{typename T::something}. Similarly if
 alternative syntax when such an error is encountered.
 
 \input{input/genericxx.tex}
+
+\chapter{License}
+\lstinputlisting[language={},breaklines=false,basicstyle=\scriptsize]{../../LICENSE}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % BACKMATTER                                                                  %

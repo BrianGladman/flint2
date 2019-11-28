@@ -1,33 +1,19 @@
-/*=============================================================================
+/*
+    Copyright (C) 2013 Tom Bachmann
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2013 Tom Bachmann
-
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 // Helpers to define concrete subclasses of expression.
 // Contrary to other parts of this library, they are tailored very
 // specifically towards FLINT.
 
-#include "flint.h"
+#include "../flint.h"
 #include "mp.h"
 #include "expression.h"
 #include "expression_traits.h"
@@ -473,7 +459,7 @@ public:                                                                       \
 // Add a static randomisation function.
 // XXX this is not really useful because the arguments are often different.
 #define FLINTXX_DEFINE_RANDFUNC(CBase, name) \
-static CBase##xx_expression name(frandxx& state, mp_bitcnt_t bits) \
+static CBase##xx_expression name(frandxx& state, flint_bitcnt_t bits) \
 { \
     CBase##xx_expression res; \
     CBase##_##name(res._data().inner, state._data(), bits); \

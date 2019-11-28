@@ -1,28 +1,14 @@
-/*=============================================================================
-
-    This file is part of FLINT.
-
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
+/*
     Copyright (C) 2010 William Hart
     Copyright (C) 2011 Fredrik Johansson
 
-******************************************************************************/
+    This file is part of FLINT.
+
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -50,8 +36,8 @@ main(void)
         mp_limb_t mod;
 
         /* Make sure to workout the Newton code */
-        if (n_randint(state, 10) == 1)
-            N = 2000;
+        if (n_randint(state, 100) == 1)
+            N = 20000;
 
         mod = n_randtest_prime(state, 0);
         n = n_randtest(state) % N;
@@ -116,12 +102,17 @@ main(void)
         slong n;
         mp_limb_t mod;
         mod = n_randtest_prime(state, 0);
-        n = n_randtest(state) % 50;
+ 
+        if (i < 30)
+            n = n_randint(state, 20000);
+        else
+            n = n_randtest(state) % 50;
+
         n = FLINT_MIN(n, mod);
 
         nmod_poly_init(A, mod);
         nmod_poly_init(B, mod);
-        nmod_poly_randtest(A, state, n_randint(state, 50));
+        nmod_poly_randtest(A, state, n);
         nmod_poly_set_coeff_ui(A, 0, UWORD(0));
 
         nmod_poly_exp_series(B, A, n);

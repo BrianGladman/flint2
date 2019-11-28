@@ -1,27 +1,13 @@
-/*=============================================================================
+/*
+    Copyright (C) 2010 William Hart
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2010 William Hart
-   
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <gmp.h>
 #include "flint.h"
@@ -30,11 +16,11 @@
 
 int
 _fmpz_poly_bit_unpack(fmpz * poly, slong len,
-                      mp_srcptr arr, mp_bitcnt_t bit_size, int negate)
+                      mp_srcptr arr, flint_bitcnt_t bit_size, int negate)
 {
-    mp_bitcnt_t bits = 0;
+    flint_bitcnt_t bits = 0;
     mp_size_t limbs = 0;
-    mp_bitcnt_t b = bit_size % FLINT_BITS;
+    flint_bitcnt_t b = bit_size % FLINT_BITS;
     mp_size_t l = bit_size / FLINT_BITS;
     int borrow = 0;
     slong i;
@@ -58,11 +44,11 @@ _fmpz_poly_bit_unpack(fmpz * poly, slong len,
 
 void
 _fmpz_poly_bit_unpack_unsigned(fmpz * poly, slong len,
-                               mp_srcptr arr, mp_bitcnt_t bit_size)
+                               mp_srcptr arr, flint_bitcnt_t bit_size)
 {
-    mp_bitcnt_t bits = 0;
+    flint_bitcnt_t bits = 0;
     mp_size_t limbs = 0;
-    mp_bitcnt_t b = bit_size % FLINT_BITS;
+    flint_bitcnt_t b = bit_size % FLINT_BITS;
     mp_size_t l = bit_size / FLINT_BITS;
     slong i;
 
@@ -81,7 +67,7 @@ _fmpz_poly_bit_unpack_unsigned(fmpz * poly, slong len,
 
 void
 fmpz_poly_bit_unpack_unsigned(fmpz_poly_t poly, const fmpz_t f,
-                                        mp_bitcnt_t bit_size)
+                                        flint_bitcnt_t bit_size)
 {
     slong len;
     mpz_t tmp;
@@ -89,7 +75,7 @@ fmpz_poly_bit_unpack_unsigned(fmpz_poly_t poly, const fmpz_t f,
     if (fmpz_sgn(f) < 0)
     {
         flint_printf("Exception (fmpz_poly_bit_unpack_unsigned). Expected an unsigned value.\n");
-        abort();
+        flint_abort();
     }
 
     if (bit_size == 0 || fmpz_is_zero(f))
@@ -115,7 +101,7 @@ fmpz_poly_bit_unpack_unsigned(fmpz_poly_t poly, const fmpz_t f,
 
 
 void
-fmpz_poly_bit_unpack(fmpz_poly_t poly, const fmpz_t f, mp_bitcnt_t bit_size)
+fmpz_poly_bit_unpack(fmpz_poly_t poly, const fmpz_t f, flint_bitcnt_t bit_size)
 {
     slong len;
     mpz_t tmp;

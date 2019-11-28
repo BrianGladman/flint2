@@ -1,35 +1,23 @@
-/*=============================================================================
-
-    This file is part of FLINT.
-
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
+/*
     Copyright (C) 2007 David Howden
     Copyright (C) 2007, 2008, 2009, 2010 William Hart
     Copyright (C) 2008 Richard Howell-Peak
     Copyright (C) 2011 Fredrik Johansson
     Copyright (C) 2012 Lina Kulakova
 
-******************************************************************************/
+    This file is part of FLINT.
+
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <stdlib.h>
 #include "nmod_poly.h"
 #include "ulong_extras.h"
+
+#define MAX_DEG 7
 
 int
 main(void)
@@ -37,17 +25,20 @@ main(void)
     int iter;
     FLINT_TEST_INIT(state);
     
-
     flint_printf("factor_distinct_deg....");
     fflush(stdout);
 
-    for (iter = 0; iter < 200; iter++)
+    for (iter = 0; iter < 20 * flint_test_multiplier(); iter++)
     {
         nmod_poly_t poly1, poly, q, r, product;
         nmod_poly_factor_t res;
         mp_limb_t modulus, lead;
         slong i, length, num;
         slong *degs;
+        slong num_of_deg[MAX_DEG + 1];
+
+        for (i = 0; i < MAX_DEG + 1; i++)
+            num_of_deg[i] = 0;
 
         modulus = n_randtest_prime(state, 0);
 
@@ -59,7 +50,7 @@ main(void)
         nmod_poly_zero(poly1);
         nmod_poly_set_coeff_ui(poly1, 0, 1);
 
-        length = n_randint(state, 7) + 2;
+        length = n_randint(state, MAX_DEG) + 2;
         do
         {
             nmod_poly_randtest(poly, state, length);
@@ -70,13 +61,15 @@ main(void)
 
         nmod_poly_mul(poly1, poly1, poly);
 
+        num_of_deg[nmod_poly_degree(poly)]++;
+
         num = n_randint(state, 5) + 1;
 
         for (i = 1; i < num; i++)
         {
             do 
             {
-                length = n_randint(state, 7) + 2;
+                length = n_randint(state, MAX_DEG) + 2;
                 nmod_poly_randtest(poly, state, length);
                 if (poly->length)
                 {
@@ -88,6 +81,7 @@ main(void)
                 (r->length == 0));
 
             nmod_poly_mul(poly1, poly1, poly);
+            num_of_deg[nmod_poly_degree(poly)]++;
         }
 
         if (!(degs = flint_malloc((poly1->length - 1) * sizeof(slong))))
@@ -101,7 +95,16 @@ main(void)
         nmod_poly_init_preinv(product, poly1->mod.n, poly1->mod.ninv);
         nmod_poly_set_coeff_ui(product, 0, 1);
         for (i = 0; i < res->num; i++)
+        {
             nmod_poly_mul(product, product, res->p + i);
+
+            if (nmod_poly_degree(res->p + i) != degs[i]*num_of_deg[degs[i]])
+            {
+               flint_printf("Error: product of factors of degree %w incorrect\n", degs[i]);
+               flint_printf("Degree %w != %w * %w\n", nmod_poly_degree(res->p + i), degs[i], num_of_deg[degs[i]]);
+               flint_abort();
+            }
+        }
 
         lead = poly1->coeffs[poly1->length - 1];
         nmod_poly_scalar_mul_nmod(product, product, lead);
@@ -111,7 +114,7 @@ main(void)
             flint_printf("Error: product of factors does not equal to the original polynomial\n");
             flint_printf("poly:\n"); nmod_poly_print(poly1); flint_printf("\n");
             flint_printf("product:\n"); nmod_poly_print(product); flint_printf("\n");
-            abort();
+            flint_abort();
         }
 
         flint_free(degs);

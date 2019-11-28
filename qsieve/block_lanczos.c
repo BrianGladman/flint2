@@ -1,48 +1,26 @@
-/*============================================================================
+/*
     Copyright 2006 Jason Papadopoulos.    
     Copyright 2006, 2011 William Hart.
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-===============================================================================
+/*-------------------------------------------------------------------
 
 Optionally, please be nice and tell me if you find this source to be
 useful. Again optionally, if you add to the functionality present here
 please consider making those additions public too, so that others may 
 benefit from your work.	
        				   --jasonp@boo.net 9/8/06
-       				   
-The following modifications were made by William Hart:
-    -added the utility function get_null_entry
-    -reformatted original code so it would operate as a standalone 
-     filter and block Lanczos module
+
 --------------------------------------------------------------------*/
 
 
-#define ulong ulongxx /* interferes with system includes */
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#undef ulong
-#define ulong mp_limb_t
-
-#include <gmp.h>
-#include "flint.h"
-#include "ulong_extras.h"
 #include "qsieve.h"
 
 #define BIT(x) (((uint64_t)(1)) << (x))
@@ -174,18 +152,29 @@ void reduce_matrix(qs_t qs_inf, slong *nrows, slong *ncols, la_col_t *cols) {
 
 	} while (r != reduced_rows);
 
-#if (QS_DEBUG & 128)
+#if QS_DEBUG
 	flint_printf("reduce to %wd x %wd in %wd passes\n", 
 			reduced_rows, reduced_cols, passes);
 #endif
 
+        for (i = 0, j = 0; i < *nrows; i++)
+        {
+           if (counts[i] > 0)
+              counts[i] = j++;
+        }
+
+        for (i = 0; i < reduced_cols; i++)
+        {
+           la_col_t *col = cols + i;
+				
+           for (j = 0; j < col->weight; j++)
+              col->data[j] = counts[col->data[j]];
+        }
+
 	flint_free(counts);
     
-	/* record the final matrix size. Note that we can't touch
-	   nrows because all the column data (and the sieving relations
-	   that produced it) would have to be updated */
-
 	*ncols = reduced_cols;
+        *nrows = reduced_rows;
 }
 
 /*-------------------------------------------------------------------*/
@@ -437,7 +426,7 @@ static slong find_nonsingular_sub(uint64_t *t, slong *s,
 		}
 				
 		if (j == 64) {
-#if (QS_DEBUG & 128)
+#if QS_DEBUG
 			flint_printf("lanczos error: submatrix "
 					"is not invertible\n");
 #endif
@@ -476,7 +465,7 @@ static slong find_nonsingular_sub(uint64_t *t, slong *s,
 		mask |= bitmask[last_s[i]];
 
 	if (mask != (uint64_t)(-1)) {
-#if (QS_DEBUG & 128)
+#if QS_DEBUG
 		flint_printf("lanczos error: not all columns used\n");
 #endif
 		return 0;
@@ -906,14 +895,13 @@ uint64_t * block_lanczos(flint_rand_t state, slong nrows,
 		dim1 = dim0;
 	}
 
-#if (QS_DEBUG & 128)
+#if QS_DEBUG
 	flint_printf("lanczos halted after %wd iterations\n", iter);
 #endif
 
 	/* free unneeded storage */
 
-    
-    flint_free(vnext);
+        flint_free(vnext);
 	flint_free(scratch);
 	flint_free(v0);
 	flint_free(vt_a_v[0]);
@@ -932,7 +920,7 @@ uint64_t * block_lanczos(flint_rand_t state, slong nrows,
 	   over again */
 
 	if (dim0 == 0) {
-#if (QS_DEBUG & 128)
+#if QS_DEBUG
 		flint_printf("linear algebra failed; retrying...\n");
 #endif
 		flint_free(x);
@@ -960,7 +948,7 @@ uint64_t * block_lanczos(flint_rand_t state, slong nrows,
 	}
 	if (i < ncols) {
 		flint_printf("lanczos error: dependencies don't work %wd\n",i);
-		abort();
+		flint_abort();
 	}
 	
 	flint_free(v[0]);

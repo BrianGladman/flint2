@@ -1,29 +1,24 @@
-/*=============================================================================
+/*
+    Copyright (C) 2009 William Hart
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+#ifdef __unix__
+#include <unistd.h> /* sysconf */
+#endif
 
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2009 William Hart
-
-******************************************************************************/
+#if defined(_WIN32) || defined(WIN32)
+#include <windows.h> /* GetSytemInfo */
+#endif
 
 #include <stdlib.h>
+
 #include <gmp.h>
 #include "flint.h"
 #include "fmpz.h"
@@ -31,41 +26,133 @@
 /* Always free larger mpz's to avoid wasting too much heap space */
 #define FLINT_MPZ_MAX_CACHE_LIMBS 64
 
+#define PAGES_PER_BLOCK 16
+
 /* The number of new mpz's allocated at a time */
-#define MPZ_BLOCK 64 
+#define MPZ_BLOCK 64
 
 FLINT_TLS_PREFIX __mpz_struct ** mpz_free_arr = NULL;
 FLINT_TLS_PREFIX ulong mpz_free_num = 0;
 FLINT_TLS_PREFIX ulong mpz_free_alloc = 0;
+#pragma omp threadprivate(mpz_free_arr, mpz_free_num, mpz_free_alloc)
+
+static slong flint_page_size;
+static slong flint_mpz_structs_per_block;
+static slong flint_page_mask;
+
+slong flint_get_page_size()
+{
+#if defined(__unix__)
+   return sysconf(_SC_PAGESIZE);
+#elif defined(_WIN32) || defined(WIN32)
+   SYSTEM_INFO si;
+   GetSystemInfo(&si);
+   return si.dwPageSize;
+#else
+   return 4096;
+#endif
+}
+
+void * flint_align_ptr(void * ptr, slong size)
+{
+    slong mask = ~(size - 1);
+
+    return (void *)((mask & (slong) ptr) + size);
+}
 
 __mpz_struct * _fmpz_new_mpz(void)
 {
-    if (mpz_free_num != 0)
+    if (mpz_free_num == 0) /* allocate more mpz's */
     {
-        return mpz_free_arr[--mpz_free_num];
+        void * aligned_ptr, * ptr;
+
+        slong i, j, num, block_size, skip;
+
+        flint_page_size = flint_get_page_size();
+        block_size = PAGES_PER_BLOCK*flint_page_size;
+        flint_page_mask = ~(flint_page_size - 1);
+
+        /* get new block */
+        ptr = flint_malloc(block_size + flint_page_size);
+
+        /* align to page boundary */
+        aligned_ptr = flint_align_ptr(ptr, flint_page_size);
+
+        /* set free count to zero and determine if this is the main thread */
+        ((fmpz_block_header_s *) ptr)->count = 0;
+#if HAVE_PTHREAD
+        ((fmpz_block_header_s *) ptr)->thread = pthread_self();
+#endif
+        /* how many __mpz_structs worth are dedicated to header, per page */
+        skip = (sizeof(fmpz_block_header_s) - 1)/sizeof(__mpz_struct) + 1;
+
+        /* total number of number of __mpz_structs worth per page */
+        num = flint_page_size/sizeof(__mpz_struct);
+
+        flint_mpz_structs_per_block = PAGES_PER_BLOCK*(num - skip);
+
+        for (i = 0; i < PAGES_PER_BLOCK; i++)
+        {
+            __mpz_struct * page_ptr = (__mpz_struct *)((slong) aligned_ptr + i*flint_page_size);
+
+            /* set pointer in each page to start of entire block */
+            ((fmpz_block_header_s *) page_ptr)->address = ptr;
+
+            for (j = skip; j < num; j++)
+            {
+                mpz_init2(page_ptr + j, 2*FLINT_BITS);
+
+                /*
+                   Cannot be lifted from loop due to possibility of
+                   gc calling _fmpz_clear_mpz during call to mpz_init_2
+                */
+                if (mpz_free_num >= mpz_free_alloc)
+                {
+                    mpz_free_alloc = FLINT_MAX(mpz_free_num + 1, mpz_free_alloc * 2);
+                    mpz_free_arr = flint_realloc(mpz_free_arr, mpz_free_alloc * sizeof(__mpz_struct *));
+                }
+
+                mpz_free_arr[mpz_free_num++] = page_ptr + j;
+            }
+        }
     }
-    else
-    {
-        __mpz_struct * z = flint_malloc(sizeof(__mpz_struct));
-        mpz_init(z);
-        return z;
-    }
+
+    return mpz_free_arr[--mpz_free_num];
 }
 
 void _fmpz_clear_mpz(fmpz f)
 {
     __mpz_struct * ptr = COEFF_TO_PTR(f);
 
-    if (ptr->_mp_alloc > FLINT_MPZ_MAX_CACHE_LIMBS)
-        mpz_realloc2(ptr, 1);
+    /* check free count for block is zero, else this mpz came from a thread */
+    fmpz_block_header_s * header_ptr = (fmpz_block_header_s *)((slong) ptr & flint_page_mask);
 
-    if (mpz_free_num == mpz_free_alloc)
+    header_ptr = (fmpz_block_header_s *) header_ptr->address;
+
+    /* clean up if this is left over from another thread */
+#if HAVE_PTHREAD
+    if (header_ptr->count != 0 || !pthread_equal(header_ptr->thread, pthread_self()))
+#else
+    if (header_ptr->count != 0)
+#endif
     {
-        mpz_free_alloc = FLINT_MAX(64, mpz_free_alloc * 2);
-        mpz_free_arr = flint_realloc(mpz_free_arr, mpz_free_alloc * sizeof(__mpz_struct *));
-    }
+        mpz_clear(ptr);
 
-    mpz_free_arr[mpz_free_num++] = ptr;
+        if (++header_ptr->count == flint_mpz_structs_per_block)
+            flint_free(header_ptr);
+    } else
+    {
+        if (ptr->_mp_alloc > FLINT_MPZ_MAX_CACHE_LIMBS)
+            mpz_realloc2(ptr, 2*FLINT_BITS);
+
+        if (mpz_free_num == mpz_free_alloc)
+        {
+            mpz_free_alloc = FLINT_MAX(64, mpz_free_alloc * 2);
+            mpz_free_arr = flint_realloc(mpz_free_arr, mpz_free_alloc * sizeof(__mpz_struct *));
+        }
+
+        mpz_free_arr[mpz_free_num++] = ptr;
+    }
 }
 
 void _fmpz_cleanup_mpz_content(void)
@@ -74,8 +161,17 @@ void _fmpz_cleanup_mpz_content(void)
 
     for (i = 0; i < mpz_free_num; i++)
     {
-        mpz_clear(mpz_free_arr[i]);
-        flint_free(mpz_free_arr[i]);
+       fmpz_block_header_s * ptr;
+
+       mpz_clear(mpz_free_arr[i]);
+
+       /* update count of cleared mpz's for block */
+       ptr = (fmpz_block_header_s *)((slong) mpz_free_arr[i] & ~(flint_page_size - 1));
+
+       ptr = (fmpz_block_header_s *) ptr->address;
+
+       if (++ptr->count == flint_mpz_structs_per_block)
+          flint_free(ptr);
     }
 
     mpz_free_num = mpz_free_alloc = 0;
@@ -155,5 +251,4 @@ void _fmpz_clear_readonly_mpz(mpz_t z)
     {
         mpz_clear(z);
     }
-
 }

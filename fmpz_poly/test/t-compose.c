@@ -1,28 +1,15 @@
-/*=============================================================================
+/*
+    Copyright (C) 2009 William Hart
+    Copyright (C) 2010 Sebastian Pancratz
+    Copyright (C) 2016 Shivin Srivastava
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2009 William Hart
-    Copyright (C) 2010 Sebastian Pancratz
-
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -180,6 +167,55 @@ main(void)
         fmpz_poly_clear(s);
         fmpz_poly_clear(t);
     }
+
+    /* Testing linear composition*/
+    for (i = 0; i < 10 * flint_test_multiplier(); i++)
+    {
+        fmpz_poly_t f, g, h, s, t;
+        fmpz_t c;
+        slong k;
+
+        fmpz_init(c);
+        fmpz_poly_init(f);
+        fmpz_poly_init(g);
+        fmpz_poly_init(h);
+        fmpz_poly_init(s);
+        fmpz_poly_init(t);
+
+        /* h is a linear polynomial*/
+        for (k = 0; k < 2; k++)
+        {
+            fmpz_randtest(c, state, 50);
+            fmpz_poly_set_coeff_fmpz(h, k, c);
+        }
+        
+        fmpz_poly_randtest(g, state, n_randint(state, 40), 80);
+        fmpz_poly_set_ui(t, 1);
+        for (k = 0; k < g->length; k++)
+        {
+            fmpz_poly_scalar_addmul_fmpz(s, t, g->coeffs + k);
+            fmpz_poly_mul(t, t, h);
+        }
+        
+        fmpz_poly_compose(f, g, h);
+
+        result = (fmpz_poly_equal(f, s));
+        if (!result)
+        {
+            flint_printf("FAIL (linear composition):\n");
+            flint_printf("g = "), fmpz_poly_print(g), flint_printf("\n\n");
+            flint_printf("h = "), fmpz_poly_print(h), flint_printf("\n\n");
+            flint_printf("f = "), fmpz_poly_print(f), flint_printf("\n\n");
+            flint_printf("s = "), fmpz_poly_print(s), flint_printf("\n\n");
+            abort();
+        }
+
+        fmpz_poly_clear(f);
+        fmpz_poly_clear(g);
+        fmpz_poly_clear(h);
+        fmpz_poly_clear(s);
+        fmpz_poly_clear(t);
+    }    
 
     FLINT_TEST_CLEANUP(state);
     

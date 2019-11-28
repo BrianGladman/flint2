@@ -1,27 +1,13 @@
-/*=============================================================================
+/*
+    Copyright (C) 2013 Tom Bachmann
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2013 Tom Bachmann
-
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #ifndef CXX_FMPQXX_H
 #define CXX_FMPQXX_H
@@ -165,7 +151,7 @@ public:
     // TODO make this only work on immediates?
     slong cfrac_bound() const {return fmpq_cfrac_bound(this->evaluate()._fmpq());}
     int sgn() const {return fmpq_sgn(this->evaluate()._fmpq());}
-    mp_bitcnt_t height_bits() const
+    flint_bitcnt_t height_bits() const
         {return fmpq_height_bits(this->evaluate()._fmpq());}
 
     FLINTXX_DEFINE_MEMBER_UNOP_(next_minimal, fmpqxx_next_minimal)
@@ -344,7 +330,7 @@ FLINTXX_DEFINE_TERNARY(fmpqxx,
 
 // immediate functions
 template<class Fmpq>
-inline typename mp::enable_if<traits::is_fmpqxx<Fmpq>, mp_bitcnt_t>::type
+inline typename mp::enable_if<traits::is_fmpqxx<Fmpq>, flint_bitcnt_t>::type
 height_bits(const Fmpq& f)
 {
     return f.height_bits();

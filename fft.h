@@ -1,38 +1,13 @@
-/* mul_fft -- radix 2 fft routines for MPIR.
-
-Copyright 2009, 2011 William Hart. All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are
-permitted provided that the following conditions are met:
-
-   1. Redistributions of source code must retain the above copyright notice, this list of
-      conditions and the following disclaimer.
-
-   2. Redistributions in binary form must reproduce the above copyright notice, this list
-      of conditions and the following disclaimer in the documentation and/or other materials
-      provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY William Hart ``AS IS'' AND ANY EXPRESS OR IMPLIED
-WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
-FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL William Hart OR
-CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
-ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-The views and conclusions contained in the software and documentation are those of the
-authors and should not be interpreted as representing official policies, either expressed
-or implied, of William Hart.
-
-*/
-
-/******************************************************************************
-
+/*
     Copyright (C) 2009, 2011 William Hart
- 
-******************************************************************************/
+
+    This file is part of FLINT.
+
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #ifndef FFT_H
 #define FFT_H
@@ -53,6 +28,10 @@ or implied, of William Hart.
 #define ulong mp_limb_t
 #include "flint.h"
 #include "mpn_extras.h"
+
+#if HAVE_OPENMP
+#include <omp.h> /* must come after flint.h */
+#endif
 
 #ifdef __cplusplus
  extern "C" {
@@ -79,7 +58,7 @@ mp_limb_t mpn_sumdiff_n(mp_ptr s, mp_ptr d, mp_srcptr x, mp_srcptr y, mp_size_t 
 
     if ((s == x && d == y) || (s == y && d == x))
     {
-        t = flint_malloc(n * sizeof(mp_limb_t));
+        t = (mp_ptr) flint_malloc(n * sizeof(mp_limb_t));
         ret = mpn_sub_n(t, x, y, n);
         ret += 2 * mpn_add_n(s, x, y, n);
         flint_mpn_copyi(d, t, n);
@@ -148,13 +127,13 @@ FLINT_DLL void fft_combine_limbs(mp_limb_t * res, mp_limb_t ** poly, slong lengt
             mp_size_t coeff_limbs, mp_size_t output_limbs, mp_size_t total_limbs);
 
 FLINT_DLL void fft_combine_bits(mp_limb_t * res, mp_limb_t ** poly, slong length, 
-                 mp_bitcnt_t bits, mp_size_t output_limbs, mp_size_t total_limbs);
+                 flint_bitcnt_t bits, mp_size_t output_limbs, mp_size_t total_limbs);
 
 FLINT_DLL mp_size_t fft_split_limbs(mp_limb_t ** poly, mp_srcptr limbs, 
             mp_size_t total_limbs, mp_size_t coeff_limbs, mp_size_t output_limbs);
 
 FLINT_DLL mp_size_t fft_split_bits(mp_limb_t ** poly, mp_srcptr limbs, 
-                 mp_size_t total_limbs, mp_bitcnt_t bits, mp_size_t output_limbs);
+                 mp_size_t total_limbs, flint_bitcnt_t bits, mp_size_t output_limbs);
 
 FLINT_DLL void fermat_to_mpz(mpz_t m, mp_limb_t * i, mp_size_t limbs);
 
@@ -167,113 +146,113 @@ FLINT_DLL void butterfly_rshB(mp_limb_t * t, mp_limb_t * u, mp_limb_t * i1,
                        mp_limb_t * i2, mp_size_t limbs, mp_size_t x, mp_size_t y);
 
 FLINT_DLL void mpn_mul_2expmod_2expp1(mp_limb_t * t, 
-                                  mp_limb_t * i1, mp_size_t limbs, mp_bitcnt_t d);
+                                  mp_limb_t * i1, mp_size_t limbs, flint_bitcnt_t d);
 
 FLINT_DLL void mpn_div_2expmod_2expp1(mp_limb_t * t, 
-                                  mp_limb_t * i1, mp_size_t limbs, mp_bitcnt_t d);
+                                  mp_limb_t * i1, mp_size_t limbs, flint_bitcnt_t d);
 
 FLINT_DLL void fft_adjust(mp_limb_t * r, mp_limb_t * i1, 
-                                     mp_size_t i, mp_size_t limbs, mp_bitcnt_t w);
+                                     mp_size_t i, mp_size_t limbs, flint_bitcnt_t w);
 
 FLINT_DLL void fft_butterfly(mp_limb_t * s, mp_limb_t * t, mp_limb_t * i1, 
-                     mp_limb_t * i2, mp_size_t i, mp_size_t limbs, mp_bitcnt_t w);
+                     mp_limb_t * i2, mp_size_t i, mp_size_t limbs, flint_bitcnt_t w);
 
 FLINT_DLL void ifft_butterfly(mp_limb_t * s, mp_limb_t * t, mp_limb_t * i1, 
-                     mp_limb_t * i2, mp_size_t i, mp_size_t limbs, mp_bitcnt_t w);
+                     mp_limb_t * i2, mp_size_t i, mp_size_t limbs, flint_bitcnt_t w);
 
 FLINT_DLL void fft_radix2(mp_limb_t ** ii, 
-                    mp_size_t n, mp_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2);
+                    mp_size_t n, flint_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2);
 
-FLINT_DLL void fft_truncate1(mp_limb_t ** ii, mp_size_t n, mp_bitcnt_t w, 
+FLINT_DLL void fft_truncate1(mp_limb_t ** ii, mp_size_t n, flint_bitcnt_t w, 
                                mp_limb_t ** t1, mp_limb_t ** t2, mp_size_t trunc);
 
-FLINT_DLL void fft_truncate(mp_limb_t ** ii,  mp_size_t n, mp_bitcnt_t w, 
+FLINT_DLL void fft_truncate(mp_limb_t ** ii,  mp_size_t n, flint_bitcnt_t w, 
                                mp_limb_t ** t1, mp_limb_t ** t2, mp_size_t trunc);
 
 FLINT_DLL void ifft_radix2(mp_limb_t ** ii, mp_size_t n, 
-                                 mp_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2);
+                                 flint_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2);
 
-FLINT_DLL void ifft_truncate1(mp_limb_t ** ii, mp_size_t n, mp_bitcnt_t w, 
+FLINT_DLL void ifft_truncate1(mp_limb_t ** ii, mp_size_t n, flint_bitcnt_t w, 
                                mp_limb_t ** t1, mp_limb_t ** t2, mp_size_t trunc);
 
-FLINT_DLL void ifft_truncate(mp_limb_t ** ii, mp_size_t n, mp_bitcnt_t w, 
+FLINT_DLL void ifft_truncate(mp_limb_t ** ii, mp_size_t n, flint_bitcnt_t w, 
                                mp_limb_t ** t1, mp_limb_t ** t2, mp_size_t trunc);
 
 FLINT_DLL void fft_butterfly_sqrt2(mp_limb_t * s, mp_limb_t * t, 
                          mp_limb_t * i1, mp_limb_t * i2, mp_size_t i, 
-                                mp_size_t limbs, mp_bitcnt_t w, mp_limb_t * temp);
+                                mp_size_t limbs, flint_bitcnt_t w, mp_limb_t * temp);
 
 FLINT_DLL void ifft_butterfly_sqrt2(mp_limb_t * s, mp_limb_t * t, mp_limb_t * i1, 
-   mp_limb_t * i2, mp_size_t i, mp_size_t limbs, mp_bitcnt_t w, mp_limb_t * temp);
+   mp_limb_t * i2, mp_size_t i, mp_size_t limbs, flint_bitcnt_t w, mp_limb_t * temp);
 
 FLINT_DLL void fft_adjust_sqrt2(mp_limb_t * r, mp_limb_t * i1, 
-                   mp_size_t i, mp_size_t limbs, mp_bitcnt_t w, mp_limb_t * temp);
+                   mp_size_t i, mp_size_t limbs, flint_bitcnt_t w, mp_limb_t * temp);
 
-FLINT_DLL void fft_truncate_sqrt2(mp_limb_t ** ii, mp_size_t n, mp_bitcnt_t w, 
+FLINT_DLL void fft_truncate_sqrt2(mp_limb_t ** ii, mp_size_t n, flint_bitcnt_t w, 
             mp_limb_t ** t1, mp_limb_t ** t2, mp_limb_t ** temp, mp_size_t trunc);
 
-FLINT_DLL void ifft_truncate_sqrt2(mp_limb_t ** ii, mp_size_t n, mp_bitcnt_t w, 
+FLINT_DLL void ifft_truncate_sqrt2(mp_limb_t ** ii, mp_size_t n, flint_bitcnt_t w, 
             mp_limb_t ** t1, mp_limb_t ** t2, mp_limb_t ** temp, mp_size_t trunc);
 
 FLINT_DLL void mul_truncate_sqrt2(mp_ptr r1, mp_srcptr i1, mp_size_t n1,
-                        mp_srcptr i2, mp_size_t n2, mp_bitcnt_t depth, mp_bitcnt_t w);
+                        mp_srcptr i2, mp_size_t n2, flint_bitcnt_t depth, flint_bitcnt_t w);
 
 FLINT_DLL void fft_butterfly_twiddle(mp_limb_t * u, mp_limb_t * v, 
-   mp_limb_t * s, mp_limb_t * t, mp_size_t limbs, mp_bitcnt_t b1, mp_bitcnt_t b2);
+   mp_limb_t * s, mp_limb_t * t, mp_size_t limbs, flint_bitcnt_t b1, flint_bitcnt_t b2);
 
 FLINT_DLL void ifft_butterfly_twiddle(mp_limb_t * u, mp_limb_t * v, 
-   mp_limb_t * s, mp_limb_t * t, mp_size_t limbs, mp_bitcnt_t b1, mp_bitcnt_t b2);
+   mp_limb_t * s, mp_limb_t * t, mp_size_t limbs, flint_bitcnt_t b1, flint_bitcnt_t b2);
 
 FLINT_DLL void fft_radix2_twiddle(mp_limb_t ** ii, mp_size_t is,
-      mp_size_t n, mp_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2,
+      mp_size_t n, flint_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2,
                             mp_size_t ws, mp_size_t r, mp_size_t c, mp_size_t rs);
 
 FLINT_DLL void ifft_radix2_twiddle(mp_limb_t ** ii, mp_size_t is,
-        mp_size_t n, mp_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2,
+        mp_size_t n, flint_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2,
                             mp_size_t ws, mp_size_t r, mp_size_t c, mp_size_t rs);
 
 FLINT_DLL void fft_truncate1_twiddle(mp_limb_t ** ii, mp_size_t is,
-        mp_size_t n, mp_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2,
+        mp_size_t n, flint_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2,
            mp_size_t ws, mp_size_t r, mp_size_t c, mp_size_t rs, mp_size_t trunc);
 
 FLINT_DLL void ifft_truncate1_twiddle(mp_limb_t ** ii, mp_size_t is,
-        mp_size_t n, mp_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2,
+        mp_size_t n, flint_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2,
            mp_size_t ws, mp_size_t r, mp_size_t c, mp_size_t rs, mp_size_t trunc);
 
 FLINT_DLL void fft_mfa_truncate_sqrt2(mp_limb_t ** ii, mp_size_t n, 
-                       mp_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2, 
+                       flint_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2, 
                                 mp_limb_t ** temp, mp_size_t n1, mp_size_t trunc);
 
 FLINT_DLL void ifft_mfa_truncate_sqrt2(mp_limb_t ** ii, mp_size_t n, 
-                      mp_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2,
+                      flint_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2,
                                 mp_limb_t ** temp, mp_size_t n1, mp_size_t trunc);
 
 FLINT_DLL void mul_mfa_truncate_sqrt2(mp_ptr r1, mp_srcptr i1, mp_size_t n1,
-                        mp_srcptr i2, mp_size_t n2, mp_bitcnt_t depth, mp_bitcnt_t w);
+                        mp_srcptr i2, mp_size_t n2, flint_bitcnt_t depth, flint_bitcnt_t w);
 
 FLINT_DLL void fft_mfa_truncate_sqrt2_outer(mp_limb_t ** ii, mp_size_t n, 
-                      mp_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2, 
+                      flint_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2, 
                                 mp_limb_t ** temp, mp_size_t n1, mp_size_t trunc);
 
 FLINT_DLL void fft_mfa_truncate_sqrt2_inner(mp_limb_t ** ii, mp_limb_t ** jj, 
-            mp_size_t n, mp_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2, 
-                mp_limb_t ** temp, mp_size_t n1, mp_size_t trunc, mp_limb_t * tt);
+            mp_size_t n, flint_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2, 
+                mp_limb_t ** temp, mp_size_t n1, mp_size_t trunc, mp_limb_t ** tt);
 
 FLINT_DLL void ifft_mfa_truncate_sqrt2_outer(mp_limb_t ** ii, mp_size_t n, 
-                        mp_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2, 
+                        flint_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2, 
                                 mp_limb_t ** temp, mp_size_t n1, mp_size_t trunc);
 
-FLINT_DLL void fft_negacyclic(mp_limb_t ** ii, mp_size_t n, mp_bitcnt_t w, 
+FLINT_DLL void fft_negacyclic(mp_limb_t ** ii, mp_size_t n, flint_bitcnt_t w, 
                              mp_limb_t ** t1, mp_limb_t ** t2, mp_limb_t ** temp);
 
-FLINT_DLL void ifft_negacyclic(mp_limb_t ** ii, mp_size_t n, mp_bitcnt_t w, 
+FLINT_DLL void ifft_negacyclic(mp_limb_t ** ii, mp_size_t n, flint_bitcnt_t w, 
                              mp_limb_t ** t1, mp_limb_t ** t2, mp_limb_t ** temp);
 
 FLINT_DLL void fft_naive_convolution_1(mp_limb_t * r, mp_limb_t * ii, 
                                                      mp_limb_t * jj, mp_size_t m);
 
 FLINT_DLL void _fft_mulmod_2expp1(mp_limb_t * r1, mp_limb_t * i1, mp_limb_t * i2, 
-                             mp_size_t r_limbs, mp_bitcnt_t depth, mp_bitcnt_t w);
+                             mp_size_t r_limbs, flint_bitcnt_t depth, flint_bitcnt_t w);
 
 FLINT_DLL slong fft_adjust_limbs(mp_size_t limbs);
 
@@ -285,7 +264,7 @@ FLINT_DLL void flint_mpn_mul_fft_main(mp_ptr r1, mp_srcptr i1, mp_size_t n1,
 
 FLINT_DLL void fft_convolution(mp_limb_t ** ii, mp_limb_t ** jj, slong depth, 
                                  slong limbs, slong trunc, mp_limb_t ** t1, 
-                                mp_limb_t ** t2, mp_limb_t ** s1, mp_limb_t * tt);
+                                mp_limb_t ** t2, mp_limb_t ** s1, mp_limb_t ** tt);
 
 #ifdef __cplusplus
 }

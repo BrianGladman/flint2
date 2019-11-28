@@ -1,31 +1,12 @@
 /* 
+    Copyright (C) 2009, 2011 William Hart
 
-Copyright 2009, 2011 William Hart. All rights reserved.
+    This file is part of FLINT.
 
-Redistribution and use in source and binary forms, with or without modification, are
-permitted provided that the following conditions are met:
-
-   1. Redistributions of source code must retain the above copyright notice, this list of
-      conditions and the following disclaimer.
-
-   2. Redistributions in binary form must reproduce the above copyright notice, this list
-      of conditions and the following disclaimer in the documentation and/or other materials
-      provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY William Hart ``AS IS'' AND ANY EXPRESS OR IMPLIED
-WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
-FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL William Hart OR
-CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
-ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-The views and conclusions contained in the software and documentation are those of the
-authors and should not be interpreted as representing official policies, either expressed
-or implied, of William Hart.
-
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
 #include <stdio.h>
@@ -38,7 +19,7 @@ or implied, of William Hart.
 int
 main(void)
 {
-    mp_bitcnt_t depth, w;
+    flint_bitcnt_t depth, w;
     
     FLINT_TEST_INIT(state);
 
@@ -57,11 +38,11 @@ main(void)
             for (i = 0; i < iter; i++)
             {
                mp_size_t n = (UWORD(1)<<depth);
-               mp_bitcnt_t bits1 = (n*w - (depth + 1))/2; 
+               flint_bitcnt_t bits1 = (n*w - (depth + 1))/2; 
                mp_size_t len1 = 2*n + n_randint(state, 2*n) + 1;
                mp_size_t len2 = 2*n + 2 - len1 + n_randint(state, 2*n);
 
-               mp_bitcnt_t b1 = len1*bits1, b2;
+               flint_bitcnt_t b1 = len1*bits1, b2;
                mp_size_t n1, n2;
                mp_size_t j;
                mp_limb_t * i1, *i2, *r1, *r2;
@@ -77,7 +58,7 @@ main(void)
                if (n1 < n2) /* ensure b1 >= b2 */
                {
                   mp_size_t t = n1;
-                  mp_bitcnt_t tb = b1;
+                  flint_bitcnt_t tb = b1;
                   n1 = n2;
                   b1 = b2;
                   n2 = t;

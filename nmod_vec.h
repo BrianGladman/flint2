@@ -1,27 +1,13 @@
-/*=============================================================================
+/*
+    Copyright (C) 2010 William Hart
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2010 William Hart
-
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #ifndef NMOD_VEC_H
 #define NMOD_VEC_H
@@ -51,7 +37,7 @@ typedef struct
 {
    mp_limb_t n;
    mp_limb_t ninv;
-   mp_bitcnt_t norm;
+   flint_bitcnt_t norm;
 } nmod_t;
 
 
@@ -63,16 +49,16 @@ do {                                            \
 
 #define NMOD_RED2(r, a_hi, a_lo, mod) \
    do { \
-      mp_limb_t q0, q1, r1; \
-      const mp_limb_t u1 = ((a_hi)<<(mod).norm) + r_shift((a_lo), FLINT_BITS - (mod).norm);	\
-      const mp_limb_t u0 = ((a_lo)<<(mod).norm); \
+      mp_limb_t q0xx, q1xx, r1xx; \
+      const mp_limb_t u1xx = ((a_hi)<<(mod).norm) + r_shift((a_lo), FLINT_BITS - (mod).norm);	\
+      const mp_limb_t u0xx = ((a_lo)<<(mod).norm); \
       const mp_limb_t nxx = ((mod).n<<(mod).norm); \
-      umul_ppmm(q1, q0, (mod).ninv, u1); \
-      add_ssaaaa(q1, q0, q1, q0, u1, u0); \
-      r1 = (u0 - (q1 + 1)*nxx); \
-      if (r1 >= q0) r1 += nxx; \
-      if (r1 < nxx) r = (r1>>(mod).norm); \
-      else r = ((r1 - nxx)>>(mod).norm); \
+      umul_ppmm(q1xx, q0xx, (mod).ninv, u1xx); \
+      add_ssaaaa(q1xx, q0xx, q1xx, q0xx, u1xx, u0xx); \
+      r1xx = (u0xx - (q1xx + 1)*nxx); \
+      if (r1xx > q0xx) r1xx += nxx; \
+      if (r1xx < nxx) r = (r1xx>>(mod).norm); \
+      else r = ((r1xx - nxx)>>(mod).norm); \
    } while (0)
 
 #define NMOD_RED(r, a, mod) \
@@ -170,6 +156,11 @@ mp_limb_t nmod_pow_ui(mp_limb_t a, ulong exp, nmod_t mod)
 {
     return n_powmod2_ui_preinv(a, exp, mod.n, mod.ninv);
 }
+/*
+This function is in fmpz.h
+
+FMPZ_INLINE mp_limb_t nmod_pow_fmpz(mp_limb_t a, const fmpz_t exp, nmod_t mod)
+*/
 
 NMOD_VEC_INLINE
 void nmod_init(nmod_t * mod, mp_limb_t n)
@@ -199,7 +190,7 @@ void _nmod_vec_zero(mp_ptr vec, slong len)
    flint_mpn_zero(vec, len);
 }
 
-FLINT_DLL mp_bitcnt_t _nmod_vec_max_bits(mp_srcptr vec, slong len);
+FLINT_DLL flint_bitcnt_t _nmod_vec_max_bits(mp_srcptr vec, slong len);
 
 NMOD_VEC_INLINE
 void _nmod_vec_set(mp_ptr res, mp_srcptr vec, slong len)
@@ -256,9 +247,11 @@ FLINT_DLL void _nmod_vec_neg(mp_ptr res, mp_srcptr vec,
 FLINT_DLL void _nmod_vec_scalar_mul_nmod(mp_ptr res, mp_srcptr vec, 
                             slong len, mp_limb_t c, nmod_t mod);
 
-FLINT_DLL void _nmod_vec_scalar_addmul_nmod(mp_ptr res, mp_srcptr vec, 
+FLINT_DLL void _nmod_vec_scalar_mul_nmod_shoup(mp_ptr res, mp_srcptr vec, 
                             slong len, mp_limb_t c, nmod_t mod);
 
+FLINT_DLL void _nmod_vec_scalar_addmul_nmod(mp_ptr res, mp_srcptr vec, 
+                            slong len, mp_limb_t c, nmod_t mod);
 
 FLINT_DLL int _nmod_vec_dot_bound_limbs(slong len, nmod_t mod);
 
@@ -267,26 +260,26 @@ FLINT_DLL int _nmod_vec_dot_bound_limbs(slong len, nmod_t mod);
     do                                                                      \
     {                                                                       \
         mp_limb_t s0, s1, s2, t0, t1;                                       \
-        s0 = s1 = s2 = UWORD(0);                                                 \
+        s0 = s1 = s2 = UWORD(0);                                            \
         switch (nlimbs)                                                     \
         {                                                                   \
             case 1:                                                         \
-                for (i = 0; i < len; i++)                                   \
+                for (i = 0; i < (len); i++)                                 \
                 {                                                           \
                     s0 += (expr1) * (expr2);                                \
                 }                                                           \
                 NMOD_RED(s0, s0, mod);                                      \
                 break;                                                      \
             case 2:                                                         \
-                if (mod.n <= (UWORD(1) << (FLINT_BITS / 2)))                     \
+                if (mod.n <= (UWORD(1) << (FLINT_BITS / 2)))                \
                 {                                                           \
-                    for (i = 0; i < len; i++)                               \
+                    for (i = 0; i < (len); i++)                             \
                     {                                                       \
                         t0 = (expr1) * (expr2);                             \
                         add_ssaaaa(s1, s0, s1, s0, 0, t0);                  \
                     }                                                       \
                 }                                                           \
-                else                                                        \
+                else if ((len) < 8)                                         \
                 {                                                           \
                     for (i = 0; i < len; i++)                               \
                     {                                                       \
@@ -294,10 +287,28 @@ FLINT_DLL int _nmod_vec_dot_bound_limbs(slong len, nmod_t mod);
                         add_ssaaaa(s1, s0, s1, s0, t1, t0);                 \
                     }                                                       \
                 }                                                           \
+                else                                                        \
+                {                                                           \
+                    mp_limb_t v0, v1, u0, u1;                               \
+                    i = 0;                                                  \
+                    if ((len) & 1)                                          \
+                        umul_ppmm(v1, v0, (expr1), (expr2));                \
+                    else                                                    \
+                        v0 = v1 = 0;                                        \
+                    for (i = (len) & 1; i < (len); i++)                     \
+                    {                                                       \
+                        umul_ppmm(t1, t0, (expr1), (expr2));                \
+                        add_ssaaaa(s1, s0, s1, s0, t1, t0);                 \
+                        i++;                                                \
+                        umul_ppmm(u1, u0, (expr1), (expr2));                \
+                        add_ssaaaa(v1, v0, v1, v0, u1, u0);                 \
+                    }                                                       \
+                    add_ssaaaa(s1, s0, s1, s0, v1, v0);                     \
+                }                                                           \
                 NMOD2_RED2(s0, s1, s0, mod);                                \
                 break;                                                      \
             default:                                                        \
-                for (i = 0; i < len; i++)                                   \
+                for (i = 0; i < (len); i++)                                 \
                 {                                                           \
                     umul_ppmm(t1, t0, (expr1), (expr2));                    \
                     add_sssaaaaaa(s2, s1, s0, s2, s1, s0, 0, t1, t0);       \
@@ -314,6 +325,58 @@ FLINT_DLL mp_limb_t _nmod_vec_dot(mp_srcptr vec1, mp_srcptr vec2,
 
 FLINT_DLL mp_limb_t _nmod_vec_dot_ptr(mp_srcptr vec1, const mp_ptr * vec2, slong offset,
     slong len, nmod_t mod, int nlimbs);
+
+
+/* discrete logs a la Pohlig - Hellman ***************************************/
+
+typedef struct {
+    mp_limb_t gammapow;
+    ulong cm;
+} nmod_discrete_log_pohlig_hellman_table_entry_struct;
+
+typedef struct {
+    slong exp;
+    ulong prime;
+    mp_limb_t gamma;
+    mp_limb_t gammainv;
+    mp_limb_t startingbeta;
+    ulong co;
+    ulong startinge;
+    ulong idem;
+    ulong cbound;
+    ulong dbound;
+    nmod_discrete_log_pohlig_hellman_table_entry_struct * table; /* length cbound */
+} nmod_discrete_log_pohlig_hellman_entry_struct;
+
+typedef struct {
+    nmod_t mod;         /* p is mod.n */
+    mp_limb_t alpha;    /* p.r. of p */
+    mp_limb_t alphainv;
+    slong num_factors;  /* factors of p - 1*/
+    nmod_discrete_log_pohlig_hellman_entry_struct * entries;
+} nmod_discrete_log_pohlig_hellman_struct;
+
+typedef nmod_discrete_log_pohlig_hellman_struct nmod_discrete_log_pohlig_hellman_t[1];
+
+FLINT_DLL void nmod_discrete_log_pohlig_hellman_init(
+                nmod_discrete_log_pohlig_hellman_t L);
+
+FLINT_DLL void nmod_discrete_log_pohlig_hellman_clear(
+                nmod_discrete_log_pohlig_hellman_t L);
+
+FLINT_DLL double nmod_discrete_log_pohlig_hellman_precompute_prime(
+                nmod_discrete_log_pohlig_hellman_t L,
+                mp_limb_t p);
+
+FLINT_DLL ulong nmod_discrete_log_pohlig_hellman_run(
+                const nmod_discrete_log_pohlig_hellman_t L,
+                mp_limb_t y);
+
+NMOD_VEC_INLINE mp_limb_t nmod_discrete_log_pohlig_hellman_primitive_root(
+                const nmod_discrete_log_pohlig_hellman_t L)
+{
+    return L->alpha;
+}
 
 #ifdef __cplusplus
 }

@@ -1,28 +1,14 @@
-/*=============================================================================
-
-    This file is part of FLINT.
-
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
+/*
     Copyright (C) 2009 William Hart
     Copyright (C) 2011 Sebastian Pancratz
 
-******************************************************************************/
+    This file is part of FLINT.
+
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <gmp.h>
 #include "flint.h"
@@ -36,7 +22,7 @@
  */
 static int _fmpz_sqrtmod(mpz_t rop, const mpz_t a, const mpz_t p) 
 {
-    slong i, r, m;
+    slong i, r, m, iter;
     mpz_t p1, k, exp, b, g, bpow, gpow;
 
     if (mpz_jacobi(a, p) == -1)
@@ -109,6 +95,8 @@ static int _fmpz_sqrtmod(mpz_t rop, const mpz_t a, const mpz_t p)
     mpz_tdiv_q_2exp(exp, exp, 1);
     mpz_powm(rop, a, exp, p);
 
+    iter = r - 1; /* maximum number of iterations if p is prime */
+
     while (flint_mpz_cmp_ui(b, 1))
     {
         mpz_set(bpow, b);
@@ -137,6 +125,11 @@ static int _fmpz_sqrtmod(mpz_t rop, const mpz_t a, const mpz_t p)
         mpz_mod(b, b, p);
 
         r = m;
+        if (iter-- == 0) /* too many iterations, p is not prime */
+        {
+            mpz_set_ui(rop, 0);
+            break;
+        }
     }
 
     mpz_clear(p1);

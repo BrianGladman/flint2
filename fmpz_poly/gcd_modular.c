@@ -1,27 +1,13 @@
-/*=============================================================================
+/*
+    Copyright (C) 2011 William Hart
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2011 William Hart
-   
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <gmp.h>
 #include "flint.h"
@@ -34,7 +20,7 @@
 void _fmpz_poly_gcd_modular(fmpz * res, const fmpz * poly1, slong len1, 
                                         const fmpz * poly2, slong len2)
 {
-    mp_bitcnt_t bits1, bits2, nb1, nb2, bits_small, pbits, curr_bits = 0, new_bits;   
+    flint_bitcnt_t bits1, bits2, nb1, nb2, bits_small, pbits, curr_bits = 0, new_bits;   
     fmpz_t ac, bc, hc, d, g, l, eval_A, eval_B, eval_GCD, modulus;
     fmpz * A, * B, * Q, * lead_A, * lead_B;
     mp_ptr a, b, h;

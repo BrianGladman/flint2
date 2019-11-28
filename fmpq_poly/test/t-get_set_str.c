@@ -1,28 +1,15 @@
-/*=============================================================================
-
-    This file is part of FLINT.
-
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
+/*
+    Copyright (C) 2018 Vincent Delecroix
     Copyright (C) 2010 Sebastian Pancratz
     Copyright (C) 2009 William Hart
 
-******************************************************************************/
+    This file is part of FLINT.
+
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,6 +18,23 @@
 #include "fmpz.h"
 #include "fmpq_poly.h"
 #include "ulong_extras.h"
+
+void check_invalid(char * s)
+{
+    fmpq_poly_t p;
+    int err;
+
+    fmpq_poly_init(p);
+    err = fmpq_poly_set_str(p, s);
+    if (!err)
+    {
+        printf("Got no error with s='%s'\n", s);
+        printf("p = "); fmpq_poly_print(p); printf("\n");
+        flint_abort();
+    }
+    fmpq_poly_clear(p);
+}
+
 
 int
 main(void)
@@ -42,6 +46,27 @@ main(void)
 
     flint_printf("get_set_str....");
     fflush(stdout);
+
+    /* badly formatted input */
+    check_invalid("");
+    check_invalid("1");
+    check_invalid("x");
+    check_invalid("-");
+    check_invalid("-1");
+    check_invalid("-1  0");
+    check_invalid("2 X1 0");
+    check_invalid("3 X-2 0 1");
+    check_invalid("2 -1 0 1Y");
+    check_invalid("2 -1 0 1");
+    check_invalid("3   -1 0 1 ");
+    check_invalid("3  -1 0 1 ");
+    check_invalid("3  -1 0  1");
+    check_invalid("3  -1  0 1");
+
+    /* wrong length */
+    check_invalid("0  0");
+    check_invalid("2  -1 0 1");
+    check_invalid("4  0 0");
 
     for (i = 0; i < 1000 * flint_test_multiplier(); i++)
     {
@@ -63,6 +88,7 @@ main(void)
             flint_printf("FAIL:\n");
             flint_printf("f      = "), fmpq_poly_debug(f), flint_printf("\n\n");
             flint_printf("g      = "), fmpq_poly_debug(g), flint_printf("\n\n");
+            flint_printf("str    = %s\n\n", str);
             flint_printf("ans    = %d\n\n", ans);
             flint_printf("cflags = %wu\n\n", cflags);
             abort();

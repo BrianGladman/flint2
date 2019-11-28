@@ -1,28 +1,14 @@
-/*=============================================================================
-
-    This file is part of FLINT.
-
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
+/*
     Copyright (C) 2011, 2010 Sebastian Pancratz
     Copyright (C) 2008, 2009 William Hart
 
-******************************************************************************/
+    This file is part of FLINT.
+
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <stdlib.h>
 #include "fmpz_vec.h"
@@ -32,12 +18,19 @@ void _fmpz_mod_poly_divrem_basecase(fmpz *Q, fmpz *R,
     const fmpz *A, slong lenA, const fmpz *B, slong lenB, 
     const fmpz_t invB, const fmpz_t p)
 {
-    slong iQ, iR;
+    slong i, iQ, iR;
     fmpz * W;
-
+    TMP_INIT;
+	
+	TMP_START;
+	
     if (R != A)
     {
-        W = _fmpz_vec_init(lenA);
+        W = (fmpz *) TMP_ALLOC(lenA*sizeof(fmpz));
+		
+		for (i = 0; i < lenA; i++)
+		   fmpz_init(W + i);
+		   
         _fmpz_vec_set(W, A, lenA);
     } else
        W = R;
@@ -45,22 +38,32 @@ void _fmpz_mod_poly_divrem_basecase(fmpz *Q, fmpz *R,
     for (iQ = lenA - lenB, iR = lenA - 1; iQ >= 0; iQ--, iR--)
     {
         if (fmpz_is_zero(W + iR))
+        {
             fmpz_zero(Q + iQ);
+		}
         else
         {
             fmpz_mul(Q + iQ, W + iR, invB);
             fmpz_mod(Q + iQ, Q + iQ, p);
 
             _fmpz_vec_scalar_submul_fmpz(W + iQ, B, lenB, Q + iQ);
-            _fmpz_vec_scalar_mod_fmpz(W + iQ, W + iQ, lenB, p);
         }
+        if (iQ > 0)
+            fmpz_mod(W + iR - 1, W + iR - 1, p);
     }
 
+	_fmpz_vec_scalar_mod_fmpz(W, W, lenB - 1, p);
+	
     if (R != A)
     {
-       _fmpz_vec_set(R, W, lenB - 1);
-       _fmpz_vec_clear(W, lenA);
+       for (i = 0; i < lenB - 1; i++)
+	      fmpz_swap(R + i, W + i);
+	   
+	   for (i = 0; i < lenA; i++)
+	      fmpz_clear(W + i);
     }
+	
+	TMP_END;
 }
 
 void fmpz_mod_poly_divrem_basecase(fmpz_mod_poly_t Q, fmpz_mod_poly_t R, 

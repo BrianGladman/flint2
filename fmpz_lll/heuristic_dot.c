@@ -1,29 +1,15 @@
-/*=============================================================================
-
-    This file is part of FLINT.
-
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
+/*
     Copyright (C) 2010 William Hart
     Copyright (C) 2010 Fredrik Johansson
     Copyright (C) 2014 Abhinav Baid
 
-******************************************************************************/
+    This file is part of FLINT.
+
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include "fmpz_lll.h"
 
@@ -31,10 +17,14 @@ double
 fmpz_lll_heuristic_dot(const double *vec1, const double *vec2, slong len2,
                        const fmpz_mat_t B, slong k, slong j, slong exp_adj)
 {
-    double err;
-    double sum = _d_vec_dot_heuristic(vec1, vec2, len2, &err);
+   double sum = _d_vec_dot(vec1, vec2, len2);
+   double tmp = _d_vec_norm(vec1, len2);
+   double tmp2 = _d_vec_norm(vec2, len2);
 
-    if (err > ldexp(1, -D_BITS / 2))
+   tmp = ldexp(tmp*tmp2, -70);
+   tmp2 = sum*sum;
+
+   if (tmp2 <= tmp)
     {
         slong exp;
         fmpz_t sp;

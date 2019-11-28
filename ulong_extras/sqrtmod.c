@@ -1,28 +1,14 @@
-/*=============================================================================
-
-    This file is part of FLINT.
-
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
+/*
     Copyright (C) 2009 William Hart
     Copyright (C) 2011 Sebastian Pancratz
 
-******************************************************************************/
+    This file is part of FLINT.
+
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <gmp.h>
 #include "flint.h"
@@ -30,7 +16,7 @@
 
 mp_limb_t n_sqrtmod(mp_limb_t a, mp_limb_t p) 
 {
-    slong i, r, m;
+    slong i, r, m, iter;
     mp_limb_t p1, k, b, g, bpow, gpow, res;
     mp_limb_t pinv;
 
@@ -47,15 +33,15 @@ mp_limb_t n_sqrtmod(mp_limb_t a, mp_limb_t p)
         if (p > 50 && n_jacobi_unsigned(a, p) == -1)
             return 0;
 
-        t = t2 = 1;
+        t = t2 = 0;
 
-        while (t <= (p - 1) / 2)
+        while (t < (p - 1) / 2)
         {
-            if (t2 == a)
-                return t;
-
             t2 = n_addmod(t2, 2*t + 1, p);
             t++;
+            
+            if (t2 == a)
+                return t;
         }
 
         return 0;
@@ -101,6 +87,8 @@ mp_limb_t n_sqrtmod(mp_limb_t a, mp_limb_t p)
     g = n_powmod2_ui_preinv(k, p1, p, pinv);
     res = n_powmod2_ui_preinv(a, (p1 + 1) / 2, p, pinv);
 
+    iter = r - 1; /* maximum number of iterations possible if p is prime */
+    
     while (b != 1)
     {
         bpow = b;
@@ -119,6 +107,8 @@ mp_limb_t n_sqrtmod(mp_limb_t a, mp_limb_t p)
         g = n_mulmod2_preinv(gpow, gpow, p, pinv);
         b = n_mulmod2_preinv(b, g, p, pinv);
         r = m;
+        if (iter-- == 0)
+            return 0; /* too many iterations, p is not prime, prevents hang */
     }
 
     return res;

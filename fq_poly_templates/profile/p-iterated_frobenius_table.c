@@ -1,27 +1,13 @@
-/*=============================================================================
+/*
+    Copyright (C) 2013 Mike Hansen
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2013 Mike Hansen
-
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #ifdef T
 
@@ -38,7 +24,7 @@
 #define ncases 2
 
 int
-get_timings(double* s, slong degree, mp_bitcnt_t bits, slong length)
+get_timings(double* s, slong degree, flint_bitcnt_t bits, slong length)
 {
     TEMPLATE(T, ctx_t) ctx;
     TEMPLATE(T, poly_t) f, *h, finv;
@@ -250,7 +236,7 @@ void write_array(fmpz_mat_t array, char * filename)
 int
 main(int argc, char** argv)
 {
-    mp_bitcnt_t bits, max_bits, max_bits_used, max_bits_e;
+    flint_bitcnt_t bits, max_bits, max_bits_used, max_bits_e;
     int is_hit, bigger_length;
     slong degree, length, max_degree, max_length, imin, imax, imid, diff;
     fmpz_mat_t array;

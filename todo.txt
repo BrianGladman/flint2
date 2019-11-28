@@ -83,18 +83,33 @@ fmpz_factor
 -----------
 
 * Add primality testing, perfect power testing, fast factorisation
-  (Brent-Pollard, QS, ...)
+  (QS, ...)
 
+* Tune Brent-Pollard Rho for optimal values
 
-fmpz_mpoly / nmod_mpoly
------------------------
+* Find optimal values for B1, B2 for ECM.
 
-* Write fmpz_mpoly_max_bits, use in t-mul_heap test code and mul_heap
+* Use multipoint polynomial evaluation in ECM stage II.
 
-* Write ACCUM2 and ACCUM3 assembly functions and use in mul_heap
+fmpz_mpoly
+----------
 
-* Make mul_heap take arrays of fmpz's as arguments and document function
+* Implement array version of divrem_ideal.
 
+* Don't restart division if upgrading to multiprecision.
+
+* Check quotient and remainder coefficients are normalised the same way for
+  small vs multiprecision division functions. Beware one normalisation may
+  require an extra bit for either q or r in signed integer division in
+  small case. This is probably why C division is normalised the way it is.
+
+* Implement fmpz_mpoly_ui/si/fmpz_sub functions for Nemo.
+
+* Add references to Monagan and Pearce papers to bibtex and reference in
+  heap multiplication, powering and division functions.
+
+* Move functions in mpoly/MISSING_FXNS.c and decarations in mpoly.h to their
+  appropriate places.
 
 nmod_poly
 ---------

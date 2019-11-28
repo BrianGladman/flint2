@@ -1,27 +1,13 @@
-/*=============================================================================
+/*
+    Copyright (C) 2013 Tom Bachmann
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2013 Tom Bachmann
-
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #ifndef FMPZ_POLY_MATXX_H
 #define FMPZ_POLY_MATXX_H FMPZ_POLY_MATXX_H
@@ -80,21 +66,21 @@ public:
     }
 
     static fmpz_poly_matxx_expression randtest(slong rows, slong cols,
-            frandxx& state, slong len, mp_bitcnt_t bits)
+            frandxx& state, slong len, flint_bitcnt_t bits)
     {
         fmpz_poly_matxx_expression res(rows, cols);
         res.set_randtest(state, len, bits);
         return res;
     }
     static fmpz_poly_matxx_expression randtest_unsigned(slong rows, slong cols,
-            frandxx& state, slong len, mp_bitcnt_t bits)
+            frandxx& state, slong len, flint_bitcnt_t bits)
     {
         fmpz_poly_matxx_expression res(rows, cols);
         res.set_randtest_unsigned(state, len, bits);
         return res;
     }
     static fmpz_poly_matxx_expression randtest_sparse(slong rows, slong cols,
-            frandxx& state, slong len, mp_bitcnt_t bits, float density)
+            frandxx& state, slong len, flint_bitcnt_t bits, float density)
     {
         fmpz_poly_matxx_expression res(rows, cols);
         res.set_randtest_sparse(state, len, bits, density);
@@ -111,11 +97,11 @@ public:
     }
 
     // these only make sense with targets
-    void set_randtest(frandxx& state, slong len, mp_bitcnt_t bits)
+    void set_randtest(frandxx& state, slong len, flint_bitcnt_t bits)
         {fmpz_poly_mat_randtest(_mat(), state._data(), len, bits);}
-    void set_randtest_unsigned(frandxx& state, slong len, mp_bitcnt_t bits)
+    void set_randtest_unsigned(frandxx& state, slong len, flint_bitcnt_t bits)
         {fmpz_poly_mat_randtest_unsigned(_mat(), state._data(), len, bits);}
-    void set_randtest_sparse(frandxx& state, slong len, mp_bitcnt_t bits,
+    void set_randtest_sparse(frandxx& state, slong len, flint_bitcnt_t bits,
             float density)
         {fmpz_poly_mat_randtest_sparse(_mat(), state._data(), len, bits, density);}
     void truncate(slong len) {fmpz_poly_mat_truncate(_mat(), len);}

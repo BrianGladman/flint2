@@ -1,27 +1,13 @@
-/*=============================================================================
+/*
+    Copyright (C) 2014 Ashish Kedia
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2014 Ashish Kedia
-
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <gmp.h>
 #include <stdlib.h>
@@ -51,7 +37,7 @@ nmod_poly_evaluate_mat_paterson_stockmeyer(nmod_mat_t dest, const nmod_poly_t po
         return;
     }
 
-    temp = malloc((lim + 1) * sizeof(nmod_mat_t));
+    temp = flint_malloc((lim + 1) * sizeof(nmod_mat_t));
     nmod_mat_init(temp[0], c->r, c->c, c->mod.n);
     nmod_mat_one(temp[0]);
     nmod_mat_init(temp[1], c->r, c->c, c->mod.n);
@@ -91,5 +77,5 @@ nmod_poly_evaluate_mat_paterson_stockmeyer(nmod_mat_t dest, const nmod_poly_t po
         nmod_mat_clear(temp[i]);
     }
     nmod_mat_clear(tmat);
-    free(temp);
+    flint_free(temp);
 }

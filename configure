@@ -17,6 +17,8 @@ SHARED=1
 STATIC=1
 TLS=1
 PTHREAD=1
+WANT_OPENMP=0
+OPENMP=0
 REENTRANT=0
 WANT_GC=0
 WANT_TLS=0
@@ -79,6 +81,8 @@ usage()
    echo "     --with-gc=<path>     GC safe build with path to gc"
    echo "     --enable-pthread     Use pthread (default)"
    echo "     --disable-pthread    Do not use pthread"
+   echo "     --enable-openmp      Use OpenMP"
+   echo "     --disable-openmp     Do not use OpenMP (default)"
    echo "     --enable-tls         Use thread-local storage (default)"
    echo "     --disable-tls        Do not use thread-local storage"
    echo "     --enable-assert      Enable use of asserts (use for debug builds only)"
@@ -146,7 +150,7 @@ while [ "$1" != "" ]; do
          BUILD="$VALUE"
          ;;
       --prefix)
-         PREFIX=$VALUE
+         PREFIX=$(absolute_path "$VALUE")
          ;;
       --enable-shared)
          SHARED=1
@@ -172,6 +176,13 @@ while [ "$1" != "" ]; do
             GC_DIR="$VALUE"
          fi
          ;;
+      --enable-openmp)
+         OPENMP=1
+         WANT_OPENMP=1
+         ;;
+      --disable-openmp)
+         OPENMP=0
+         ;;
       --enable-pthread)
          PTHREAD=1
          ;;
@@ -183,7 +194,7 @@ while [ "$1" != "" ]; do
          WANT_TLS=1;;
       --disable-tls)
          TLS=0
-         ;;
+         WANT_TLS=2;;
       --enable-assert)
          ASSERT=1
          ;;
@@ -326,11 +337,26 @@ if [ -z "$AR" ]; then
    AR=ar
 fi
 
+#openmp provides tls
+if [ "$OPENMP" = "1" -a "$TLS" = "0" ]; then
+   if [ "$WANT_TLS" = "2" -a "$WANT_OPENMP" = "1" ]; then
+      echo "****WARNING**** Cannot have OpenMP without TLS. Disabling OpenMP."
+      OPENMP=0
+   elif [ "$WANT_OPENMP" = "1" ]; then
+      TLS=1
+   else
+      OPENMP=0
+   fi
+fi
+
 #handle gc and reentrant flags
 
 if [ "$WANT_GC" = "1" ]; then
       TLS=0
-      if [ "$WANT_TLS" = "1" ]; then
+      OPENMP=0
+      if [ "$WANT_OPENMP" = "1" ]; then
+          echo "****WARNING**** GC does not support TLS, which is implied by OpenMP....disabling both"
+      elif [ "$WANT_TLS" = "1" ]; then
           echo "****WARNING**** GC does not support TLS....disabling TLS"
       fi
       cp fmpz/link/fmpz_gc.c fmpz/fmpz.c
@@ -447,11 +473,9 @@ if [ -z "$FLINT_LIB" ]; then
       Darwin)
          FLINT_LIBNAME="libflint.dylib"
          FLINT_LIB="libflint-$FLINT_MAJOR.dylib"
-         EXTRA_SHARED_FLAGS="-install_name $PREFIX/lib/$FLINT_LIB"
+         EXTRA_SHARED_FLAGS="-install_name `pwd`/$FLINT_LIB"
          EXTRA_SHARED_FLAGS="$EXTRA_SHARED_FLAGS -compatibility_version $FLINT_MAJOR.$FLINT_MINOR"
          EXTRA_SHARED_FLAGS="$EXTRA_SHARED_FLAGS -current_version $FLINT_MAJOR.$FLINT_MINOR.$FLINT_PATCH"
-         EXTRA_SHARED_FLAGS="$EXTRA_SHARED_FLAGS -Wl,-rpath,$GMP_LIB_DIR"
-         EXTRA_SHARED_FLAGS="$EXTRA_SHARED_FLAGS -Wl,-rpath,$MPFR_LIB_DIR"
          ;;
       CYGWIN* | MINGW*)
          FLINT_LIBNAME="libflint.dll"
@@ -460,24 +484,22 @@ if [ -z "$FLINT_LIB" ]; then
          EXTRA_SHARED_FLAGS="$EXTRA_SHARED_FLAGS -shared"
          EXTRA_SHARED_FLAGS="$EXTRA_SHARED_FLAGS -Wl,--export-all-symbols"
          EXTRA_SHARED_FLAGS="$EXTRA_SHARED_FLAGS -Wl,-soname,libflint-$FLINT_MAJOR.dll.$FLINT_MINOR.$FLINT_PATCH"
-         EXTRA_SHARED_FLAGS="$EXTRA_SHARED_FLAGS -Wl,-rpath,$GMP_LIB_DIR"
-         EXTRA_SHARED_FLAGS="$EXTRA_SHARED_FLAGS -Wl,-rpath,$MPFR_LIB_DIR"
          FLINT_DLL=1
          ;;
       *)
          FLINT_LIBNAME="libflint.so"
          FLINT_LIB="libflint.so.$FLINT_MAJOR.$FLINT_MINOR.$FLINT_PATCH"
          EXTRA_SHARED_FLAGS="-Wl,-soname,libflint.so.$FLINT_MAJOR"
-         EXTRA_SHARED_FLAGS="$EXTRA_SHARED_FLAGS -Wl,-rpath,$GMP_LIB_DIR"
-         EXTRA_SHARED_FLAGS="$EXTRA_SHARED_FLAGS -Wl,-rpath,$MPFR_LIB_DIR"
          FLINT_SOLIB=1
          ;;
    esac
+ EXTRA_SHARED_FLAGS="$EXTRA_SHARED_FLAGS -Wl,-rpath,$GMP_LIB_DIR"
+ EXTRA_SHARED_FLAGS="$EXTRA_SHARED_FLAGS -Wl,-rpath,$MPFR_LIB_DIR"
 fi
 
 # sometimes LDCONFIG is not to be found in the path. Look at some common places.
 case "$OS" in
-   MINGW*|CYGWIN*|Darwin)
+   MINGW*|CYGWIN*|Darwin|FreeBSD)
       LDCONFIG="true";;
    *)
       if [ -z "$LDCONFIG" ]; then
@@ -569,17 +591,28 @@ else
    printf "%s\n" "no"
 fi
 
+#get flag for OpenMP
+if [ "$OPENMP" = "1" ]; then
+    OPENMP_FLAG="-fopenmp"
+else
+    OPENMP_FLAG="-Wno-unknown-pragmas"
+fi
+CONFIG_OPENMP="#define HAVE_OPENMP ${WANT_OPENMP}"
+
 #defaults for CFLAGS
 
 if [ -z "$CFLAGS" ]; then
    if [ "$OS" = "MINGW64" ]; then
-      CFLAGS="-std=c99 -O2 -funroll-loops -g $POPCNT_FLAG $ABI_FLAG"
+      CFLAGS="-std=c99 -O2 -funroll-loops -g $POPCNT_FLAG $ABI_FLAG $OPENMP_FLAG"
    elif [ "$OS" = "CYGWIN64" ]; then
-      CFLAGS="-O2 -funroll-loops -g -D _WIN64 $POPCNT_FLAG $ABI_FLAG"
+      CFLAGS="-O2 -funroll-loops -g -D _WIN64 $POPCNT_FLAG $ABI_FLAG $OPENMP_FLAG"
    elif [ "$MACHINE" = "mips64" ]; then
-      CFLAGS="-O2 -funroll-loops -g $POPCNT_FLAG $ABI_FLAG"
+      CFLAGS="-O2 -funroll-loops -g $POPCNT_FLAG $ABI_FLAG $OPENMP_FLAG"
+   elif [ "$KERNEL" = FreeBSD ]; then
+      CFLAGS="-std=c99 -pedantic -Wall -O2 -funroll-loops -g $POPCNT_FLAG $ABI_FLAG $OPENMP_FLAG"
+      CXXFLAGS="-std=c++11 -pedantic -Wall -O2 -funroll-loops -g $POPCNT_FLAG $ABI_FLAG $OPENMP_FLAG"
    else
-      CFLAGS="-ansi -pedantic -Wall -O2 -funroll-loops -g $POPCNT_FLAG $ABI_FLAG"
+      CFLAGS="-ansi -pedantic -Wall -O2 -funroll-loops -g $POPCNT_FLAG $ABI_FLAG $OPENMP_FLAG"
    fi
 fi
 
@@ -647,6 +680,26 @@ rm -f build/test-fenv.h
 
 CONFIG_PTHREAD="#define HAVE_PTHREAD ${PTHREAD}"
 
+#cpu_set_t configuration
+
+CONFIG_CPU_SET_T="#define HAVE_CPU_SET_T 0"
+
+mkdir -p build
+MSG="Testing cpu_set_t..."
+printf "%s" "$MSG"
+echo "#define _GNU_SOURCE
+#include <sched.h>
+int main(){cpu_set_t s;CPU_ZERO(&s);return 0;}" > build/test-cpu_set_t.c
+$CC build/test-cpu_set_t.c -o ./build/test-cpu_set_t > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+    rm -f build/test-cpu_set_t
+    printf "%s\n" "yes"
+    CONFIG_CPU_SET_T="#define HAVE_CPU_SET_T 1"
+else
+    printf "%s\n" "no"
+fi
+rm -f build/test-cpu_set_t.c
+
 
 #external modules
 
@@ -654,7 +707,7 @@ EXTRA_INC_DIRS="${EXTRA_INC_DIRS} ${EXTENSIONS}"
 
 #include paths
 
-INCS="-I\$(CURDIR)"
+INCS="-I\$(CURDIR) -I\$(CURDIR)/build"
 for INC_DIR in ${INC_DIRS} ${EXTRA_INC_DIRS}; do
    INCS="${INCS} -I${INC_DIR}"
 done
@@ -680,26 +733,6 @@ lLIBS="-lflint $lLIBS2"
 LIBS2="$LLIBS $lLIBS2"
 LIBS="$LLIBS $lLIBS"
 
-#paths for dynamic linker
-
-case "$OS" in
-   CYGWIN* | MINGW*)
-      DLPATH="PATH";;
-   Darwin)
-      DLPATH="DYLD_LIBRARY_PATH";;
-   sparc)
-      DLPATH="LD_LIBRARY_PATH32";;
-   sparc64)
-      DLPATH="LD_LIBRARY_PATH64";;
-   *)
-      DLPATH="LD_LIBRARY_PATH";;
-esac
-
-DLPATH_ADD="\$(CURDIR)"
-for LIB_DIR in ${LIB_DIRS} ${EXTRA_LIB_DIRS}; do
-   DLPATH_ADD="${DLPATH_ADD}:${LIB_DIR}"
-done
-
 #cxx
 
 if [ "$WANT_CXX" = "1" ]; then
@@ -718,7 +751,9 @@ echo "$CONFIG_BLAS" >> config.h
 echo "$CONFIG_TLS" >> config.h
 echo "$CONFIG_FENV" >> config.h
 echo "$CONFIG_PTHREAD" >> config.h
+echo "$CONFIG_OPENMP" >> config.h
 echo "$CONFIG_GC" >> config.h
+echo "$CONFIG_CPU_SET_T" >> config.h
 echo "#define FLINT_REENTRANT $REENTRANT" >> config.h
 echo "#define WANT_ASSERT $ASSERT" >> config.h
 if [ "$FLINT_DLL" = "1" ]; then
@@ -737,11 +772,16 @@ echo "# This file is autogenerated by ./configure -- do not edit!" > Makefile
 echo "" >> Makefile
 echo "SHELL=/bin/sh" >> Makefile
 echo "" >> Makefile
+echo "GMP_LIB_DIR=$GMP_LIB_DIR" >> Makefile
+echo "MPFR_LIB_DIR=$MPFR_LIB_DIR" >> Makefile
+echo "" >> Makefile
 echo "FLINT_STATIC=$STATIC" >> Makefile
 echo "FLINT_SHARED=$SHARED" >> Makefile
 echo "FLINT_LIB=$FLINT_LIB" >> Makefile
 echo "FLINT_LIBNAME=$FLINT_LIBNAME" >> Makefile
+echo "OS=$OS" >> Makefile
 echo "FLINT_SOLIB=$FLINT_SOLIB" >> Makefile
+echo "FLINT_MAJOR=$FLINT_MAJOR" >> Makefile
 echo "EXEEXT=$EXEEXT" >> Makefile
 echo "PREFIX=$PREFIX" >> Makefile
 echo "" >> Makefile
@@ -762,11 +802,10 @@ echo "ABI_FLAG=$ABI_FLAG" >> Makefile
 echo "PIC_FLAG=$PIC_FLAG" >> Makefile
 echo "EXTRA_SHARED_FLAGS=$EXTRA_SHARED_FLAGS" >> Makefile
 echo "" >> Makefile
-echo "DLPATH=$DLPATH" >> Makefile
-echo "DLPATH_ADD=$DLPATH_ADD" >> Makefile
 echo "EXTENSIONS=$EXTENSIONS" >> Makefile
 echo "EXTRA_BUILD_DIRS=$EXTRA_BUILD" >> Makefile
 echo "" >> Makefile
+
 
 cat Makefile.in >> Makefile
 

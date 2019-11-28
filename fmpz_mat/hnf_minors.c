@@ -1,30 +1,22 @@
-/*=============================================================================
+/*
+    Copyright (C) 2014 Alex J. Best
+    Copyright (C) 2017 Tommy Hofmann
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2014 Alex J. Best
-
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include "fmpz_mat.h"
 
+/*
+  This is the algorithm of Kannan, Bachem, "Polynomial algorithms for computing
+  the Smith and Hermite normal forms of an integer matrix", Siam J. Comput.,
+  Vol. 8, No. 4, pp. 499-507.
+*/
 void
 fmpz_mat_hnf_minors(fmpz_mat_t H, const fmpz_mat_t A)
 {
@@ -48,8 +40,25 @@ fmpz_mat_hnf_minors(fmpz_mat_t H, const fmpz_mat_t A)
     {
         for (j = 0; j < k; j++)
         {
+            if (fmpz_is_zero(fmpz_mat_entry(H, k, j)))
+            {
+                continue;
+            }
+
             fmpz_xgcd(d, u, v, fmpz_mat_entry(H, j, j),
                       fmpz_mat_entry(H, k, j));
+
+            if (fmpz_cmpabs(d, fmpz_mat_entry(H, j, j)) == 0)
+            {
+                 fmpz_divexact(b, fmpz_mat_entry(H, k, j), fmpz_mat_entry(H, j, j));
+                 for (j2 = j; j2 < n; j2++)
+                 {
+                     fmpz_submul(fmpz_mat_entry(H, k, j2), b, fmpz_mat_entry(H, j, j2));
+                 }
+                 continue;
+            }
+                
+
             fmpz_divexact(r1d, fmpz_mat_entry(H, j, j), d);
             fmpz_divexact(r2d, fmpz_mat_entry(H, k, j), d);
             for (j2 = j; j2 < n; j2++)
@@ -87,6 +96,10 @@ fmpz_mat_hnf_minors(fmpz_mat_t H, const fmpz_mat_t A)
             {
                 fmpz_fdiv_q(q, fmpz_mat_entry(H, i, j),
                             fmpz_mat_entry(H, j, j));
+                if (fmpz_is_zero(q))
+                {
+                    continue;
+                }
                 for (j2 = j; j2 < n; j2++)
                 {
                     fmpz_submul(fmpz_mat_entry(H, i, j2), q,
@@ -104,6 +117,17 @@ fmpz_mat_hnf_minors(fmpz_mat_t H, const fmpz_mat_t A)
         {
             fmpz_xgcd(d, u, v, fmpz_mat_entry(H, j, j),
                       fmpz_mat_entry(H, k, j));
+            
+            if (fmpz_cmpabs(d, fmpz_mat_entry(H, j, j)) == 0)
+            {
+                 fmpz_divexact(b, fmpz_mat_entry(H, k, j), fmpz_mat_entry(H, j, j));
+                 for (j2 = j; j2 < n; j2++)
+                 {
+                     fmpz_submul(fmpz_mat_entry(H, k, j2), b, fmpz_mat_entry(H, j, j2));
+                 }
+                 continue;
+            }
+
             fmpz_divexact(r1d, fmpz_mat_entry(H, j, j), d);
             fmpz_divexact(r2d, fmpz_mat_entry(H, k, j), d);
             for (j2 = j; j2 < n; j2++)
@@ -124,6 +148,11 @@ fmpz_mat_hnf_minors(fmpz_mat_t H, const fmpz_mat_t A)
             {
                 fmpz_fdiv_q(q, fmpz_mat_entry(H, i, j),
                             fmpz_mat_entry(H, j, j));
+
+                if (fmpz_is_zero(q))
+                {
+                    continue;
+                }
                 for (j2 = j; j2 < n; j2++)
                 {
                     fmpz_submul(fmpz_mat_entry(H, i, j2), q,

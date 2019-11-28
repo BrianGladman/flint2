@@ -1,27 +1,13 @@
-/*=============================================================================
+/*
+    Copyright (C) 2011 Fredrik Johansson
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2011 Fredrik Johansson
-
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <math.h>
 #include "arith.h"
@@ -42,7 +28,7 @@ __euler_number_vec_mod_p(mp_ptr res, mp_ptr tmp, slong m, nmod_t mod)
         c = n_mulmod2_preinv(c, (2*k)*(2*k-1), mod.n, mod.ninv);
     }
 
-    _nmod_poly_inv_series(res, tmp, m, mod);
+    _nmod_poly_inv_series(res, tmp, m, m, mod);
 
     /* Multiply by factorials */
     c = UWORD(1);
@@ -66,7 +52,7 @@ void __euler_number_vec_multi_mod(fmpz * res, slong n)
     mp_ptr temppoly;
     nmod_t mod;
     slong i, j, k, m, num_primes, num_primes_k, resolution;
-    mp_bitcnt_t size, prime_bits;
+    flint_bitcnt_t size, prime_bits;
 
     if (n < 1)
         return;

@@ -1,27 +1,14 @@
-/*=============================================================================
+/*
+    Copyright 2007 William Hart and David Harvey
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright 2007 William Hart and David Harvey
-
-******************************************************************************/
 #ifndef FLINT_PROFILER_H
 #define FLINT_PROFILER_H
 
@@ -93,6 +80,14 @@ void timeit_start(timeit_t t)
 }
 
 static __inline__
+slong timeit_query_wall(timeit_t t)
+{
+    struct timeval tv;
+    gettimeofday(&tv, 0);
+    return t->wall + tv.tv_sec * 1000 + tv.tv_usec / 1000;
+}
+
+static __inline__
 void timeit_stop(timeit_t t)
 {
     struct timeval tv;
@@ -103,9 +98,13 @@ void timeit_stop(timeit_t t)
 
 /******************************************************************************
 
-    Timer based on the cycle counter
+    Timer based on the x86 cycle counter
    
 ******************************************************************************/
+
+#if (defined( _MSC_VER ) || (GMP_LIMB_BITS == 64 && defined (__amd64__)) || \
+     (GMP_LIMB_BITS == 32 && (defined (__i386__) || \
+			      defined (__i486__) || defined(__amd64__))))
 
 #define FLINT_NUM_CLOCKS 20
 
@@ -192,6 +191,8 @@ FLINT_DLL void prof_repeat(double* min, double* max, profile_target_t target, vo
 #define DURATION_THRESHOLD 5000.0
 
 #define DURATION_TARGET 10000.0
+
+#endif
 
 /******************************************************************************
 

@@ -1,31 +1,12 @@
 /* 
+    Copyright (C) 2009, 2011 William Hart
 
-Copyright 2009, 2011 William Hart. All rights reserved.
+    This file is part of FLINT.
 
-Redistribution and use in source and binary forms, with or without modification, are
-permitted provided that the following conditions are met:
-
-   1. Redistributions of source code must retain the above copyright notice, this list of
-      conditions and the following disclaimer.
-
-   2. Redistributions in binary form must reproduce the above copyright notice, this list
-      of conditions and the following disclaimer in the documentation and/or other materials
-      provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY William Hart ``AS IS'' AND ANY EXPRESS OR IMPLIED
-WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
-FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL William Hart OR
-CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
-ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-The views and conclusions contained in the software and documentation are those of the
-authors and should not be interpreted as representing official policies, either expressed
-or implied, of William Hart.
-
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
 #include "gmp.h"
@@ -34,7 +15,7 @@ or implied, of William Hart.
 #include "fft.h"
       
 void fft_butterfly_twiddle(mp_limb_t * u, mp_limb_t * v, 
-    mp_limb_t * s, mp_limb_t * t, mp_size_t limbs, mp_bitcnt_t b1, mp_bitcnt_t b2)
+    mp_limb_t * s, mp_limb_t * t, mp_size_t limbs, flint_bitcnt_t b1, flint_bitcnt_t b2)
 {
    mp_limb_t nw = limbs*FLINT_BITS;
    mp_size_t x, y;
@@ -65,7 +46,7 @@ void fft_butterfly_twiddle(mp_limb_t * u, mp_limb_t * v,
 }
 
 void fft_radix2_twiddle(mp_limb_t ** ii, mp_size_t is,
-      mp_size_t n, mp_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2,
+      mp_size_t n, flint_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2,
       mp_size_t ws, mp_size_t r, mp_size_t c, mp_size_t rs)
 {
    mp_size_t i;
@@ -96,7 +77,7 @@ void fft_radix2_twiddle(mp_limb_t ** ii, mp_size_t is,
 }
 
 void fft_truncate1_twiddle(mp_limb_t ** ii, mp_size_t is,
-      mp_size_t n, mp_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2,
+      mp_size_t n, flint_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2,
       mp_size_t ws, mp_size_t r, mp_size_t c, mp_size_t rs, mp_size_t trunc)
 {
    mp_size_t i;
@@ -127,15 +108,15 @@ void fft_truncate1_twiddle(mp_limb_t ** ii, mp_size_t is,
 }
 
 void fft_mfa_truncate_sqrt2(mp_limb_t ** ii, mp_size_t n, 
-                   mp_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2, 
+                   flint_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2, 
                              mp_limb_t ** temp, mp_size_t n1, mp_size_t trunc)
 {
    mp_size_t i, j, s;
    mp_size_t n2 = (2*n)/n1;
    mp_size_t trunc2 = (trunc - 2*n)/n1;
    mp_size_t limbs = (n*w)/FLINT_BITS;
-   mp_bitcnt_t depth = 0;
-   mp_bitcnt_t depth2 = 0;
+   flint_bitcnt_t depth = 0;
+   flint_bitcnt_t depth2 = 0;
    
    while ((UWORD(1)<<depth) < n2) depth++;
    while ((UWORD(1)<<depth2) < n1) depth2++;
@@ -238,42 +219,48 @@ void fft_mfa_truncate_sqrt2(mp_limb_t ** ii, mp_size_t n,
 }
 
 void fft_mfa_truncate_sqrt2_outer(mp_limb_t ** ii, mp_size_t n, 
-                   mp_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2, 
+                   flint_bitcnt_t w, mp_limb_t ** t1, mp_limb_t ** t2, 
                              mp_limb_t ** temp, mp_size_t n1, mp_size_t trunc)
 {
    mp_size_t i, j;
    mp_size_t n2 = (2*n)/n1;
    mp_size_t trunc2 = (trunc - 2*n)/n1;
    mp_size_t limbs = (n*w)/FLINT_BITS;
-   mp_bitcnt_t depth = 0;
-   mp_bitcnt_t depth2 = 0;
-   
+   flint_bitcnt_t depth = 0;
+   flint_bitcnt_t depth2 = 0;
+   int k = 0;
+
    while ((UWORD(1)<<depth) < n2) depth++;
    while ((UWORD(1)<<depth2) < n1) depth2++;
 
    /* first half matrix fourier FFT : n2 rows, n1 cols */
    
    /* FFTs on columns */
+
+#pragma omp parallel for private(i, j, k)
    for (i = 0; i < n1; i++)
    {   
+#if HAVE_OPENMP
+      k = omp_get_thread_num();
+#endif
       /* relevant part of first layer of full sqrt2 FFT */
       if (w & 1)
       {
          for (j = i; j < trunc - 2*n; j+=n1) 
          {   
             if (j & 1)
-               fft_butterfly_sqrt2(*t1, *t2, ii[j], ii[2*n+j], j, limbs, w, *temp);
+               fft_butterfly_sqrt2(t1[k], t2[k], ii[j], ii[2*n+j], j, limbs, w, temp[k]);
             else
-               fft_butterfly(*t1, *t2, ii[j], ii[2*n+j], j/2, limbs, w);     
+               fft_butterfly(t1[k], t2[k], ii[j], ii[2*n+j], j/2, limbs, w);     
 
-            SWAP_PTRS(ii[j],     *t1);
-            SWAP_PTRS(ii[2*n+j], *t2);
+            SWAP_PTRS(ii[j],     t1[k]);
+            SWAP_PTRS(ii[2*n+j], t2[k]);
          }
 
          for ( ; j < 2*n; j+=n1)
          {
              if (i & 1)
-                fft_adjust_sqrt2(ii[j + 2*n], ii[j], j, limbs, w, *temp); 
+                fft_adjust_sqrt2(ii[j + 2*n], ii[j], j, limbs, w, temp[k]); 
              else
                 fft_adjust(ii[j + 2*n], ii[j], j/2, limbs, w); 
          }
@@ -281,10 +268,10 @@ void fft_mfa_truncate_sqrt2_outer(mp_limb_t ** ii, mp_size_t n,
       {
          for (j = i; j < trunc - 2*n; j+=n1) 
          {   
-            fft_butterfly(*t1, *t2, ii[j], ii[2*n+j], j, limbs, w/2);
+            fft_butterfly(t1[k], t2[k], ii[j], ii[2*n+j], j, limbs, w/2);
    
-            SWAP_PTRS(ii[j],     *t1);
-            SWAP_PTRS(ii[2*n+j], *t2);
+            SWAP_PTRS(ii[j],     t1[k]);
+            SWAP_PTRS(ii[2*n+j], t2[k]);
          }
 
          for ( ; j < 2*n; j+=n1)
@@ -296,7 +283,7 @@ void fft_mfa_truncate_sqrt2_outer(mp_limb_t ** ii, mp_size_t n,
          of 1 starting at row 0, where z => w bits
       */
       
-      fft_radix2_twiddle(ii + i, n1, n2/2, w*n1, t1, t2, w, 0, i, 1);
+      fft_radix2_twiddle(ii + i, n1, n2/2, w*n1, t1 + k, t2 + k, w, 0, i, 1);
       for (j = 0; j < n2; j++)
       {
          mp_size_t s = n_revbin(j, depth);
@@ -308,14 +295,19 @@ void fft_mfa_truncate_sqrt2_outer(mp_limb_t ** ii, mp_size_t n,
    ii += 2*n;
 
    /* FFTs on columns */
+
+#pragma omp parallel for private(i, j, k)
    for (i = 0; i < n1; i++)
    {   
+#if HAVE_OPENMP
+      k = omp_get_thread_num();
+#endif
       /*
          FFT of length n2 on column i, applying z^{r*i} for rows going up in steps 
          of 1 starting at row 0, where z => w bits
       */
       
-      fft_truncate1_twiddle(ii + i, n1, n2/2, w*n1, t1, t2, w, 0, i, 1, trunc2);
+      fft_truncate1_twiddle(ii + i, n1, n2/2, w*n1, t1 + k, t2 + k, w, 0, i, 1, trunc2);
       for (j = 0; j < n2; j++)
       {
          mp_size_t s = n_revbin(j, depth);

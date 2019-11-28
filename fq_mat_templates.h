@@ -1,27 +1,15 @@
-/*=============================================================================
+/*
+    Copyright (C) 2013 Mike Hansen
+    Copyright (C) 2018 Tommy Hofmann
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2013 Mike Hansen
-
-******************************************************************************/
 #ifdef T
 
 #include "flint.h"
@@ -105,6 +93,87 @@ TEMPLATE(T, mat_ncols)(const TEMPLATE(T, mat_t) mat,
                        const TEMPLATE(T, ctx_t) ctx)
 {
     return mat->c;
+}
+
+FQ_MAT_TEMPLATES_INLINE void
+TEMPLATE(T, mat_swap_rows)(TEMPLATE(T, mat_t) mat, slong * perm, slong r, slong s, const TEMPLATE(T, ctx_t) ctx)
+{
+    if (r != s && !TEMPLATE(T, mat_is_empty)(mat, ctx))
+    {
+        TEMPLATE(T, struct) * u;
+        slong t;
+
+        if (perm)
+        {
+            t = perm[s];
+            perm[s] = perm[r];
+            perm[r] = t;
+        }
+
+        u = mat->rows[s];
+        mat->rows[s] = mat->rows[r];
+        mat->rows[r] = u;
+    }
+}
+
+FQ_MAT_TEMPLATES_INLINE void
+TEMPLATE(T, mat_invert_rows)(TEMPLATE(T, mat_t) mat, slong * perm, const TEMPLATE(T, ctx_t) ctx)
+{
+    slong i;
+
+    for (i = 0; i < mat->r/2; i++)
+        TEMPLATE(T, mat_swap_rows)(mat, perm, i, mat->r - i - 1, ctx);
+}
+
+FQ_MAT_TEMPLATES_INLINE void
+TEMPLATE(T, mat_swap_cols)(TEMPLATE(T, mat_t) mat, slong * perm, slong r, slong s, const TEMPLATE(T, ctx_t) ctx)
+{
+    if (r != s && !TEMPLATE(T, mat_is_empty)(mat, ctx))
+    {
+        slong t;
+
+        if (perm)
+        {
+            t = perm[s];
+            perm[s] = perm[r];
+            perm[r] = t;
+        }
+
+       for (t = 0; t < mat->r; t++)
+       {
+           TEMPLATE(T, swap)(TEMPLATE(T, mat_entry)(mat, t, r), TEMPLATE(T, mat_entry)(mat, t, s), ctx);
+       }
+    }
+}
+
+FQ_MAT_TEMPLATES_INLINE void
+TEMPLATE(T, mat_invert_cols)(TEMPLATE(T, mat_t) mat, slong * perm, const TEMPLATE(T, ctx_t) ctx)
+{
+    if (!TEMPLATE(T, mat_is_empty)(mat, ctx))
+    {
+        slong t;
+        slong i;
+        slong c = mat->c;
+        slong k = mat->c/2;
+
+        if (perm)
+        {
+            for (i =0; i < k; i++)
+            {
+                t = perm[i];
+                perm[i] = perm[c - i];
+                perm[c - i] = t;
+            }
+        }
+
+        for (t = 0; t < mat->r; t++)
+        {
+            for (i = 0; i < k; i++)
+            {
+                TEMPLATE(T, swap)(TEMPLATE(T, mat_entry)(mat, t, i), TEMPLATE(T, mat_entry)(mat, t, c - i - 1), ctx);
+            }
+        }
+    }
 }
 
 /* Assignment  ***************************************************************/
@@ -234,6 +303,10 @@ FLINT_DLL slong TEMPLATE(T, mat_lu_recursive)(slong * P,
 FLINT_DLL slong TEMPLATE(T, mat_lu_classical)(slong * P, TEMPLATE(T, mat_t) A, int rank_check,
                               const TEMPLATE(T, ctx_t) ctx);
 
+/* Inverse *******************************************************************/
+
+FLINT_DLL int TEMPLATE(T, mat_inv)(TEMPLATE(T, mat_t) B, TEMPLATE(T, mat_t) A,
+                                   const TEMPLATE(T, ctx_t) ctx);
 
 /* Solving *******************************************************************/
 
@@ -280,6 +353,10 @@ FLINT_DLL void TEMPLATE(T, mat_solve_triu_recursive)(TEMPLATE(T, mat_t) X,
                                       int unit,
                                       const TEMPLATE(T, ctx_t) ctx);
 
+/* Nonsingular solving *******************************************************/
+
+FLINT_DLL int TEMPLATE(T, mat_solve)(TEMPLATE(T, mat_t) X, const TEMPLATE(T, mat_t A),
+                           const TEMPLATE(T, mat_t) C, const TEMPLATE(T, ctx_t) ctx);
 
 /* Transforms ****************************************************************/
 

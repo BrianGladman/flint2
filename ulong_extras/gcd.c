@@ -1,42 +1,30 @@
-/*=============================================================================
+/*
+    Copyright (C) 2009, 2015 William Hart
+    Copyright (C) 2014 Abhinav Baid
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2009 William Hart
-    Copyright (C) 2014 Abhinav Baid
-
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <gmp.h>
 #include "flint.h"
 #include "ulong_extras.h"
 
-#if (defined (__amd64__) || defined (__i386__) || defined (__i486__))	 
+#if (defined (__amd64__) || defined (__i386__) || defined (__i486__))
 
-mp_limb_t
-n_gcd(mp_limb_t x, mp_limb_t y)
+ulong
+n_gcd(ulong x, ulong y)
 {
-    register mp_limb_t s0, s1, f;
+    register ulong s0, s1, f;
 
-    if (x == 0) return y;
-    if (y == 0) return x;
+    if (x == 0)
+        return y;
+    if (y == 0)
+        return x;
 
     count_trailing_zeros(s0, x);
     count_trailing_zeros(s1, y);
@@ -67,59 +55,64 @@ n_gcd(mp_limb_t x, mp_limb_t y)
 
 #else
 
-mp_limb_t
-n_gcd(mp_limb_t x, mp_limb_t y)
+ulong
+n_gcd(ulong x, ulong y)
 {
-    mp_limb_t u3, v3;
-    mp_limb_t quot, rem;
+    ulong d, v, quot, rem;
 
     if (x >= y)
-    {
-        u3 = x;
-        v3 = y;
-    }
+        v = y;
     else
     {
-        u3 = y;
-        v3 = x;
+        v = x;
+        x = y;
     }
 
-    if ((mp_limb_signed_t) (x & y) < WORD(0))  /* x and y both have top bit set */
+    /* x and y both have top bit set */
+    if ((slong) (x & v) < WORD(0))
     {
-        quot = u3 - v3;
-        u3 = v3;
-        v3 = quot;
+        d = x - v;
+        x = v;
+        v = d;
     }
 
-    while ((mp_limb_signed_t) (v3 << 1) < WORD(0))  /* second value has second msb set */
+    /* second value has second msb set */
+    while ((slong) (v << 1) < WORD(0))
     {
-        quot = u3 - v3;
-        u3   = v3;
-        if (quot < v3)             v3 = quot;
-        else if (quot < (v3 << 1)) v3 = quot - u3;
-        else                       v3 = quot - (u3 << 1);
+        d = x - v;
+        x = v;
+        if (d < v)
+            v = d;              /* quot = 1 */
+        else if (d < (v << 1))
+            v = d - x;          /* quot = 2 */
+        else
+            v = d - (x << 1);   /* quot = 3 */
     }
 
-    while (v3)
+    while (v)
     {
-        if (u3 < (v3 << 2))  /* overflow not possible due to top 2 bits of v3 not being set */
+        /* overflow not possible due to top 2 bits of v not being set */
+        if (x < (v << 2))       /* avoid divisions when quotient < 4 */
         {
-            quot = u3 - v3;
-            u3   = v3;
-            if (quot < v3)             v3 = quot;
-            else if (quot < (v3 << 1)) v3 = quot - u3;
-            else                       v3 = quot - (u3 << 1);
+            d = x - v;
+            x = v;
+            if (d < v)
+                v = d;          /* quot = 1 */
+            else if (d < (v << 1))
+                v = d - x;      /* quot = 2 */
+            else
+                v = d - (x << 1);   /* quot = 3 */
         }
         else
         {
-            quot = u3 / v3;
-            rem  = u3 - v3 * quot;
-            u3   = v3;
-            v3   = rem;
+            quot = x / v;
+            rem = x - v * quot;
+            x = v;
+            v = rem;
         }
     }
 
-    return u3;
+    return x;
 }
 
 #endif

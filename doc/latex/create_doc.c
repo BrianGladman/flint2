@@ -1,28 +1,14 @@
-/*=============================================================================
-
-    This file is part of FLINT.
-
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
+/*
     Copyright (C) 2010 Sebastian Pancratz
     Copyright (C) 2013 Mike Hansen
 
-******************************************************************************/
+    This file is part of FLINT.
+
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <stdlib.h>
 #include <string.h>
@@ -36,9 +22,11 @@ static char * docsin[] = {
     "../../fmpz_mat/doc/fmpz_mat.txt", 
     "../../fmpz_poly/doc/fmpz_poly.txt", 
     "../../fmpz_poly_factor/doc/fmpz_poly_factor.txt", 
+    "../../fmpz_mpoly/doc/fmpz_mpoly.txt", 
     "../../fmpq/doc/fmpq.txt", 
     "../../fmpq_mat/doc/fmpq_mat.txt", 
     "../../fmpq_poly/doc/fmpq_poly.txt", 
+    "../../fmpq_mpoly/doc/fmpq_mpoly.txt", 
     "../../fmpz_poly_q/doc/fmpz_poly_q.txt", 
     "../../fmpz_poly_mat/doc/fmpz_poly_mat.txt", 
     "../../nmod_vec/doc/nmod_vec.txt",
@@ -50,16 +38,19 @@ static char * docsin[] = {
     "../../fmpz_mod_poly/doc/fmpz_mod_poly.txt",
     "../../fmpz_mod_poly_factor/doc/fmpz_mod_poly_factor.txt",
     "../../fq/doc/fq.txt",
+    "../../fq_embed/doc/fq_embed.txt",
     "../../fq_vec/doc/fq_vec.txt",
     "../../fq_mat/doc/fq_mat.txt",
     "../../fq_poly/doc/fq_poly.txt",
     "../../fq_poly_factor/doc/fq_poly_factor.txt",
     "../../fq_nmod/doc/fq_nmod.txt",
+    "../../fq_nmod_embed/doc/fq_nmod_embed.txt",
     "../../fq_nmod_vec/doc/fq_nmod_vec.txt",
     "../../fq_nmod_mat/doc/fq_nmod_mat.txt",
     "../../fq_nmod_poly/doc/fq_nmod_poly.txt",
     "../../fq_nmod_poly_factor/doc/fq_nmod_poly_factor.txt",
     "../../fq_zech/doc/fq_zech.txt",
+    "../../fq_zech_embed/doc/fq_zech_embed.txt",
     "../../fq_zech_vec/doc/fq_zech_vec.txt",
     "../../fq_zech_mat/doc/fq_zech_mat.txt",
     "../../fq_zech_poly/doc/fq_zech_poly.txt",
@@ -69,6 +60,7 @@ static char * docsin[] = {
     "../../padic_poly/doc/padic_poly.txt", 
     "../../qadic/doc/qadic.txt", 
     "../../arith/doc/arith.txt", 
+    "../../aprcl/doc/aprcl.txt",
     "../../ulong_extras/doc/ulong_extras.txt",
     "../../long_extras/doc/long_extras.txt",
     "../../doc/longlong.txt",
@@ -89,9 +81,11 @@ static char * docsout[] = {
     "input/fmpz_mat.tex",
     "input/fmpz_poly.tex", 
     "input/fmpz_poly_factor.tex", 
+    "input/fmpz_mpoly.tex", 
     "input/fmpq.tex", 
     "input/fmpq_mat.tex", 
     "input/fmpq_poly.tex", 
+    "input/fmpq_mpoly.tex", 
     "input/fmpz_poly_q.tex", 
     "input/fmpz_poly_mat.tex", 
     "input/nmod_vec.tex",
@@ -103,16 +97,19 @@ static char * docsout[] = {
     "input/fmpz_mod_poly.tex",
     "input/fmpz_mod_poly_factor.tex",
     "input/fq.tex",
+    "input/fq_embed.tex",
     "input/fq_vec.tex",
     "input/fq_mat.tex",
     "input/fq_poly.tex",
     "input/fq_poly_factor.tex",
     "input/fq_nmod.tex",
+    "input/fq_nmod_embed.tex",
     "input/fq_nmod_vec.tex",
     "input/fq_nmod_mat.tex",
     "input/fq_nmod_poly.tex",
     "input/fq_nmod_poly_factor.tex",
     "input/fq_zech.tex",
+    "input/fq_zech_embed.tex",
     "input/fq_zech_vec.tex",
     "input/fq_zech_mat.tex",
     "input/fq_zech_poly.tex",
@@ -122,6 +119,7 @@ static char * docsout[] = {
     "input/padic_poly.tex", 
     "input/qadic.tex", 
     "input/arith.tex", 
+    "input/aprcl.tex",
     "input/ulong_extras.tex",
     "input/long_extras.tex",
     "input/longlong.tex", 

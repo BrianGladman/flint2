@@ -1,27 +1,13 @@
-/*=============================================================================
+/*
+    Copyright (C) 2010, 2011 Sebastian Pancratz
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2010, 2011 Sebastian Pancratz
-
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -57,7 +43,9 @@ char * _fmpq_poly_get_str_pretty(const fmpz *poly, const fmpz_t den, slong len,
         fmpz_get_mpz(mpq_numref(q), poly);
         fmpz_get_mpz(mpq_denref(q), den);
         mpq_canonicalize(q);
-        str = mpq_get_str(NULL, 10, q);
+        str = flint_malloc(mpz_sizeinbase (mpq_numref(q), 10) +
+                           mpz_sizeinbase (mpq_denref(q), 10) + 3);
+        str = mpq_get_str(str, 10, q);
         mpq_clear(q);
         return str;
     }
@@ -77,9 +65,9 @@ char * _fmpq_poly_get_str_pretty(const fmpz *poly, const fmpz_t den, slong len,
         mpq_canonicalize(a1);
 
         size0 = mpz_sizeinbase(mpq_numref(a0), 10) 
-              + mpz_sizeinbase(mpq_denref(a0), 10) + 1;
+              + mpz_sizeinbase(mpq_denref(a0), 10) + 2;
         size1 = mpz_sizeinbase(mpq_numref(a1), 10) 
-              + mpz_sizeinbase(mpq_denref(a1), 10) + 1;
+              + mpz_sizeinbase(mpq_denref(a1), 10) + 2;
         size  = size0 + 1 + strlen(var) + 1 + size1 + 1;
         str   = flint_malloc(size);
 
@@ -136,7 +124,7 @@ char * _fmpq_poly_get_str_pretty(const fmpz *poly, const fmpz_t den, slong len,
     for (i = 0; i < len; i++)
     {
         fmpz_get_mpz(z, poly + i);
-        size += mpz_sizeinbase(z, 10);                   /* Numerator         */
+        size += mpz_sizeinbase(z, 10) + 1;               /* Numerator + sign  */
         if (mpz_sgn(z) != 0) size += 1 + densize;        /* Denominator and / */
         size += 3;                                       /* Operator and ws   */
         size += 1 + varsize + 1;                         /* *, x and ^        */

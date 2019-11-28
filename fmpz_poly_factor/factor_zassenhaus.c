@@ -1,28 +1,14 @@
-/*=============================================================================
+/*
+    Copyright (C) 2011 Andy Novocin
+    Copyright (C) 2011 Sebastian Pancratz
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2011 Andy Novocin
-    Copyright (C) 2011 Sebastian Pancratz
-   
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <stdlib.h>
 #include "fmpz_poly.h"
@@ -50,7 +36,7 @@
     and so in this case we use that the leading (resp.\ constant) 
     term of $g$ divides the leading (resp.\ constant) term of $f$.
  */
-static void _fmpz_poly_factor_mignotte(fmpz_t B, const fmpz *f, slong m)
+void _fmpz_poly_factor_mignotte(fmpz_t B, const fmpz *f, slong m)
 {
     slong j;
     fmpz_t b, f2, lc, s, t;
@@ -96,13 +82,13 @@ static void _fmpz_poly_factor_mignotte(fmpz_t B, const fmpz *f, slong m)
     fmpz_clear(t);
 }
 
-static void fmpz_poly_factor_mignotte(fmpz_t B, const fmpz_poly_t f)
+void fmpz_poly_factor_mignotte(fmpz_t B, const fmpz_poly_t f)
 {
     _fmpz_poly_factor_mignotte(B, f->coeffs, f->length - 1);
 }
 
 void _fmpz_poly_factor_zassenhaus(fmpz_poly_factor_t final_fac, 
-                                  slong exp, const fmpz_poly_t f, slong cutoff)
+               slong exp, const fmpz_poly_t f, slong cutoff, int use_van_hoeij)
 {
     const slong lenF = f->length;
 
@@ -140,7 +126,7 @@ void _fmpz_poly_factor_zassenhaus(fmpz_poly_factor_t final_fac,
                 t->mod = mod;
 
                 fmpz_poly_get_nmod_poly(t, f);
-                if (t->length == lenF)
+                if (t->length == lenF && t->coeffs[0] != 0)
                 {
                     nmod_poly_derivative(d, t);
                     nmod_poly_gcd(g, t, d);
@@ -168,15 +154,22 @@ void _fmpz_poly_factor_zassenhaus(fmpz_poly_factor_t final_fac,
         nmod_poly_clear(g);
         nmod_poly_clear(t);
 
-        if (r > cutoff)
-        {
-            flint_printf("Exception (fmpz_poly_factor_zassenhaus). r > cutoff.\n");
-            nmod_poly_factor_clear(fac);
-            abort();
-        }
-        else if (r == 1)
+        p = (fac->p + 0)->mod.n;
+            
+        if (r == 1 && r <= cutoff)
         {
             fmpz_poly_factor_insert(final_fac, f, exp);
+        }
+        else if (r > cutoff)
+        {
+            if (use_van_hoeij)
+               fmpz_poly_factor_van_hoeij(final_fac, fac, f, exp, p);
+            else
+            {
+               flint_printf("Exception (fmpz_poly_factor_zassenhaus). r > cutoff.\n");
+               nmod_poly_factor_clear(fac);
+               flint_abort();
+            }
         }
         else
         {
@@ -184,7 +177,6 @@ void _fmpz_poly_factor_zassenhaus(fmpz_poly_factor_t final_fac,
             fmpz_poly_factor_t lifted_fac;
             fmpz_poly_factor_init(lifted_fac);
 
-            p = (fac->p + 0)->mod.n;
             {
                 fmpz_t B;
                 fmpz_init(B);
@@ -195,7 +187,6 @@ void _fmpz_poly_factor_zassenhaus(fmpz_poly_factor_t final_fac,
                 fmpz_clear(B);
             }
 
-            /* TODO: Check if use_Hoeij_Novocin and try smaller a. */
             fmpz_poly_hensel_lift_once(lifted_fac, f, fac, a);
 
             #if TRACE_ZASSENHAUS == 1
@@ -279,7 +270,7 @@ void fmpz_poly_factor_zassenhaus(fmpz_poly_factor_t fac, const fmpz_poly_t G)
 
         /* Factor each square-free part */
         for (j = 0; j < sq_fr_fac->num; j++)
-            _fmpz_poly_factor_zassenhaus(fac, sq_fr_fac->exp[j], sq_fr_fac->p + j, 10);
+            _fmpz_poly_factor_zassenhaus(fac, sq_fr_fac->exp[j], sq_fr_fac->p + j, 10, 0);
 
         fmpz_poly_factor_clear(sq_fr_fac);
     }

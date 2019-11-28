@@ -1,27 +1,13 @@
-/*=============================================================================
+/*
+    Copyright (C) 2009, 2010, 2011 Sebastian Pancratz
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2009, 2010, 2011 Sebastian Pancratz
-
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #ifndef FMPZ_POLY_Q_H
 #define FMPZ_POLY_Q_H
@@ -74,12 +60,12 @@ FLINT_DLL void fmpz_poly_q_clear(fmpz_poly_q_t rop);
 /* Randomisation *************************************************************/
 
 FLINT_DLL void fmpz_poly_q_randtest(fmpz_poly_q_t poly, flint_rand_t state,
-                          slong len1, mp_bitcnt_t bits1, 
-                          slong len2, mp_bitcnt_t bits2);
+                          slong len1, flint_bitcnt_t bits1, 
+                          slong len2, flint_bitcnt_t bits2);
 
 FLINT_DLL void fmpz_poly_q_randtest_not_zero(fmpz_poly_q_t poly, flint_rand_t state, 
-                                   slong len1, mp_bitcnt_t bits1, 
-                                   slong len2, mp_bitcnt_t bits2);
+                                   slong len1, flint_bitcnt_t bits1, 
+                                   slong len2, flint_bitcnt_t bits2);
 
 /* Assignment ****************************************************************/
 
@@ -177,8 +163,8 @@ FLINT_DLL int fmpz_poly_q_evaluate(mpq_t rop, const fmpz_poly_q_t f, const mpq_t
 
 FLINT_DLL int fmpz_poly_q_set_str(fmpz_poly_q_t rop, const char *s);
 
-char * fmpz_poly_q_get_str(const fmpz_poly_q_t op);
-char * fmpz_poly_q_get_str_pretty(const fmpz_poly_q_t op, const char *x);
+FLINT_DLL char * fmpz_poly_q_get_str(const fmpz_poly_q_t op);
+FLINT_DLL char * fmpz_poly_q_get_str_pretty(const fmpz_poly_q_t op, const char *x);
 
 FLINT_DLL int fmpz_poly_q_print(const fmpz_poly_q_t op);
 FLINT_DLL int fmpz_poly_q_print_pretty(const fmpz_poly_q_t op, const char *x);

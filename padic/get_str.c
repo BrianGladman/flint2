@@ -1,38 +1,23 @@
-/*=============================================================================
+/*
+    Copyright (C) 2011, 2012 Sebastian Pancratz
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2011, 2012 Sebastian Pancratz
- 
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <limits.h>
 
 #include "padic.h"
 #include "long_extras.h"
 
-char * padic_get_str(char *str, const padic_t op, const padic_ctx_t ctx)
+char * _padic_get_str(char *str, const padic_t op, const fmpz_t p, enum padic_print_mode mode)
 {
     const fmpz *u = padic_unit(op);
-    const slong v  = padic_val(op);
-    const fmpz *p = ctx->p;
+    const slong v = padic_val(op);
 
     if (fmpz_is_zero(u))
     {
@@ -45,7 +30,7 @@ char * padic_get_str(char *str, const padic_t op, const padic_ctx_t ctx)
         return str;
     }
 
-    if (ctx->mode == PADIC_TERSE)
+    if (mode == PADIC_TERSE)
     {
         if (v == 0)
         {
@@ -71,14 +56,14 @@ char * padic_get_str(char *str, const padic_t op, const padic_ctx_t ctx)
             fmpz_clear(t);
         }
     }
-    else if (ctx->mode == PADIC_SERIES)
+    else if (mode == PADIC_SERIES)
     {
         char *s;
         fmpz_t x;
         fmpz_t d;
         slong j, N;
 
-        N = fmpz_clog(u, p) + v;
+        N = fmpz_clog(u, p) + v + 1;
 
         if (!str)
         {
@@ -90,7 +75,7 @@ char * padic_get_str(char *str, const padic_t op, const padic_ctx_t ctx)
             if (!str)
             {
                 flint_printf("Exception (padic_get_str).  Memory allocation failed.\n");
-                abort();
+                flint_abort();
             }
         }
 
@@ -178,7 +163,7 @@ char * padic_get_str(char *str, const padic_t op, const padic_ctx_t ctx)
             if (!str)
             {
                 flint_printf("Exception (padic_get_str).  Memory allocation failed.\n");
-                abort();
+                flint_abort();
             }
         }
 
@@ -209,6 +194,11 @@ char * padic_get_str(char *str, const padic_t op, const padic_ctx_t ctx)
         }
     }
 
-    return str;
+    return str;   
+}
+
+char * padic_get_str(char *str, const padic_t op, const padic_ctx_t ctx)
+{
+    return _padic_get_str(str, op, ctx->p, ctx->mode);
 }
 

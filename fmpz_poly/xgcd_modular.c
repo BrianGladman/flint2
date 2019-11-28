@@ -1,28 +1,14 @@
-/*=============================================================================
+/*
+    Copyright (C) 2011 William Hart
+    Copyright (C) 2011 Sebastian Pancratz
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2011 William Hart
-    Copyright (C) 2011 Sebastian Pancratz
-   
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <gmp.h>
 #include "flint.h"
@@ -39,7 +25,7 @@ void _fmpz_poly_xgcd_modular(fmpz_t r, fmpz * s, fmpz * t,
     fmpz_t prod;
     int stabilised = 0, first;
     mp_limb_t p;
-    mp_bitcnt_t s_bits = 0, t_bits = 0;
+    flint_bitcnt_t s_bits = 0, t_bits = 0;
 
     /* Compute resultant of input polys */
     _fmpz_poly_resultant(r, poly1, len1, poly2, len2);
@@ -133,7 +119,7 @@ void _fmpz_poly_xgcd_modular(fmpz_t r, fmpz * s, fmpz * t,
             }
             else /* Otherwise do CRT */
             {
-                mp_bitcnt_t new_s_bits, new_t_bits;
+                flint_bitcnt_t new_s_bits, new_t_bits;
 
                 _fmpz_poly_CRT_ui(s, s, len2, prod, S, len2, mod.n, mod.ninv, 1);
                 _fmpz_poly_CRT_ui(t, t, len1, prod, T, len1, mod.n, mod.ninv, 1);

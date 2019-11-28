@@ -1,28 +1,14 @@
-/*=============================================================================
-
-    This file is part of FLINT.
-
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
+/*
     Copyright (C) 2011 William Hart
     Copyright (C) 2012 Sebastian Pancratz
 
-******************************************************************************/
+    This file is part of FLINT.
+
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <stdlib.h>
 #include "fmpz_vec.h"
@@ -36,14 +22,23 @@ slong _fmpz_mod_poly_gcdinv(fmpz *G, fmpz *S,
     fmpz_t inv;
     slong ans;
 
-    T = _fmpz_vec_init(lenA - 1);
     fmpz_init(inv);
     fmpz_invmod(inv, A + (lenA - 1), p);
 
-    ans = _fmpz_mod_poly_xgcd(G, T, S, B, lenB, A, lenA, inv, p);
-
+    if (lenB < 16)
+	{
+	    ans = _fmpz_mod_poly_gcdinv_euclidean(G, S,
+		                                   A, lenA, B, lenB, inv, p);
+	} else
+	{
+	    T = _fmpz_vec_init(lenA - 1);
+    
+	    ans = _fmpz_mod_poly_xgcd(G, T, S, B, lenB, A, lenA, inv, p);
+		
+		_fmpz_vec_clear(T, lenA - 1);
+    }
+	
     fmpz_clear(inv);
-    _fmpz_vec_clear(T, lenA - 1);
 
     return ans;
 }
@@ -56,7 +51,7 @@ void fmpz_mod_poly_gcdinv(fmpz_mod_poly_t G, fmpz_mod_poly_t S,
     if (lenB < 2)
     {
         flint_printf("Exception (fmpz_mod_poly_gcdinv). lenB < 2.\n");
-        abort();
+        flint_abort();
     }
     if (lenA >= lenB)
     {
@@ -99,7 +94,7 @@ void fmpz_mod_poly_gcdinv(fmpz_mod_poly_t G, fmpz_mod_poly_t S,
         }
 
         lenG = _fmpz_mod_poly_gcdinv(g, s, 
-            A->coeffs, lenA, B->coeffs, lenB, &A->p);
+                A->coeffs, lenA, B->coeffs, lenB, &A->p);
 
         if (G == A || G == B)
         {

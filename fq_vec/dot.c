@@ -1,36 +1,42 @@
-/*=============================================================================
+/*
+    Copyright (C) 2019 William Hart
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2013 Mike Hansen
-
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include "fq_vec.h"
 
-#ifdef T
-#undef T
-#endif
+void _fq_vec_dot(fq_t res, const fq_struct * vec1,
+         const fq_struct * vec2, slong len2, const fq_ctx_t ctx)
+{
+   slong i;
+   fmpz_poly_t t;
 
-#define T fq
-#define CAP_T FQ
-#include "fq_vec_templates/dot.c"
-#undef CAP_T
-#undef T
+   if (len2 == 0)
+   {
+      fq_zero(res, ctx);
+
+      return;
+   }
+
+   fmpz_poly_init(t);
+
+   fmpz_poly_mul(res, vec1 + 0, vec2 + 0);
+
+   for (i = 1; i < len2; i++)
+   {
+      fmpz_poly_mul(t, vec1 + i, vec2 + i);
+
+      fmpz_poly_add(res, res, t);
+   }
+
+   fq_reduce(res, ctx);
+
+   fmpz_poly_clear(t);
+}
+

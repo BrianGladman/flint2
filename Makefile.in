@@ -1,9 +1,3 @@
-ifdef $(DLPATH)
-  $(DLPATH):=$($(DLPATH)):$(DLPATH_ADD)
-else
-  $(DLPATH):=$(DLPATH_ADD)
-endif
-
 LIBDIR=lib
 
 QUIET_CC  = @echo '   ' CC  ' ' $@;
@@ -12,26 +6,28 @@ QUIET_AR  = @echo '   ' AR  ' ' $@;
 
 AT=@
 
-BUILD_DIRS = ulong_extras long_extras perm fmpz fmpz_vec fmpz_poly \
+BUILD_DIRS = aprcl ulong_extras long_extras perm fmpz fmpz_vec fmpz_poly \
    fmpq_poly fmpz_mat fmpz_lll mpfr_vec mpfr_mat mpf_vec mpf_mat nmod_vec nmod_poly \
    nmod_poly_factor arith mpn_extras nmod_mat fmpq fmpq_vec fmpq_mat padic \
    fmpz_poly_q fmpz_poly_mat nmod_poly_mat fmpz_mod_poly \
    fmpz_mod_poly_factor fmpz_factor fmpz_poly_factor fft qsieve \
    double_extras d_vec d_mat padic_poly padic_mat qadic  \
-   fq fq_vec fq_mat fq_poly fq_poly_factor\
-   fq_nmod fq_nmod_vec fq_nmod_mat fq_nmod_poly fq_nmod_poly_factor \
-   fq_zech fq_zech_vec fq_zech_mat fq_zech_poly fq_zech_poly_factor \
+   fq fq_vec fq_mat fq_poly fq_poly_factor fq_embed \
+   fq_nmod fq_nmod_vec fq_nmod_mat fq_nmod_poly fq_nmod_poly_factor fq_nmod_embed \
+   fq_zech fq_zech_vec fq_zech_mat fq_zech_poly fq_zech_poly_factor fq_zech_embed \
+   fmpz_mod_mat mpoly fmpz_mpoly fmpq_mpoly nmod_mpoly fq_nmod_mpoly fmpz_mod_mpoly \
+   thread_pool fmpz_mod \
    $(EXTRA_BUILD_DIRS)
 
 TEMPLATE_DIRS = fq_vec_templates fq_mat_templates fq_poly_templates \
-   fq_poly_factor_templates fq_templates
+   fq_poly_factor_templates fq_embed_templates fq_templates
 
 export
 
-SOURCES = printf.c fprintf.c sprintf.c scanf.c fscanf.c sscanf.c clz_tab.c memory_manager.c version.c profiler.c thread_support.c
+SOURCES = printf.c fprintf.c sprintf.c scanf.c fscanf.c sscanf.c clz_tab.c memory_manager.c version.c profiler.c thread_support.c exception.c hashmap.c inlines.c
 LIB_SOURCES = $(wildcard $(patsubst %, %/*.c, $(BUILD_DIRS)))  $(patsubst %, %/*.c, $(TEMPLATE_DIRS))
 
-HEADERS = $(patsubst %, %.h, $(BUILD_DIRS)) NTL-interface.h flint.h longlong.h config.h gmpcompat.h fft_tuning.h fmpz-conversions.h profiler.h templates.h $(patsubst %, %.h, $(TEMPLATE_DIRS))
+HEADERS = $(patsubst %, %.h, $(BUILD_DIRS)) NTL-interface.h flint.h longlong.h config.h gmpcompat.h fft_tuning.h fmpz-conversions.h profiler.h templates.h exception.h hashmap.h $(patsubst %, %.h, $(TEMPLATE_DIRS))
 
 OBJS = $(patsubst %.c, build/%.o, $(SOURCES))
 LIB_OBJS = $(patsubst %, build/%/*.o, $(BUILD_DIRS))
@@ -119,6 +115,7 @@ $(FLINT_LIB): $(LOBJS) $(LIB_SOURCES) $(EXT_SOURCES) $(HEADERS) $(EXT_HEADERS) |
 		$(LDCONFIG) -n "$(CURDIR)"; \
 	fi
 	ln -sf "$(FLINT_LIB)" "$(FLINT_LIBNAME)"; \
+	ln -sf "$(FLINT_LIB)" "$(FLINT_LIBNAME).$(FLINT_MAJOR)"; \
 
 libflint.a: $(OBJS) $(LIB_SOURCES) $(EXT_SOURCES) $(HEADERS) $(EXT_HEADERS) | build build/interfaces
 	$(AT)$(foreach ext, $(EXTENSIONS), $(foreach dir, $(filter-out %templates, $(patsubst $(ext)/%.h, %, $(wildcard $(ext)/*.h))), mkdir -p build/$(dir); BUILD_DIR=$(CURDIR)/build/$(dir); export BUILD_DIR; MOD_DIR=$(dir); export MOD_DIR; $(MAKE) -f $(CURDIR)/Makefile.subdirs -C $(ext)/$(dir) static || exit $$?;))
@@ -173,6 +170,7 @@ define test_mod_ext
 	$(AT)MOD_DIR=$(dir); export MOD_DIR; test ! -d $(ext)/$(dir) || mkdir -p build/$(dir)/test; BUILD_DIR=$(CURDIR)/build/$(dir); export BUILD_DIR; test ! -d $(ext)/$(dir) || $(MAKE) $(USER_SET_TESTS_VAR) -f $(CURDIR)/Makefile.subdirs -C $(ext)/$(dir) check
 endef
 
+check: LDFLAGS:=$(LDFLAGS) -Wl,-rpath,$(GMP_LIB_DIR) -Wl,-rpath,$(MPFR_LIB_DIR) -Wl,-rpath,$(CURDIR)
 check: library test_helpers.o
 ifndef MOD
 	$(AT)$(MAKE) $(TESTS)
@@ -214,6 +212,9 @@ install: library
 	mkdir -p "$(DESTDIR)$(PREFIX)/include/flint/flintxx"
 	cp flintxx/*.h "$(DESTDIR)$(PREFIX)/include/flint/flintxx"
 	cp *xx.h "$(DESTDIR)$(PREFIX)/include/flint"
+	$(AT)if [ "$(OS)" = "Darwin" ]; then \
+		install_name_tool -id "$(DESTDIR)$(PREFIX)/$(LIBDIR)/$(FLINT_LIB)" "$(DESTDIR)$(PREFIX)/$(LIBDIR)/$(FLINT_LIBNAME)"; \
+	fi
 
 build:
 	mkdir -p build
@@ -228,7 +229,7 @@ build/%.o: %.c $(HEADERS) | build
 	$(QUIET_CC) $(CC) $(CFLAGS) $(INCS) -c $< -o $@;
 
 build/test/%$(EXEEXT): test/%.c $(HEADERS) test_helpers.o | build/test
-	$(QUIET_CC) $(CC) $(CFLAGS) $(INCS) test_helpers.o $< -o $@ $(LIBS)
+	$(QUIET_CC) $(CC) $(CFLAGS) $(INCS) test_helpers.o $< -o $@ $(LIBS) $(LDFLAGS)
 
 build/test:
 	mkdir -p build/test
@@ -243,7 +244,7 @@ build/interfaces/NTL-interface.o: interfaces/NTL-interface.cpp NTL-interface.h
 	$(QUIET_CXX) $(CXX) $(CXXFLAGS) $(INCS) -c $< -o $@
 
 build/interfaces/test/t-NTL-interface$(EXEEXT): interfaces/test/t-NTL-interface.cpp build/interfaces/NTL-interface.o
-	$(QUIET_CXX) $(CXX) $(CXXFLAGS) $(INCS) $< build/interfaces/NTL-interface.o -o $@ $(LIBS)
+	$(QUIET_CXX) $(CXX) $(CXXFLAGS) $(INCS) $< build/interfaces/NTL-interface.o -o $@ $(LIBS) $(LDFLAGS)
 
 print-%:
 	@echo '$*=$($*)'

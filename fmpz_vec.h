@@ -1,28 +1,14 @@
-/*=============================================================================
-
-    This file is part of FLINT.
-
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
+/*
     Copyright (C) 2010 William Hart
     Copyright (C) 2010 Sebastian Pancratz
 
-******************************************************************************/
+    This file is part of FLINT.
+
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #ifndef FMPZ_VEC_H
 #define FMPZ_VEC_H
@@ -69,16 +55,19 @@ FLINT_DLL void _fmpz_vec_clear(fmpz * vec, slong len);
 /*  Randomisation  ***********************************************************/
 
 FLINT_DLL void _fmpz_vec_randtest(fmpz * f, flint_rand_t state, 
-                        slong len, mp_bitcnt_t bits);
+                        slong len, flint_bitcnt_t bits);
 
 FLINT_DLL void _fmpz_vec_randtest_unsigned(fmpz * f, flint_rand_t state, 
-                                 slong len, mp_bitcnt_t bits);
+                                 slong len, flint_bitcnt_t bits);
 
 /*  Norms  *******************************************************************/
 
 FLINT_DLL slong _fmpz_vec_max_bits(const fmpz * vec, slong len);
 
 FLINT_DLL slong _fmpz_vec_max_bits_ref(const fmpz * vec, slong len);
+
+FLINT_DLL void _fmpz_vec_sum_max_bits(slong * sumabs, slong * maxabs,
+                                            const fmpz * coeffs, slong length);
 
 FLINT_DLL mp_size_t _fmpz_vec_max_limbs(const fmpz * vec, slong len);
 
@@ -132,11 +121,22 @@ FLINT_DLL void _fmpz_vec_zero(fmpz * vec, slong len);
 
 FLINT_DLL void _fmpz_vec_neg(fmpz * vec1, const fmpz * vec2, slong len2);
 
+FLINT_DLL void _fmpz_vec_scalar_abs(fmpz * vec1, 
+                                                const fmpz * vec2, slong len2);
+
 /*  Comparison  **************************************************************/
 
 FLINT_DLL int _fmpz_vec_equal(const fmpz * vec1, const fmpz * vec2, slong len);
 
 FLINT_DLL int _fmpz_vec_is_zero(const fmpz * vec, slong len);
+
+FLINT_DLL void _fmpz_vec_max(fmpz * vec1, const fmpz * vec2, const fmpz * vec3,
+                                                                     slong len);
+FLINT_DLL void _fmpz_vec_max_inplace(fmpz * vec1, const fmpz * vec2, slong len);
+
+FLINT_DLL void _fmpz_vec_min(fmpz * vec1, const fmpz * vec2, const fmpz * vec3,
+                                                                     slong len);
+FLINT_DLL void _fmpz_vec_min_inplace(fmpz * vec1, const fmpz * vec2, slong len);
 
 /* Sorting  ******************************************************************/
 

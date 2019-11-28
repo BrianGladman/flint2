@@ -1,27 +1,13 @@
-/*=============================================================================
+/*
+    Copyright 2010 William Hart
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright 2010 William Hart
-
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,7 +18,7 @@
 
 typedef struct
 {
-   mp_bitcnt_t bits;
+   flint_bitcnt_t bits;
    int type;
 } info_t;
 
@@ -41,7 +27,7 @@ void sample(void * arg, ulong count)
    mp_limb_t n, r = 0;
    nmod_t mod;
    info_t * info = (info_t *) arg;
-   mp_bitcnt_t bits = info->bits;
+   flint_bitcnt_t bits = info->bits;
    int type = info->type;
    mp_size_t j;
    slong i;
@@ -102,7 +88,7 @@ int main(void)
 {
    double min1, min2, min3, max;
    info_t info;
-   mp_bitcnt_t i;
+   flint_bitcnt_t i;
 
    for (i = 2; i <= FLINT_BITS; i++)
    {

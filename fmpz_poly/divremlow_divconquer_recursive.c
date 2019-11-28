@@ -1,28 +1,14 @@
-/*=============================================================================
-
-    This file is part of FLINT.
-
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
+/*
     Copyright (C) 2008, 2009 William Hart
     Copyright (C) 2010 Sebastian Pancratz
 
-******************************************************************************/
+    This file is part of FLINT.
+
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <stdlib.h>
 #include <gmp.h>
@@ -33,13 +19,15 @@
 
 #define FLINT_DIVREMLOW_DIVCONQUER_CUTOFF  16
 
-void
+int
 _fmpz_poly_divremlow_divconquer_recursive(fmpz * Q, fmpz * QB, 
-                                          const fmpz * A, const fmpz * B, slong lenB)
+                         const fmpz * A, const fmpz * B, slong lenB, int exact)
 {
     if (lenB <= FLINT_DIVREMLOW_DIVCONQUER_CUTOFF)
     {
-        _fmpz_poly_divrem_basecase(Q, QB, A, 2 * lenB - 1, B, lenB);
+        if (!_fmpz_poly_divrem_basecase(Q, QB, A, 2 * lenB - 1, B, lenB, exact))
+           return 0;
+
         _fmpz_vec_sub(QB, A, QB, lenB - 1);
     }
     else
@@ -69,7 +57,8 @@ _fmpz_poly_divremlow_divconquer_recursive(fmpz * Q, fmpz * QB,
            at most n1; {W, n1 - 1} is d1 * q1 is truncated to length n1 - 1
          */
 
-        _fmpz_poly_divremlow_divconquer_recursive(q1, W, p1, d1, n1);
+        if (!_fmpz_poly_divremlow_divconquer_recursive(q1, W, p1, d1, n1, exact))
+            return 0;
 
         /* 
            W is of length lenB, but we only care about the bottom n1 - 1 
@@ -126,7 +115,8 @@ _fmpz_poly_divremlow_divconquer_recursive(fmpz * Q, fmpz * QB,
 
         d3q2 = QB;
 
-        _fmpz_poly_divremlow_divconquer_recursive(q2, d3q2, p2, B + n1, n2);
+        if (!_fmpz_poly_divremlow_divconquer_recursive(q2, d3q2, p2, B + n1, n2, exact))
+            return 0;
 
         _fmpz_vec_swap(QB + n1, d3q2, n2 - 1);
 
@@ -147,5 +137,7 @@ _fmpz_poly_divremlow_divconquer_recursive(fmpz * Q, fmpz * QB,
         _fmpz_vec_swap(QB, d4q2, n2);
         _fmpz_vec_add(QB + n2, QB + n2, d4q2 + n2, n1 - 1);
     }
+
+    return 1;
 }
 

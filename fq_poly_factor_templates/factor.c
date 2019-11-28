@@ -1,32 +1,17 @@
-/*=============================================================================
-
-    This file is part of FLINT.
-
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
+/*
     Copyright (C) 2007 David Howden
     Copyright (C) 2007, 2008, 2009, 2010 William Hart
     Copyright (C) 2008 Richard Howell-Peak
     Copyright (C) 2011 Fredrik Johansson
     Copyright (C) 2013 Mike Hansen
 
-******************************************************************************/
+    This file is part of FLINT.
 
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #ifdef T
 
@@ -143,7 +128,9 @@ __TEMPLATE(T, poly_factor_deflation) (TEMPLATE(T, poly_factor_t) result,
     {
         TEMPLATE(T, poly_factor_t) def_res;
         TEMPLATE(T, poly_t) def;
+        TEMPLATE(T, t) lc_dummy;
 
+        TEMPLATE(T, init) (lc_dummy, ctx);
         TEMPLATE(T, poly_init) (def, ctx);
         TEMPLATE(T, poly_deflate) (def, input, deflation, ctx);
         TEMPLATE(T, poly_factor_init) (def_res, ctx);
@@ -160,13 +147,13 @@ __TEMPLATE(T, poly_factor_deflation) (TEMPLATE(T, poly_factor_t) result,
 
             /* Factor inflation */
             if (def_res->exp[i] == 1)
-                __TEMPLATE(T, poly_factor) (result, leading_coeff, pol,
+                __TEMPLATE(T, poly_factor) (result, lc_dummy, pol,
                                             algorithm, ctx);
             else
             {
                 TEMPLATE(T, poly_factor_t) t;
                 TEMPLATE(T, poly_factor_init) (t, ctx);
-                __TEMPLATE(T, poly_factor) (t, leading_coeff, pol, algorithm,
+                __TEMPLATE(T, poly_factor) (t, lc_dummy, pol, algorithm,
                                             ctx);
                 TEMPLATE(T, poly_factor_pow) (t, def_res->exp[i], ctx);
                 TEMPLATE(T, poly_factor_concat) (result, t, ctx);
@@ -175,6 +162,7 @@ __TEMPLATE(T, poly_factor_deflation) (TEMPLATE(T, poly_factor_t) result,
             TEMPLATE(T, poly_clear) (pol, ctx);
         }
 
+        TEMPLATE(T, clear) (lc_dummy, ctx);
         TEMPLATE(T, poly_factor_clear) (def_res, ctx);
     }
 }
@@ -217,7 +205,7 @@ TEMPLATE(T, poly_factor) (TEMPLATE(T, poly_factor_t) result,
                           const TEMPLATE(T, poly_t) input,
                           const TEMPLATE(T, ctx_t) ctx)
 {
-    mp_bitcnt_t bits = fmpz_bits(TEMPLATE(T, ctx_prime) (ctx));
+    flint_bitcnt_t bits = fmpz_bits(TEMPLATE(T, ctx_prime) (ctx));
     slong n = TEMPLATE(T, poly_degree) (input, ctx);
 
     if (n < 10 + 50 / bits)

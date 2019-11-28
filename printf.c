@@ -1,28 +1,14 @@
-/*=============================================================================
-
-    This file is part of FLINT.
-
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
+/*
     Copyright (C) 2013 William Hart
     Copyright (C) 2014 Ashish Kedia
 
-******************************************************************************/
+    This file is part of FLINT.
+
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -75,9 +61,8 @@ int parse_fmt(int * floating, const char * fmt)
    return args;
 }
 
-int flint_printf(const char * str, ...)
+int flint_vprintf(const char * str, va_list ap)
 {
-   va_list ap;
    size_t len = strlen(str);
    char * str2 = flint_malloc(len + 1);
    int w1 = 0, w2 = 0;
@@ -95,8 +80,6 @@ int flint_printf(const char * str, ...)
    ret = printf("%s", str2);
    len -= n;
    str += n;
-
-   va_start(ap, str);
 
    while (len) /* deal with fmt spec prefixed strings */
    {
@@ -191,8 +174,19 @@ int flint_printf(const char * str, ...)
       str += n;
    }
 
-   va_end(ap);
    flint_free(str2);
 
    return (int) ret;
+}
+
+int flint_printf(const char * str, ...)
+{
+   va_list ap;
+   int count;
+
+   va_start(ap, str);
+   count = flint_vprintf(str, ap);
+   va_end(ap);
+
+   return count;
 }

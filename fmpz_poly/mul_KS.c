@@ -1,28 +1,14 @@
-/*=============================================================================
-
-    This file is part of FLINT.
-
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
+/*
     Copyright (C) 2008, 2009 William Hart
     Copyright (C) 2010, 2012 Sebastian Pancratz
 
-******************************************************************************/
+    This file is part of FLINT.
+
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <stdlib.h>
 #include <gmp.h>
@@ -30,6 +16,7 @@
 #include "fmpz.h"
 #include "fmpz_vec.h"
 #include "fmpz_poly.h"
+#include "fft.h"
 
 void
 _fmpz_poly_mul_KS(fmpz * res, const fmpz * poly1, slong len1,
@@ -97,11 +84,24 @@ _fmpz_poly_mul_KS(fmpz * res, const fmpz * poly1, slong len1,
     arr3 = (mp_limb_t *) flint_malloc((limbs1 + limbs2) * sizeof(mp_limb_t));
 
     if (limbs1 == limbs2)
-        mpn_mul_n(arr3, arr1, arr2, limbs1);
-    else if (limbs1 > limbs2)
-        mpn_mul(arr3, arr1, limbs1, arr2, limbs2);
-    else
-        mpn_mul(arr3, arr2, limbs2, arr1, limbs1);
+    {
+       if (limbs1 < 2000)
+          mpn_mul_n(arr3, arr1, arr2, limbs1);
+       else
+          flint_mpn_mul_fft_main(arr3, arr1, limbs1, arr2, limbs2);
+    } else if (limbs1 > limbs2)
+    {
+       if (limbs2 < 1000)
+          mpn_mul(arr3, arr1, limbs1, arr2, limbs2);
+       else
+          flint_mpn_mul_fft_main(arr3, arr1, limbs1, arr2, limbs2);
+    } else
+    {
+       if (limbs1 < 1000)
+          mpn_mul(arr3, arr2, limbs2, arr1, limbs1);
+       else
+          flint_mpn_mul_fft_main(arr3, arr2, limbs2, arr1, limbs1);
+    }
 
     if (sign)
         _fmpz_poly_bit_unpack(res, len1 + len2 - 1, arr3, bits, neg1 ^ neg2);

@@ -1,27 +1,13 @@
-/*=============================================================================
+/*
+    Copyright (C) 2015 Tommy Hofmann
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2015 Tommy Hofmann
-
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <stdlib.h>
 #include "flint.h"
@@ -57,14 +43,14 @@ _n_ppio(mp_ptr ppi, mp_ptr ppo, mp_limb_t a, mp_limb_t b)
 {
     mp_limb_t c, n, g;
 
-    c = n_gcd_full(a, b);
+    c = n_gcd(a, b);
     n = a/c;
-    g = n_gcd_full(c, n);
+    g = n_gcd(c, n);
     while( g != 1 )
     {
         c = c * g;
         n = n/g;
-        g = n_gcd_full(c, n);
+        g = n_gcd(c, n);
     }
     *ppi = c;
     *ppo = n;
@@ -74,8 +60,8 @@ static mp_limb_t
 _n_stab(mp_limb_t a, mp_limb_t b, nmod_t N)
 {
     mp_limb_t g, s, t;
-    g = n_gcd_full(a, b);
-    b = n_gcd_full(g, N.n);
+    g = n_gcd(a, b);
+    b = n_gcd(g, N.n);
     _n_ppio(&s, &t, N.n/b, a/b);
     return t;
 }
@@ -83,9 +69,9 @@ _n_stab(mp_limb_t a, mp_limb_t b, nmod_t N)
 static mp_limb_t
 _n_unit(mp_limb_t a, nmod_t N)
 {
-    mp_limb_t g, s, t, l, d;
+    mp_limb_t g, s, l, d;
 
-    g = n_xgcd(&s, &t, a, N.n);
+    g = n_gcdinv(&s, a, N.n);
 
     if (g == 1)
     {
@@ -97,6 +83,22 @@ _n_unit(mp_limb_t a, nmod_t N)
         d = _n_stab(s, l, N);
         return nmod_add(s, nmod_mul(d, l, N), N);
     }
+}
+
+/* test wether q*a = b mod N has a solution */
+static int
+_n_is_divisible(mp_ptr q, mp_limb_t b, mp_limb_t a, nmod_t N)
+{
+    mp_limb_t e, g;
+    g = n_gcdinv(&e, a, N.n);
+
+    if (( b % g ) == 0)
+    {
+        *q = nmod_mul(e, b/g, N);
+        return 1;
+    }
+
+    return 0;
 }
 
 void
@@ -129,35 +131,51 @@ nmod_mat_strong_echelon_form(nmod_mat_t A)
         }
         for (i = row + 1; i < n; i++)
         {
-            if (nmod_mat_entry(A, row, col) >= nmod_mat_entry(A, i, col))
+            if (nmod_mat_entry(A, i, col) == 0)
             {
-                g = n_xgcd(&s, &t, nmod_mat_entry(A, row, col), nmod_mat_entry(A, i, col));
+                continue;
+            }
+
+            if (_n_is_divisible(&s, nmod_mat_entry(A, i, col), nmod_mat_entry(A, row, col), mod))
+            {
+                 for (k = col; k < m; k++)
+                 {
+                     t1 = nmod_sub(nmod_mat_entry(A, i, k), nmod_mul(s, nmod_mat_entry(A, row, k), mod), mod);
+                     nmod_mat_entry(A, i, k) = t1;
+                 }
             }
             else
             {
-                g = n_xgcd(&t, &s, nmod_mat_entry(A, i, col), nmod_mat_entry(A, row, col));
-            }
+                if (nmod_mat_entry(A, row, col) >= nmod_mat_entry(A, i, col))
+                {
+                    g = n_xgcd(&s, &t, nmod_mat_entry(A, row, col), nmod_mat_entry(A, i, col));
+                }
+                else
+                {
+                    g = n_xgcd(&t, &s, nmod_mat_entry(A, i, col), nmod_mat_entry(A, row, col));
+                }
 
-            /* now g = a*x - b*y 
-             a,b < x < mod.n */
-            t = nmod_neg(t, mod);
-            u = (nmod_mat_entry(A, i, col))/g;
-            u = nmod_neg(u, mod);
-            v = (nmod_mat_entry(A, row, col))/g;
-            /* now g = a*x + b*y and 0 = sv - tu = 1 modulo mod.n */
-            
-            for (k = col; k < m; k++)
-            {
-                t1 = nmod_add(nmod_mul(s, nmod_mat_entry(A, row, k), mod), nmod_mul(t, nmod_mat_entry(A, i, k), mod), mod);
-                t2 = nmod_add(nmod_mul(u, nmod_mat_entry(A, row, k), mod), nmod_mul(v, nmod_mat_entry(A, i, k), mod), mod);
-                nmod_mat_entry(A, row, k) = t1;
-                nmod_mat_entry(A, i, k) = t2;
+                /* now g = a*x - b*y
+                 a,b < x < mod.n */
+                t = nmod_neg(t, mod);
+                u = (nmod_mat_entry(A, i, col))/g;
+                u = nmod_neg(u, mod);
+                v = (nmod_mat_entry(A, row, col))/g;
+                /* now g = a*x + b*y and 0 = sv - tu = 1 modulo mod.n */
+
+                for (k = col; k < m; k++)
+                {
+                    t1 = nmod_add(nmod_mul(s, nmod_mat_entry(A, row, k), mod), nmod_mul(t, nmod_mat_entry(A, i, k), mod), mod);
+                    t2 = nmod_add(nmod_mul(u, nmod_mat_entry(A, row, k), mod), nmod_mul(v, nmod_mat_entry(A, i, k), mod), mod);
+                    nmod_mat_entry(A, row, k) = t1;
+                    nmod_mat_entry(A, i, k) = t2;
+                }
             }
         }
         row++;
         col++;
     }
-    
+
     for (col = 0; col < m; col++)
     {
         if (nmod_mat_entry(A, col, col) != 0)
@@ -169,8 +187,7 @@ nmod_mat_strong_echelon_form(nmod_mat_t A)
             }
             for (row = 0; row < col ; row++)
             {
-                
-                
+
                 q = nmod_mat_entry(A, row, col)/nmod_mat_entry(A, col, col);
 
                 for (l = row; l< m; l++)
@@ -180,7 +197,7 @@ nmod_mat_strong_echelon_form(nmod_mat_t A)
                 }
             }
 
-            g = n_gcd_full(mod.n, nmod_mat_entry(A, col, col));
+            g = n_gcd(mod.n, nmod_mat_entry(A, col, col));
             if (g == 1)
             {
                 continue;
@@ -212,7 +229,7 @@ nmod_mat_strong_echelon_form(nmod_mat_t A)
             u = nmod_neg(u, mod);
             v = (nmod_mat_entry(A, row, row))/g;
             /* now g = a*x + b*y and 0 = sv - tu = 1 modulo mod.n */
-            
+
             for (k = row; k < m; k++)
             {
                 t1 = nmod_add(nmod_mul(s, nmod_mat_entry(A, row, k), mod), nmod_mul(t, extra_row[k], mod), mod);

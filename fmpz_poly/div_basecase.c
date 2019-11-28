@@ -1,28 +1,14 @@
-/*=============================================================================
-
-    This file is part of FLINT.
-
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
+/*
     Copyright (C) 2008, 2009 William Hart
     Copyright (C) 2010 Sebastian Pancratz
 
-******************************************************************************/
+    This file is part of FLINT.
+
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <stdlib.h>
 #include <gmp.h>
@@ -31,23 +17,27 @@
 #include "fmpz_vec.h"
 #include "fmpz_poly.h"
 
-void
+int
 _fmpz_poly_div_basecase(fmpz * Q, fmpz * R, const fmpz * A, slong lenA,
-                        const fmpz * B, slong lenB)
+                        const fmpz * B, slong lenB, int exact)
 {
     const fmpz * leadB = B + lenB - 1;
     slong B1, iQ = lenA - lenB;
     slong alloc;
+    fmpz_t r;
 
     while (lenA >= lenB && fmpz_cmpabs(A + lenA - 1, leadB) < 0)
     {
+        if (exact && !fmpz_is_zero(A + lenA - 1))
+           return 0;
+
         fmpz_zero(Q + iQ);
         iQ--;
         lenA--;
     }
 
     if (lenA < lenB)
-        return;
+        return 1;
 
     alloc = (R == NULL) ? lenA : 0;
     if (alloc)
@@ -56,14 +46,39 @@ _fmpz_poly_div_basecase(fmpz * Q, fmpz * R, const fmpz * A, slong lenA,
         _fmpz_vec_set(R + lenB - 1, A + lenB - 1, lenA - lenB + 1);
 
     B1 = lenB - 1;
+
+    if (exact)
+        fmpz_init(r);
     
     while (lenA >= lenB)
     {
         if (fmpz_cmpabs(R + lenA - 1, leadB) < 0)
-            fmpz_zero(Q + iQ);
-        else
         {
-            fmpz_fdiv_q(Q + iQ, R + lenA - 1, leadB);
+            if (exact && !fmpz_is_zero(R + lenA - 1))
+            {
+                if (alloc)
+                    _fmpz_vec_clear(R, alloc);
+
+                return 0;
+            }
+
+            fmpz_zero(Q + iQ);
+        } else
+        {
+            if (exact)
+            {
+                fmpz_fdiv_qr(Q + iQ, r, R + lenA - 1, leadB);
+
+                if (!fmpz_is_zero(r))
+                {
+                    if (alloc)
+                    _fmpz_vec_clear(R, alloc);
+
+                    return 0;
+                }
+            } else
+                fmpz_fdiv_q(Q + iQ, R + lenA - 1, leadB);
+
             _fmpz_vec_scalar_submul_fmpz(R + lenA - B1 - 1, B, B1, Q + iQ);
         }
 
@@ -77,8 +92,13 @@ _fmpz_poly_div_basecase(fmpz * Q, fmpz * R, const fmpz * A, slong lenA,
         iQ--;
     }
 
+    if (exact)
+        fmpz_clear(r);
+
     if (alloc)
         _fmpz_vec_clear(R, alloc);
+
+    return 1;
 }
 
 void
@@ -91,7 +111,7 @@ fmpz_poly_div_basecase(fmpz_poly_t Q,
     if (B->length == 0)
     {
         flint_printf("Exception (fmpz_poly_div_basecase). Division by zero.\n");
-        abort();
+        flint_abort();
     }
     if (A->length < B->length)
     {
@@ -109,7 +129,7 @@ fmpz_poly_div_basecase(fmpz_poly_t Q,
     }
 
     _fmpz_poly_div_basecase(q, NULL, A->coeffs, A->length,
-                                     B->coeffs, B->length);
+                                     B->coeffs, B->length, 0);
 
     if ((Q == A) || (Q == B))
     {

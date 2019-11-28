@@ -1,36 +1,42 @@
-/*=============================================================================
+/*
+    Copyright (C) 2019 William Hart
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2013 Mike Hansen
-
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include "fq_nmod_vec.h"
 
-#ifdef T
-#undef T
-#endif
+void _fq_nmod_vec_dot(fq_nmod_t res, const fq_nmod_struct * vec1,
+         const fq_nmod_struct * vec2, slong len2, const fq_nmod_ctx_t ctx)
+{
+   slong i;
+   nmod_poly_t t;
 
-#define T fq_nmod
-#define CAP_T FQ_NMOD
-#include "fq_vec_templates/dot.c"
-#undef CAP_T
-#undef T
+   if (len2 == 0)
+   {
+      fq_nmod_zero(res, ctx);
+
+      return;
+   }
+
+   nmod_poly_init(t, ctx->p);
+
+   nmod_poly_mul(res, vec1 + 0, vec2 + 0);
+
+   for (i = 1; i < len2; i++)
+   {
+      nmod_poly_mul(t, vec1 + i, vec2 + i);
+
+      nmod_poly_add(res, res, t);
+   }
+
+   fq_nmod_reduce(res, ctx);
+
+   nmod_poly_clear(t);
+}
+

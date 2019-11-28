@@ -1,27 +1,13 @@
-/*=============================================================================
+/*
+    Copyright (C) 2013 Tom Bachmann
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2013 Tom Bachmann
-
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #ifndef NMOD_MATXX_H
 #define NMOD_MATXX_H
@@ -429,8 +415,15 @@ private:
             nmod_mat_init_set(data[i], o.data[i]);
     }
 
+    void clear(void)
+    {
+        for(std::size_t i = 0;i < size_;++i)
+            nmod_mat_clear(data[i]);
+        delete[] data;
+    }
+
 public:
-    ~nmod_mat_vector() {delete[] data;}
+    ~nmod_mat_vector() {clear();}
     nmod_mat_vector(slong rows, slong cols, const std::vector<mp_limb_t>& primes)
     {
         size_ = primes.size();
@@ -446,7 +439,7 @@ public:
 
     nmod_mat_vector& operator=(const nmod_mat_vector& o)
     {
-        delete[] data;
+        clear();
         init(o);
         return *this;
     }

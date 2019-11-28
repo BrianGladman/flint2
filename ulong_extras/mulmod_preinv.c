@@ -1,44 +1,35 @@
-/*=============================================================================
+/*
+    Copyright (C) 2009, 2010, 2012, 2016 William Hart
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2009, 2010, 2012 William Hart
-
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <gmp.h>
 #include "flint.h"
 #include "ulong_extras.h"
 
-mp_limb_t
-n_mulmod_preinv(mp_limb_t a, mp_limb_t b, mp_limb_t n, 
-                                          mp_limb_t ninv, ulong norm)
+ulong
+n_mulmod_preinv(ulong a, ulong b, ulong n, ulong ninv, ulong norm)
 {
-    mp_limb_t q0, q1, r, p_hi, p_lo;
+    ulong q0, q1, r, p_hi, p_lo;
+
+    /* check normalisation */
+    FLINT_ASSERT((n & (UWORD(1) << (FLINT_BITS - 1))) != 0);
+    FLINT_ASSERT(a < n);
+    FLINT_ASSERT(b < n);
+    FLINT_ASSERT(n != 0);
 
     /* renormalise product */
     a >>= norm;
 
     /* multiply */
     umul_ppmm(p_hi, p_lo, a, b);
-    
+
     /* reduce mod n */
     {
         umul_ppmm(q1, q0, ninv, p_hi);
@@ -46,7 +37,7 @@ n_mulmod_preinv(mp_limb_t a, mp_limb_t b, mp_limb_t n,
 
         r = (p_lo - (q1 + 1) * n);
 
-        if (r >= q0)
+        if (r > q0)
             r += n;
 
         return (r < n ? r : r - n);

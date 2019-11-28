@@ -1,28 +1,14 @@
-/*=============================================================================
-
-    This file is part of FLINT.
-
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
+/*
     Copyright (C) 2011 William Hart
     Copyright (C) 2012 Sebastian Pancratz
 
-******************************************************************************/
+    This file is part of FLINT.
+
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <stdlib.h>
 #include "fmpz_vec.h"
@@ -86,10 +72,10 @@ slong _fmpz_mod_poly_xgcd_euclidean(fmpz *G, fmpz *S, fmpz *T,
 
             do {
                 fmpz_invmod(inv, V3 + (lenV3 - 1), p);
-                _fmpz_mod_poly_divrem(Q, R, D, lenD, V3, lenV3, inv, p);
+                _fmpz_mod_poly_divrem_basecase(Q, D, D, lenD, V3, lenV3, inv, p);
                 lenQ = lenD - lenV3 + 1;
-                lenR = lenV3 - 1;
-                FMPZ_VEC_NORM(R, lenR);
+                lenD = lenV3 - 1;
+                FMPZ_VEC_NORM(D, lenD);
 
                 if (lenV1 >= lenQ)
                     _fmpz_mod_poly_mul(W, V1, lenV1, Q, lenQ, p);
@@ -102,19 +88,7 @@ slong _fmpz_mod_poly_xgcd_euclidean(fmpz *G, fmpz *S, fmpz *T,
                 FMPZ_VEC_NORM(U, lenU);
 
                 FMPZ_VEC_SWAP(U, lenU, V1, lenV1);
-                {
-                    fmpz *__t;
-                    slong __tn;
-
-                    __t = D;
-                    D   = V3;
-                    V3  = R;
-                    R   = __t;
-                    __tn  = lenD;
-                    lenD  = lenV3;
-                    lenV3 = lenR;
-                    lenR  = __tn;
-                }
+                FMPZ_VEC_SWAP(D, lenD, V3, lenV3);
 
             } while (lenV3 != 0);
 

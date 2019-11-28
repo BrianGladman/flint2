@@ -1,27 +1,13 @@
-/*=============================================================================
+/*
+    Copyright (C) 2012 Sebastian Pancratz
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2012 Sebastian Pancratz
- 
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include "qadic.h"
 
@@ -36,7 +22,9 @@ void _qadic_trace(fmpz_t rop, const fmpz *op, slong len,
     t = _fmpz_vec_init(d);
 
     fmpz_set_ui(t + 0, d);
-    for (i = 1; i < d; i++)
+    for (i = 1; i < len; i++)  /* simple Newton identities to                    */
+                               /* compute power sums = traces of basis elements  */
+                               /* we don't need them past len                    */
     {
         for (l = lena - 2; l >= 0 && j[l] >= d - (i - 1); l--)
         {
@@ -53,7 +41,7 @@ void _qadic_trace(fmpz_t rop, const fmpz *op, slong len,
     }
 
     fmpz_zero(rop);
-    for (i = 0; i < d; i++)
+    for (i = 0; i < len; i++)
     {
         fmpz_addmul(rop, op + i, t + i);
     }

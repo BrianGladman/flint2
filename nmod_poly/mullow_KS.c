@@ -1,28 +1,14 @@
-/*=============================================================================
-
-    This file is part of FLINT.
-
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
+/*
     Copyright (C) 2010 William Hart
     Copyright (C) 2010 Sebastian Pancratz
 
-******************************************************************************/
+    This file is part of FLINT.
+
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <stdlib.h>
 #include <gmp.h>
@@ -32,7 +18,7 @@
 
 void
 _nmod_poly_mullow_KS(mp_ptr out, mp_srcptr in1, slong len1,
-            mp_srcptr in2, slong len2, mp_bitcnt_t bits, slong n, nmod_t mod)
+            mp_srcptr in2, slong len2, flint_bitcnt_t bits, slong n, nmod_t mod)
 {
     slong limbs1, limbs2;
     mp_ptr mpn1, mpn2, res;
@@ -42,7 +28,7 @@ _nmod_poly_mullow_KS(mp_ptr out, mp_srcptr in1, slong len1,
 
     if (bits == 0)
     {
-        mp_bitcnt_t bits1, bits2, loglen;
+        flint_bitcnt_t bits1, bits2, loglen;
         bits1  = _nmod_vec_max_bits(in1, len1);
         bits2  = (in1 == in2) ? bits1 : _nmod_vec_max_bits(in2, len2);
         loglen = FLINT_BIT_COUNT(len2);
@@ -76,7 +62,7 @@ _nmod_poly_mullow_KS(mp_ptr out, mp_srcptr in1, slong len1,
 void
 nmod_poly_mullow_KS(nmod_poly_t res,
                  const nmod_poly_t poly1, const nmod_poly_t poly2,
-                 mp_bitcnt_t bits, slong n)
+                 flint_bitcnt_t bits, slong n)
 {
     slong len_out;
 

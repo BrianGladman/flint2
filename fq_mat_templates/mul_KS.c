@@ -1,29 +1,14 @@
-/*=============================================================================
-
-    This file is part of FLINT.
-
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
+/*
     Copyright (C) 2011 Fredrik Johansson
     Copyright (C) 2013 Mike Hansen
 
-******************************************************************************/
+    This file is part of FLINT.
 
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #ifdef T
 
@@ -60,7 +45,7 @@ TEMPLATE(T, mat_mul_KS) (TEMPLATE(T, mat_t) C,
     fmpz_set(beta, TEMPLATE(T, ctx_prime) (ctx));
     fmpz_sub_ui(beta, beta, 1);
     fmpz_mul(beta, beta, beta);
-    fmpz_mul_si(beta, beta, A->r);
+    fmpz_mul_si(beta, beta, A->c);
     fmpz_mul_si(beta, beta, TEMPLATE(T, ctx_degree) (ctx));
     bits = fmpz_bits(beta) + 1;
 
@@ -94,6 +79,8 @@ TEMPLATE(T, mat_mul_KS) (TEMPLATE(T, mat_t) C,
     fmpz_mat_clear(fa);
     fmpz_mat_clear(fb);
     fmpz_mat_clear(fc);
+
+    fmpz_clear(beta);
 }
 
 

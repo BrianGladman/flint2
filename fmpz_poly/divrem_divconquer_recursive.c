@@ -1,28 +1,14 @@
-/*=============================================================================
+/*
+    Copyright (C) 2008, 2009, 2019 William Hart
+    Copyright (C) 2010 Sebastian Pancratz
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2008, 2009 William Hart
-    Copyright (C) 2010 Sebastian Pancratz
-   
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <stdlib.h>
 #include <gmp.h>
@@ -33,17 +19,18 @@
 
 #define FLINT_DIVREM_DIVCONQUER_CUTOFF  16
 
-void
+int
 _fmpz_poly_divrem_divconquer_recursive(fmpz * Q, fmpz * BQ, fmpz * W, 
                                        const fmpz * A, const fmpz * B,
-                                       slong lenB)
+                                       slong lenB, int exact)
 {
     if (lenB <= FLINT_DIVREM_DIVCONQUER_CUTOFF)
     {
         _fmpz_vec_zero(BQ, lenB - 1);
         _fmpz_vec_set(BQ + (lenB - 1), A + (lenB - 1), lenB);
 
-        _fmpz_poly_divrem_basecase(Q, BQ, BQ, 2 * lenB - 1, B, lenB);
+        if (!_fmpz_poly_divrem_basecase(Q, BQ, BQ, 2 * lenB - 1, B, lenB, exact))
+            return 0;
 
         _fmpz_vec_neg(BQ, BQ, lenB - 1);
         _fmpz_vec_sub(BQ + (lenB - 1), A + (lenB - 1), BQ + (lenB - 1), lenB);
@@ -75,7 +62,8 @@ _fmpz_poly_divrem_divconquer_recursive(fmpz * Q, fmpz * BQ, fmpz * W,
            being of length n1;  d1q1 = d1 q1 is of length 2 n1 - 1
          */
 
-        _fmpz_poly_divrem_divconquer_recursive(q1, d1q1, W1, p1, d1, n1);
+        if (!_fmpz_poly_divrem_divconquer_recursive(q1, d1q1, W1, p1, d1, n1, exact))
+            return 0;
 
         /* 
            Compute d2q1 = d2 q1, of length lenB - 1
@@ -113,7 +101,9 @@ _fmpz_poly_divrem_divconquer_recursive(fmpz * Q, fmpz * BQ, fmpz * W,
          */
 
         d3q2 = W1;
-        _fmpz_poly_divrem_divconquer_recursive(q2, d3q2, W2, p2, d3, n2);
+
+        if (!_fmpz_poly_divrem_divconquer_recursive(q2, d3q2, W2, p2, d3, n2, exact))
+            return 0;
 
         /*
            Compute d4q2 = d4 q2, of length n1 + n2 - 1 = lenB - 1
@@ -134,4 +124,6 @@ _fmpz_poly_divrem_divconquer_recursive(fmpz * Q, fmpz * BQ, fmpz * W,
            Note Q = q1 x^n2 + q2, and BQ = dq1 x^n2 + dq2
          */
     }
+
+    return 1;
 }

@@ -1,28 +1,14 @@
-/*=============================================================================
-
-    This file is part of FLINT.
-
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it wdll be useful,
-    but WITHOUT ANY WARRANTY; wdthout even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along wdth FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
+/*
     Copyright (C) 2007, David Howden.
     Copyright (C) 2010 William Hart
 
-******************************************************************************/
+    This file is part of FLINT.
+
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <stdlib.h>
 #include <string.h>
@@ -46,7 +32,7 @@ char * nmod_poly_get_str_pretty(const nmod_poly_t poly, const char * x)
     }
     else if (poly->length == 1)
     {
-        size = (ulong) ceil(0.30103*FLINT_BIT_COUNT(poly->coeffs[0]));
+        size = (ulong) ceil(0.30103*FLINT_BIT_COUNT(poly->coeffs[0])) + 1;
         buf = (char *) flint_malloc(size);
         flint_sprintf(buf, "%wu", poly->coeffs[0]);
         return buf;

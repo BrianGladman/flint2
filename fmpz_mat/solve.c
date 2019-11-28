@@ -1,27 +1,13 @@
-/*=============================================================================
+/*
+    Copyright (C) 2011 Fredrik Johansson
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2011 Fredrik Johansson
-
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include "fmpz_mat.h"
 #include "perm.h"
@@ -32,6 +18,10 @@ fmpz_mat_solve(fmpz_mat_t X, fmpz_t den,
 {
     if (fmpz_mat_nrows(A) <= 3)
         return fmpz_mat_solve_cramer(X, den, A, B);
-    else
+    else if (fmpz_mat_nrows(A) <= 20 && fmpz_mat_ncols(A) <= 20)
         return fmpz_mat_solve_fflu(X, den, A, B);
+    else if (fmpz_mat_ncols(B) == 1)
+	return fmpz_mat_solve_dixon_den(X, den, A, B);
+    else
+        return fmpz_mat_solve_multi_mod_den(X, den, A, B);
 }

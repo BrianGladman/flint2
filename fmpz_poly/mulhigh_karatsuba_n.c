@@ -1,27 +1,13 @@
-/*=============================================================================
+/*
+    Copyright (C) 2010 William Hart
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2010 William Hart
-
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+*/
 
 #include <stdlib.h>
 #include <string.h>
@@ -122,7 +108,7 @@ fmpz_poly_mulhigh_karatsuba_n(fmpz_poly_t res,
         return;
     }
 
-    if (poly1->length != len)
+    if (poly1->length < len)
     {
         pol1 = (fmpz *) flint_calloc(len, sizeof(fmpz));
         memcpy(pol1, poly1->coeffs, poly1->length * sizeof(fmpz));
@@ -131,7 +117,7 @@ fmpz_poly_mulhigh_karatsuba_n(fmpz_poly_t res,
     else
         pol1 = poly1->coeffs;
 
-    if (poly2->length != len)
+    if (poly2->length < len)
     {
         pol2 = (fmpz *) flint_calloc(len, sizeof(fmpz));
         memcpy(pol2, poly2->coeffs, poly2->length * sizeof(fmpz));
