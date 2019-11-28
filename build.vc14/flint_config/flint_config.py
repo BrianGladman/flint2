@@ -68,7 +68,7 @@ def write_f(ipath, opath):
         return
     copy(ipath, opath)
 
-ignore_dirs = ( '.git', 'doc', 'examples', 'lib', 'exe', 'dll', 'win_hdrs', 'build.vc12')
+ignore_dirs = ( '.git', 'doc', 'examples', 'lib', 'exe', 'dll', 'win_hdrs', 'build.vc14')
 req_extns = ( '.h', '.c', '.cc', '.cpp' )
 
 def find_src(path):
@@ -265,7 +265,7 @@ if build_lib:
   gen_filter(vcx_path + '.filters', flint_dir, h, c, [], '12.0')
   guid = solc.get_project_guid(vcx_name, vcx_path)
   mode = ('Win32', 'x64')
-  inc_dirs = r'..\;..\..\;..\..\..\mpir\lib;..\..\..\mpfr\lib;..\..\..\pthreads\lib'
+  inc_dirs = r'..\;..\..\;..\..\..\mpir\lib\$(IntDir);..\..\..\mpfr\lib\$(IntDir);..\..\..\pthreads\lib\$(IntDir)'
   link_libs = r'..\..\..\mpir\lib\$(IntDir)mpir.lib;..\..\..\mpfr\lib\$(IntDir)mpfr.lib;..\..\..\pthreads\lib\$(IntDir)pthreads.lib'
   gen_vcxproj(vcx_path, flint_dir, proj_name, guid, mode, Project_Type.LIB, flib_type, True, True, True, h, c, inc_dirs, link_libs)
   solc.add_project('', vcx_name, vcx_path, guid)
@@ -282,7 +282,7 @@ if build_dll:
   gen_filter(vcx_path + '.filters', flint_dir, h, c, [], '12.0')
   guid = solc.get_project_guid(vcx_name, vcx_path)
   mode = ('Win32', 'x64')
-  inc_dirs = r'..\;..\..\;..\..\..\mpir\dll;..\..\..\mpfr\dll;..\..\..\pthreads\dll;'
+  inc_dirs = r'..\;..\..\;..\..\..\mpir\dll\$(IntDir);..\..\..\mpfr\dll\$(IntDir);..\..\..\pthreads\dll\$(IntDir);'
   link_libs = r'..\..\..\mpir\dll\$(IntDir)mpir.lib;..\..\..\mpfr\dll\$(IntDir)mpfr.lib;..\..\..\pthreads\dll\$(IntDir)pthreads.lib;'
   gen_vcxproj(vcx_path, flint_dir, proj_name, guid, mode, Project_Type.DLL, flib_type, True, True, True, h, c, inc_dirs, link_libs)
   solc.add_project('', vcx_name, vcx_path, guid)
@@ -296,7 +296,7 @@ def gen_test(sol, solf, test_name, directory, proj_dir, name, c_file):
   gen_filter(vcx_path + '.filters', solution_dir, [], [('', c_file)], [], '12.0')
   guid = sol.get_project_guid(vcx_name, vcx_path)
   mode = ('Win32', 'x64')
-  inc_dirs = r'..\..\;..\..\..\;..\..\..\..\mpir\lib;..\..\..\..\mpfr\lib;..\..\..\..\pthreads\lib;'
+  inc_dirs = r'..\..\;..\..\..\;..\..\..\..\mpir\lib\$(IntDir);..\..\..\..\mpfr\lib\$(IntDir);..\..\..\..\pthreads\lib\$(IntDir);'
   link_libs = r'..\..\..\lib\$(IntDir)lib_flint.lib;..\..\..\..\mpir\lib\$(IntDir)mpir.lib;..\..\..\..\mpfr\lib\$(IntDir)mpfr.lib;..\..\..\..\pthreads\lib\$(IntDir)pthreads.lib;'
   gen_vcxproj(vcx_path, flint_dir, test_name, guid, mode, Project_Type.APP, flib_type, False, False, False, [], [('', c_file)], inc_dirs, link_libs)
   sol.add_project(solf, vcx_name, vcx_path, guid)

@@ -131,9 +131,9 @@ for l2, fp in t:
   inc_dirs = [
     '..\\',
     '..\\..\\',
-    '..\\..\\..\\mpir\\lib',
-    '..\\..\\..\\mpfr\\lib',
-    '..\\..\\..\\pthreads\\lib'
+    '..\\..\\..\\mpir\\lib' + intd,
+    '..\\..\\..\\mpfr\\lib' + intd,
+    '..\\..\\..\\pthreads\\lib' + intd
     ]
   libs = [
     '..\\..\\lib' + intd + 'lib_flint',

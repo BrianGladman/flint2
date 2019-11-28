@@ -58,8 +58,8 @@ the following build projects:
                     Studio build files
     build_tests   - a Python program for building the FLINT2
                     tests (after they have been created)
-     run_tests     - a Python program for running the FLINT2
-                     tests (after they have been built)
+    run_tests     - a Python program for running the FLINT2
+                    tests (after they have been built)
 
 The projects lib_flint and dll_flint can be used immediately to
 build FLINT2 as a Static and Dynamic Link Library respectively.

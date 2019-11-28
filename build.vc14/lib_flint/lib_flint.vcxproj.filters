@@ -5,7 +5,6 @@
     <Filter Include="Source Files" />
     <Filter Include="Source Files\arith" />
     <Filter Include="Source Files\build.vc" />
-    <Filter Include="Source Files\build.vc14" />
     <Filter Include="Source Files\d_mat" />
     <Filter Include="Source Files\d_vec" />
     <Filter Include="Source Files\double_extras" />
@@ -66,21 +65,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\arith.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\build.vc14\config.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\build.vc14\cpimport.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\build.vc14\getopt.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\build.vc14\gettimeofday.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\build.vc14\unistd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\build.vc\config.h">
@@ -411,12 +395,6 @@
     </ClCompile>
     <ClCompile Include="..\..\build.vc\gettimeofday.c">
       <Filter>Source Files\build.vc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\build.vc14\getopt.c">
-      <Filter>Source Files\build.vc14</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\build.vc14\gettimeofday.c">
-      <Filter>Source Files\build.vc14</Filter>
     </ClCompile>
     <ClCompile Include="..\..\d_mat\approx_equal.c">
       <Filter>Source Files\d_mat</Filter>
