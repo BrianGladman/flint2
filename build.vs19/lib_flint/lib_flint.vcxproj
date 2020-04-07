@@ -84,83 +84,79 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PreBuildEvent>
-        <Command>..\..\build.vc\out_copy_rename.bat ..\..\build.vc\cpimport.h ..\..\qadic\ cpimport.h
+      <Command>..\..\build.vc\out_copy_rename.bat ..\..\build.vc\cpimport.h ..\..\qadic\ cpimport.h
         </Command>
     </PreBuildEvent>
     <ClCompile>
-    <Optimization>Full</Optimization>
-    <IntrinsicFunctions>true</IntrinsicFunctions>
-    <AdditionalIncludeDirectories>..\..\;..\..\build.vc;..\..\..\mpir\lib\$(IntDir);..\..\..\mpfr\lib\$(IntDir);..\..\..\pthreads\lib\$(IntDir)</AdditionalIncludeDirectories>
-    <PreprocessorDefinitions>NDEBUG;WIN32;_LIB;HAVE_CONFIG_H;PTW32_STATIC_LIB;FLINT_REENTRANT=0;HAVE_TLS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-    <ProgramDataBaseFileName>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFileName>
-    <DebugInformationFormat>None</DebugInformationFormat>
+      <Optimization>Full</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>..\..\;..\..\build.vc;..\..\..\mpir\lib\$(IntDir);..\..\..\mpfr\lib\$(IntDir);..\..\..\pthreads\lib\$(IntDir)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;WIN32;_LIB;HAVE_CONFIG_H;PTW32_STATIC_LIB;FLINT_REENTRANT=0;HAVE_TLS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <ProgramDataBaseFileName>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
-
-  <PostBuildEvent>
+    <PostBuildEvent>
       <Command>..\..\build.vc\postbuild $(IntDir) LIB 19
       </Command>
-  </PostBuildEvent>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PreBuildEvent>
-        <Command>..\..\build.vc\out_copy_rename.bat ..\..\build.vc\cpimport.h ..\..\qadic\ cpimport.h
+      <Command>..\..\build.vc\out_copy_rename.bat ..\..\build.vc\cpimport.h ..\..\qadic\ cpimport.h
         </Command>
     </PreBuildEvent>
     <ClCompile>
-    <Optimization>Disabled</Optimization>
-    <IntrinsicFunctions>true</IntrinsicFunctions>
-    <AdditionalIncludeDirectories>..\..\;..\..\build.vc;..\..\..\mpir\lib\$(IntDir);..\..\..\mpfr\lib\$(IntDir);..\..\..\pthreads\lib\$(IntDir)</AdditionalIncludeDirectories>
-    <PreprocessorDefinitions>_DEBUG;WIN32;_LIB;HAVE_CONFIG_H;PTW32_STATIC_LIB;FLINT_REENTRANT=0;HAVE_TLS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-    <ProgramDataBaseFileName>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFileName>
-    <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>..\..\;..\..\build.vc;..\..\..\mpir\lib\$(IntDir);..\..\..\mpfr\lib\$(IntDir);..\..\..\pthreads\lib\$(IntDir)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;WIN32;_LIB;HAVE_CONFIG_H;PTW32_STATIC_LIB;FLINT_REENTRANT=0;HAVE_TLS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <ProgramDataBaseFileName>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
-
-  <PostBuildEvent>
+    <PostBuildEvent>
       <Command>..\..\build.vc\postbuild $(IntDir) LIB 19
       </Command>
-  </PostBuildEvent>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PreBuildEvent>
-        <Command>..\..\build.vc\out_copy_rename.bat ..\..\build.vc\cpimport.h ..\..\qadic\ cpimport.h
+      <Command>..\..\build.vc\out_copy_rename.bat ..\..\build.vc\cpimport.h ..\..\qadic\ cpimport.h
         </Command>
     </PreBuildEvent>
     <ClCompile>
-    <Optimization>Full</Optimization>
-    <IntrinsicFunctions>true</IntrinsicFunctions>
-    <AdditionalIncludeDirectories>..\..\;..\..\build.vc;..\..\..\mpir\lib\$(IntDir);..\..\..\mpfr\lib\$(IntDir);..\..\..\pthreads\lib\$(IntDir)</AdditionalIncludeDirectories>
-    <PreprocessorDefinitions>NDEBUG;WIN32;_LIB;HAVE_CONFIG_H;PTW32_STATIC_LIB;FLINT_REENTRANT=0;HAVE_TLS=1;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-    <ProgramDataBaseFileName>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFileName>
-    <DebugInformationFormat>None</DebugInformationFormat>
+      <Optimization>Full</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>..\..\;..\..\build.vc;..\..\..\mpir\lib\$(IntDir);..\..\..\mpfr\lib\$(IntDir);..\..\..\pthreads\lib\$(IntDir)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;WIN32;_LIB;HAVE_CONFIG_H;PTW32_STATIC_LIB;FLINT_REENTRANT=0;HAVE_TLS=1;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <ProgramDataBaseFileName>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
-
-  <PostBuildEvent>
+    <PostBuildEvent>
       <Command>..\..\build.vc\postbuild $(IntDir) LIB 19
       </Command>
-  </PostBuildEvent>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PreBuildEvent>
-        <Command>..\..\build.vc\out_copy_rename.bat ..\..\build.vc\cpimport.h ..\..\qadic\ cpimport.h
+      <Command>..\..\build.vc\out_copy_rename.bat ..\..\build.vc\cpimport.h ..\..\qadic\ cpimport.h
         </Command>
     </PreBuildEvent>
     <ClCompile>
-    <Optimization>Disabled</Optimization>
-    <IntrinsicFunctions>true</IntrinsicFunctions>
-    <AdditionalIncludeDirectories>..\..\;..\..\build.vc;..\..\..\mpir\lib\$(IntDir);..\..\..\mpfr\lib\$(IntDir);..\..\..\pthreads\lib\$(IntDir)</AdditionalIncludeDirectories>
-    <PreprocessorDefinitions>_DEBUG;WIN32;_LIB;HAVE_CONFIG_H;PTW32_STATIC_LIB;FLINT_REENTRANT=0;HAVE_TLS=1;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-    <ProgramDataBaseFileName>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFileName>
-    <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>..\..\;..\..\build.vc;..\..\..\mpir\lib\$(IntDir);..\..\..\mpfr\lib\$(IntDir);..\..\..\pthreads\lib\$(IntDir)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;WIN32;_LIB;HAVE_CONFIG_H;PTW32_STATIC_LIB;FLINT_REENTRANT=0;HAVE_TLS=1;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <ProgramDataBaseFileName>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
-
-  <PostBuildEvent>
+    <PostBuildEvent>
       <Command>..\..\build.vc\postbuild $(IntDir) LIB 19
       </Command>
-  </PostBuildEvent>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ImportGroup>
     <Import Condition="exists('$(MPIR_Props_External)')" Project="$(MPIR_Props_External)" />
@@ -172,7 +168,6 @@
     <ClInclude Include="..\..\build.vc\config.h" />
     <ClInclude Include="..\..\build.vc\cpimport.h" />
     <ClInclude Include="..\..\build.vc\getopt.h" />
-    <ClInclude Include="..\..\build.vc\gettimeofday.h" />
     <ClInclude Include="..\..\build.vc\unistd.h" />
     <ClInclude Include="..\..\d_mat.h" />
     <ClInclude Include="..\..\d_vec.h" />
@@ -352,7 +347,6 @@
     <ClCompile Include="..\..\arith\sum_of_squares_vec.c" />
     <ClCompile Include="..\..\arith\zeta_inv_euler_product.c" />
     <ClCompile Include="..\..\build.vc\getopt.c" />
-    <ClCompile Include="..\..\build.vc\gettimeofday.c" />
     <ClCompile Include="..\..\d_mat\approx_equal.c" />
     <ClCompile Include="..\..\d_mat\clear.c" />
     <ClCompile Include="..\..\d_mat\equal.c" />

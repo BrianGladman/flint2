@@ -92,9 +92,6 @@
     <ClInclude Include="..\..\build.vc\getopt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\build.vc\gettimeofday.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\build.vc\unistd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -626,9 +623,6 @@
       <Filter>Source Files\arith</Filter>
     </ClCompile>
     <ClCompile Include="..\..\build.vc\getopt.c">
-      <Filter>Source Files\build.vc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\build.vc\gettimeofday.c">
       <Filter>Source Files\build.vc</Filter>
     </ClCompile>
     <ClCompile Include="..\..\d_mat\approx_equal.c">
@@ -9421,8 +9415,5 @@
     <ClCompile Include="..\..\ulong_extras\xgcd.c">
       <Filter>Source Files\ulong_extras</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\gmp-h.in" />
   </ItemGroup>
 </Project>

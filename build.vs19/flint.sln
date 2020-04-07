@@ -5,6 +5,8 @@ VisualStudioVersion = 19.20.27027.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lib_flint", "lib_flint\lib_flint.vcxproj", "{50BA74B7-448C-43F8-B3D0-81405D78EB95}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dll_flint", "dll_flint\dll_flint.vcxproj", "{41C2286F-4C78-4BB1-B70D-BE8C3B82AE78}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -17,6 +19,10 @@ Global
 		{50BA74B7-448C-43F8-B3D0-81405D78EB95}.Debug|x64.ActiveCfg = Debug|x64
 		{50BA74B7-448C-43F8-B3D0-81405D78EB95}.Release|Win32.ActiveCfg = Release|Win32
 		{50BA74B7-448C-43F8-B3D0-81405D78EB95}.Release|x64.ActiveCfg = Release|x64
+		{41C2286F-4C78-4BB1-B70D-BE8C3B82AE78}.Debug|Win32.ActiveCfg = Debug|Win32
+		{41C2286F-4C78-4BB1-B70D-BE8C3B82AE78}.Debug|x64.ActiveCfg = Debug|x64
+		{41C2286F-4C78-4BB1-B70D-BE8C3B82AE78}.Release|Win32.ActiveCfg = Release|Win32
+		{41C2286F-4C78-4BB1-B70D-BE8C3B82AE78}.Release|x64.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
