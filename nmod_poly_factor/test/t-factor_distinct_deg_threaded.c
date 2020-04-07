@@ -1,6 +1,6 @@
 /*
     Copyright (C) 2007 David Howden
-    Copyright (C) 2007, 2008, 2009, 2010 William Hart
+    Copyright (C) 2007, 2008, 2009, 2010, 2020 William Hart
     Copyright (C) 2008 Richard Howell-Peak
     Copyright (C) 2011 Fredrik Johansson
     Copyright (C) 2012 Lina Kulakova
@@ -90,13 +90,10 @@ main(void)
             num_of_deg[nmod_poly_degree(poly)]++;
         }
 
-        if (!(degs = flint_malloc((poly1->length - 1) * sizeof(slong))))
-        {
-            flint_printf("Fatal error: not enough memory.");
-            abort();
-        }
+        degs = (slong *) flint_malloc((poly1->length - 1) * sizeof(slong));
+	
         nmod_poly_factor_init(res);
-        nmod_poly_factor_distinct_deg_threaded(res, poly1, &degs);
+        nmod_poly_factor_distinct_deg_threaded(res, poly1, &degs, FLINT_DEFAULT_THREAD_LIMIT);
 
         nmod_poly_init_preinv(product, poly1->mod.n, poly1->mod.ninv);
         nmod_poly_set_coeff_ui(product, 0, 1);

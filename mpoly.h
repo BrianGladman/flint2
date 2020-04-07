@@ -30,6 +30,7 @@
 #include "string.h"
 #include "flint.h"
 #include "fmpz.h"
+#include "fmpz_mat.h"
 #include "fmpq.h"
 #include "ulong_extras.h"
 #include "thread_pool.h"
@@ -66,7 +67,9 @@ MPOLY_INLINE slong mpoly_divide_threads(slong n, double la, double lb)
 
 
 typedef enum {
-   ORD_LEX, ORD_DEGLEX, ORD_DEGREVLEX
+    ORD_LEX,
+    ORD_DEGLEX,
+    ORD_DEGREVLEX
 } ordering_t;
 
 #define MPOLY_NUM_ORDERINGS 3
@@ -334,6 +337,61 @@ void mpoly_monomial_msub_mp(ulong * exp1, const ulong * exp2, ulong scalar,
     mpn_submul_1(exp1, exp3, N, scalar);
 }
 
+MPOLY_INLINE
+void mpoly_monomial_msub_ui_array(ulong * exp1, const ulong * exp2,
+                                     const ulong * scalar, slong scalar_limbs,
+                                                   const ulong * exp3, slong N)
+{
+    slong i;
+    for (i = 0; i < N; i++)
+        exp1[i] = exp2[i];
+    FLINT_ASSERT(scalar_limbs <= N);
+    for (i = 0; i < scalar_limbs; i++)
+        mpn_submul_1(exp1 + i, exp3, N - i, scalar[i]);
+}
+
+MPOLY_INLINE
+void mpoly_monomial_madd_ui_array(ulong * exp1, const ulong * exp2,
+                                     const ulong * scalar, slong scalar_limbs,
+                                                   const ulong * exp3, slong N)
+{
+    slong i;
+    for (i = 0; i < N; i++)
+        exp1[i] = exp2[i];
+    FLINT_ASSERT(scalar_limbs <= N);
+    for (i = 0; i < scalar_limbs; i++)
+        mpn_addmul_1(exp1 + i, exp3, N - i, scalar[i]);
+}
+
+MPOLY_INLINE
+void mpoly_monomial_madd_fmpz(ulong * exp1, const ulong * exp2,
+                             const fmpz_t scalar, const ulong * exp3, slong N)
+{
+    if (COEFF_IS_MPZ(*scalar))
+    {
+        __mpz_struct * mpz = COEFF_TO_PTR(*scalar);
+        mpoly_monomial_madd_ui_array(exp1, exp2,
+                                           mpz->_mp_d, mpz->_mp_size, exp3, N);
+    }
+    else
+    {
+        mpoly_monomial_madd_mp(exp1, exp2, *scalar, exp3, N);
+    }
+}
+
+MPOLY_INLINE
+ulong mpoly_overflow_mask_sp(flint_bitcnt_t bits)
+{
+    slong i;
+    ulong mask = 0;
+
+    FLINT_ASSERT(bits <= FLINT_BITS);
+
+    for (i = 0; i < FLINT_BITS/bits; i++)
+        mask = (mask << bits) + (UWORD(1) << (bits - 1));
+
+    return mask;
+}
 
 MPOLY_INLINE
 void mpoly_monomial_max(ulong * exp1, const ulong * exp2, const ulong * exp3,
@@ -828,6 +886,12 @@ FLINT_DLL void mpoly_gen_fields_fmpz(fmpz * exp, slong var,
 
 FLINT_DLL flint_bitcnt_t mpoly_gen_bits_required(slong var, const mpoly_ctx_t mctx);
 
+/* return the index in the fields where the generator of index v is stored */
+MPOLY_INLINE slong mpoly_gen_index(slong v, const mpoly_ctx_t mctx)
+{
+    return mctx->rev ? v : mctx->nvars - 1 - v;
+}
+
 FLINT_DLL void mpoly_gen_offset_shift_sp(slong * offset, slong * shift,
                           slong var, flint_bitcnt_t bits, const mpoly_ctx_t mctx);
 
@@ -842,6 +906,15 @@ FLINT_DLL slong mpoly_gen_offset_mp(slong var,
 
 FLINT_DLL slong mpoly_gen_monomial_offset_mp(ulong * mexp, slong var,
                                      flint_bitcnt_t bits, const mpoly_ctx_t mctx);
+
+FLINT_DLL void fmpz_mat_mul_vec(fmpz * v, const fmpz_mat_t M, fmpz * u);
+
+FLINT_DLL void mpoly_compose_mat_gen(fmpz_mat_t M, const slong * c,
+                            const mpoly_ctx_t mctxB, const mpoly_ctx_t mctxAC);
+
+FLINT_DLL void mpoly_compose_mat_fill_column(fmpz_mat_t M, const ulong * Cexp,
+                    flint_bitcnt_t Cbits, slong Bvar, const mpoly_ctx_t mctxB,
+                                                     const mpoly_ctx_t mctxAC);
 
 /* Monomial arrays ***********************************************************/
 
@@ -1075,6 +1148,14 @@ FLINT_DLL void _mpoly_gen_shift_left(ulong * Aexp, flint_bitcnt_t Abits,
 FLINT_DLL int mpoly_monomial_cmp_general(ulong * Aexp, flint_bitcnt_t Abits,
                       ulong * Bexp, flint_bitcnt_t Bbits, const mpoly_ctx_t mctx);
 
+FLINT_DLL void mpoly_monomials_shift_right_ui(ulong * Aexps, flint_bitcnt_t Abits,
+               slong Alength, const ulong * user_exps, const mpoly_ctx_t mctx);
+
+FLINT_DLL int mpoly_monomial_cofactors(fmpz * Abarexps, fmpz * Bbarexps,
+                                    const ulong * Aexps, flint_bitcnt_t Abits,
+                                    const ulong * Bexps, flint_bitcnt_t Bbits,
+                                        slong length,  const mpoly_ctx_t mctx);
+
 /* info related to gcd calculation *******************************************/
 
 typedef struct
@@ -1094,10 +1175,13 @@ typedef struct
     slong * Btail_count;
 
     ulong * Gmin_exp;
+    ulong * Abarmin_exp;
+    ulong * Bbarmin_exp;
     ulong * Gstride;
     slong * Gterm_count_est;
     slong * Gdeflate_deg_bound;
-    int Gdeflate_deg_bounds_are_nice; /* all of Gdeflate_deg_bound came from real gcd computations */
+
+    flint_bitcnt_t Gbits, Abarbits, Bbarbits;
 
     slong mvars;
 
@@ -1107,6 +1191,7 @@ typedef struct
     double brown_time_est, bma_time_est, zippel_time_est;
     slong * brown_perm, * bma_perm, * zippel_perm;
     int can_use_brown, can_use_bma, can_use_zippel;
+    int Gdeflate_deg_bounds_are_nice; /* all of Gdeflate_deg_bound came from real gcd computations */
 
     char * data;
 } mpoly_gcd_info_struct;
@@ -1155,6 +1240,8 @@ typedef mpoly_zipinfo_struct mpoly_zipinfo_t[1];
 void mpoly_zipinfo_init(mpoly_zipinfo_t zinfo, slong nvars);
 
 void mpoly_zipinfo_clear(mpoly_zipinfo_t zinfo);
+
+void _fmpz_vec_content_chained(fmpz_t res, const fmpz * vec, slong len);
 
 /* Heap **********************************************************************/
 

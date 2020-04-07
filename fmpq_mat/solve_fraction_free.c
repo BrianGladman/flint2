@@ -12,6 +12,30 @@
 #include "fmpq_mat.h"
 
 int
+fmpq_mat_solve_fmpz_mat_fraction_free(fmpq_mat_t X, const fmpz_mat_t A,
+                                                    const fmpz_mat_t B)
+{
+    fmpz_mat_t Xnum;
+    fmpz_t den;
+    int success;
+
+    fmpz_mat_init(Xnum, B->r, B->c);
+    fmpz_init(den);
+
+    /* call solve instead of solve_fflu explicitly because we also want
+       to use cramer where applicable */
+    success = fmpz_mat_solve(Xnum, den, A, B);
+
+    if (success)
+        fmpq_mat_set_fmpz_mat_div_fmpz(X, Xnum, den);
+
+    fmpz_mat_clear(Xnum);
+    fmpz_clear(den);
+
+    return success;
+}
+
+int
 fmpq_mat_solve_fraction_free(fmpq_mat_t X, const fmpq_mat_t A,
                                                     const fmpq_mat_t B)
 {
@@ -27,6 +51,8 @@ fmpq_mat_solve_fraction_free(fmpq_mat_t X, const fmpq_mat_t A,
     fmpz_init(den);
 
     fmpq_mat_get_fmpz_mat_rowwise_2(Anum, Bnum, NULL, A, B);
+    /* call solve instead of solve_fflu explicitly because we also want
+       to use cramer where applicable */
     success = fmpz_mat_solve(Xnum, den, Anum, Bnum);
 
     if (success)

@@ -101,8 +101,14 @@ FLINT_DLL void __flint_set_memory_functions(void *(*alloc_func) (size_t),
      void *(*calloc_func) (size_t, size_t), void *(*realloc_func) (void *, size_t),
                                                               void (*free_func) (void *));
 
-FLINT_DLL void flint_abort(void);
-FLINT_DLL void flint_set_abort(void (*func)(void));
+#ifdef __GNUC__
+#define FLINT_NORETURN __attribute__ ((noreturn))
+#else
+#define FLINT_NORETURN
+#endif
+
+FLINT_DLL FLINT_NORETURN void flint_abort(void);
+FLINT_DLL void flint_set_abort(FLINT_NORETURN void (*func)(void));
   /* flint_abort is calling abort by default
    * if flint_set_abort is used, then instead of abort this function
    * is called. EXPERIMENTALLY use at your own risk!
@@ -160,19 +166,13 @@ FLINT_DLL void flint_set_abort(void (*func)(void));
 #define FLINT_TLS_PREFIX
 #endif
 
-#ifdef _OPENMP
-#define FLINT_PREFER_OMP 1
-#elif HAVE_PTHREAD
-#define FLINT_PREFER_OMP 0
-#else
-#define FLINT_PREFER_OMP 1
-#endif
-
 FLINT_DLL int flint_get_num_threads(void);
 FLINT_DLL void flint_set_num_threads(int num_threads);
+FLINT_DLL void _flint_set_num_workers(int num_workers);
+FLINT_DLL int flint_set_num_workers(int num_workers);
+FLINT_DLL void flint_reset_num_workers(int max_workers);
 FLINT_DLL int flint_set_thread_affinity(int * cpus, slong length);
 FLINT_DLL int flint_restore_thread_affinity();
-FLINT_DLL void flint_parallel_cleanup(void);
 
 FLINT_DLL flint_test_multiplier(void);
 
@@ -434,6 +434,19 @@ FLINT_DLL int flint_sprintf(char * s, const char * str, ...); /* flint version o
 FLINT_DLL int flint_scanf(const char * str, ...); /* flint version of scanf */
 FLINT_DLL int flint_fscanf(FILE * f, const char * str, ...); /* flint version of fscanf */
 FLINT_DLL int flint_sscanf(const char * s, const char * str, ...); /* flint version of sscanf */
+
+FLINT_INLINE slong flint_mul_sizes(slong x, slong y)
+{
+    ulong hi, lo;
+
+    umul_ppmm(hi, lo, (ulong) x, (ulong) y);
+    if (hi != 0 || lo > WORD_MAX)
+    {
+        flint_printf("Exception (flint). Overflow creating size %wd x %wd object.\n", x, y);
+        flint_abort();
+    }
+    return lo;
+}
 
 #include "gmpcompat.h"
 #include "exception.h"

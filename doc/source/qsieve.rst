@@ -64,9 +64,9 @@
 
 .. function:: void qsieve_do_sieving(qs_t qs_inf, unsigned char * sieve)
 
-    First initialize the sieve array to zero, then for each `p \in factor base`, add
-    `log_2(p)` to the locations `soln1 _p + i * p` and `soln2 _p + i * p` for 
-    `i = 0, 1, 2,\dots`, where `soln1 _p` and `soln2 _p` are the sieve offsets calculated
+    First initialize the sieve array to zero, then for each `p \in` ``factor base``, add
+    `\log_2(p)` to the locations `\operatorname{soln1} _p + i * p` and `\operatorname{soln2} _p + i * p` for 
+    `i = 0, 1, 2,\dots`, where `\operatorname{soln1} _p` and `\operatorname{soln2} _p` are the sieve offsets calculated
     for `p`.
 
 .. function:: void qsieve_do_sieving2(qs_t qs_inf)
@@ -127,7 +127,7 @@
 
     Remove duplicate from given list of relations by sorting relations in the list.
 
-.. function:: void qsieve_insert_relation2(qs_t qs_inf, relation_t * rel_list, slong num_relations);
+.. function:: void qsieve_insert_relation2(qs_t qs_inf, relation_t * rel_list, slong num_relations)
 
     Given a list of relations, insert each relation from the list into the matrix for
     further processing. 
@@ -138,9 +138,12 @@
     reading all the relations, removes singleton. Then merge all the possible partial
     to obtain full relations.
 
-.. function:: void qsieve_factor(fmpz_factor_t factors, const fmpz_t n)
+.. function:: void qsieve_factor_threaded(fmpz_factor_t factors, const fmpz_t n, slong thread_limit)
 
     Factor `n` using the quadratic sieve method. It is required that `n` is not a
     prime and not a perfect power. There is no guarantee that the factors found will
-    be prime, or distinct.
+    be prime, or distinct. ``thread_limit`` is an upper limit on the number of
+    threads to use.
 
+
+ 

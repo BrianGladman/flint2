@@ -1156,16 +1156,19 @@ slong _fmpz_mpoly_divides_stripe1(
             if (ds == FLINT_SIGN_EXT(acc_sm[1]) && d1 < lc_abs)
             {
                 ulong qq, rr, nhi, nlo;
+                FLINT_ASSERT(0 < lc_norm && lc_norm < FLINT_BITS);
                 nhi = (d1 << lc_norm) | (d0 >> (FLINT_BITS - lc_norm));
                 nlo = d0 << lc_norm;
                 udiv_qrnnd_preinv(qq, rr, nhi, nlo, lc_n, lc_i);
-                if (rr != WORD(0))
+                if (rr != UWORD(0))
                     goto not_exact_division;
 
-                if ((qq & (WORD(3) << (FLINT_BITS - 2))) == WORD(0))
+                if (qq <= COEFF_MAX)
                 {
                     _fmpz_demote(Qcoeff + Qlen);
-                    Qcoeff[Qlen] = (qq^(ds^lc_sign)) - (ds^lc_sign);
+                    Qcoeff[Qlen] = qq;
+                    if (ds != lc_sign)
+                        Qcoeff[Qlen] = -Qcoeff[Qlen];
                 }
                 else
                 {
@@ -1531,16 +1534,19 @@ slong _fmpz_mpoly_divides_stripe(
             if (ds == FLINT_SIGN_EXT(acc_sm[1]) && d1 < lc_abs)
             {
                 ulong qq, rr, nhi, nlo;
+                FLINT_ASSERT(0 < lc_norm && lc_norm < FLINT_BITS);
                 nhi = (d1 << lc_norm) | (d0 >> (FLINT_BITS - lc_norm));
                 nlo = d0 << lc_norm;
                 udiv_qrnnd_preinv(qq, rr, nhi, nlo, lc_n, lc_i);
-                if (rr != WORD(0))
+                if (rr != UWORD(0))
                     goto not_exact_division;
 
-                if ((qq & (WORD(3) << (FLINT_BITS - 2))) == WORD(0))
+                if (qq <= COEFF_MAX)
                 {
                     _fmpz_demote(Qcoeff + Qlen);
-                    Qcoeff[Qlen] = (qq^(ds^lc_sign)) - (ds^lc_sign);
+                    Qcoeff[Qlen] = qq;
+                    if (ds != lc_sign)
+                        Qcoeff[Qlen] = -Qcoeff[Qlen];
                 }
                 else
                 {
@@ -2096,7 +2102,8 @@ int _fmpz_mpoly_divides_heap_threaded(
     for (i = 0; i + 1 < S->length; i++)
     {
         divides_heap_chunk_struct * L;
-        L = (divides_heap_chunk_struct *) malloc(sizeof(divides_heap_chunk_struct));
+        L = (divides_heap_chunk_struct *) flint_malloc(
+                                            sizeof(divides_heap_chunk_struct));
         L->ma = 0;
         L->mq = 0;
         L->emax = S->exps + N*i;
@@ -2167,7 +2174,7 @@ int _fmpz_mpoly_divides_heap_threaded(
     for (i = 0; i < num_handles; i++)
     {
         (worker_args + i)->H = H;
-        thread_pool_wake(global_thread_pool, handles[i],
+        thread_pool_wake(global_thread_pool, handles[i], 0,
                                                  worker_loop, worker_args + i);
     }
     (worker_args + num_handles)->H = H;

@@ -30,7 +30,7 @@ Element access
 
 .. function:: void fmpz_mod_mat_set_entry(fmpz_mod_mat_t mat, slong i, slong j, const fmpz_t val)
 
-    Set the entry at row ``i`` and column ``j` of ``mat`` to ``val``.
+    Set the entry at row ``i`` and column ``j`` of ``mat`` to ``val``.
 
 
 Memory management
@@ -56,7 +56,8 @@ Basic manipulation                                                              
 
 
 .. function:: slong fmpz_mod_mat_nrows(const fmpz_mod_mat_t mat)
-                                                                                              Return the number of rows of ``mat``.
+
+   Return the number of rows of ``mat``.
 
 .. function:: slong fmpz_mod_mat_ncols(const fmpz_mod_mat_t mat)
 
@@ -121,7 +122,7 @@ Windows and concatenation
 
 .. function:: void fmpz_mod_mat_concat_horizontal(fmpz_mod_mat_t res, const fmpz_mod_mat_t mat1, const fmpz_mod_mat_t mat2)
 
-    Sets ``res`` to vertical concatenation of (``mat1``, ``mat2``)                            in that order. Matrix dimensions : ``mat1`` : `m \times n`,                               ``mat2`` : `k \times n`, ``res`` : ``(m + k) \times n`.
+    Sets ``res`` to vertical concatenation of (``mat1``, ``mat2``)                            in that order. Matrix dimensions : ``mat1`` : `m \times n`,                               ``mat2`` : `k \times n`, ``res`` : `(m + k) \times n`.
 
 .. function:: void fmpz_mod_mat_concat_vertical(fmpz_mod_mat_t res, const fmpz_mod_mat_t mat1, const fmpz_mod_mat_t mat2)
 
@@ -208,7 +209,20 @@ Matrix multiplication
     Set ``C`` to ``A\times B``. The number of rows of ``B`` must match the
     number of columns of ``A``.
 
-.. function:: fmpz_mod_mat_sqr(fmpz_mod_mat_t B, const fmpz_mod_mat_t A)
+.. function:: void _fmpz_mod_mat_mul_classical_threaded_pool(fmpz_mod_mat_t D, const fmpz_mod_mat_t C, const fmpz_mod_mat_t A, const fmpz_mod_mat_t B, int op, thread_pool_handle * threads, slong num_threads)
+
+    Set ``D`` to ``A\times B + op*C`` where ``op`` is ``+1``, ``-1`` or ``0``.
+
+.. function:: void _fmpz_mod_mat_mul_classical_threaded(fmpz_mod_mat_t D, const fmpz_mod_mat_t C, const fmpz_mod_mat_t A, const fmpz_mod_mat_t B, int op, slong thread_limit)
+
+    Set ``D`` to ``A\times B + op*C`` where ``op`` is ``+1``, ``-1`` or ``0``.
+
+.. function:: void fmpz_mod_mat_mul_classical_threaded(fmpz_mod_mat_t C, const fmpz_mod_mat_t A, const fmpz_mod_mat_t B, slong thread_limit)
+
+    Set ``C`` to ``A\times B``. The number of rows of ``B`` must match the
+    number of columns of ``A``.
+
+.. function:: void fmpz_mod_mat_sqr(fmpz_mod_mat_t B, const fmpz_mod_mat_t A)
 
     Set ``B`` to ``A^2``. The matrix ``A`` must be square.
 
@@ -242,15 +256,15 @@ Strong echelon form and Howell form
 
     Transforms `mat` into the strong echelon form of `mat`. The Howell form and the
     strong echelon form are equal up to permutation of the rows, see
-    \cite{FieHof2014} for a definition of the strong echelon form and the
+    [FieHof2014]_ for a definition of the strong echelon form and the
     algorithm used here.
 
     `mat` must have at least as many rows as columns.
 
-.. function:: slong fmpz_mat_howell_form_mod(fmpz_mod__mat_t mat)
+.. function:: slong fmpz_mod_mat_howell_form_mod(fmpz_mod_mat_t mat)
 
     Transforms `mat` into the Howell form of `mat`.  For a definition of the
-    Howell form see \cite{StoMul1998}. The Howell form is computed by first
+    Howell form see [StoMul1998]_. The Howell form is computed by first
     putting `mat` into strong echelon form and then ordering the rows.
 
     `mat` must have at least as many rows as columns.

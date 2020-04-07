@@ -16,6 +16,7 @@
 #include "mpn_extras.h"
 #include "ulong_extras.h"
 #include "qsieve.h"
+#include "thread_support.h"
 
 void
 fmpz_factor_no_trial(fmpz_factor_t factor, const fmpz_t n)
@@ -45,26 +46,58 @@ fmpz_factor_no_trial(fmpz_factor_t factor, const fmpz_t n)
          fmpz_factor_clear(fac);
       } else
       {
-         fmpz_factor_t fac, fac2;
+         fmpz_factor_t fac, fac2, fac3;
+	 slong bits = fmpz_sizeinbase(n, 2);
+         int done;
 
-         fmpz_factor_init(fac);
+         fmpz_factor_init(fac3);
 
-         /* insert call to ecm here */
+	 done = fmpz_factor_smooth(fac3, n, FLINT_MAX(bits/3 - 17, 2), 1);
 
-         qsieve_factor(fac, n);
+         if (!done)
+	 {
+            fmpz_t n2;
+	    slong exp2;
 
-         for (i = 0; i < fac->num; i++)
-         {
-            fmpz_factor_init(fac2);
+	    fmpz_init(n2);
+	    
+	    /* take out cofactor and factor it */
+	    fmpz_set(n2, fac3->p + fac3->num - 1);
+	    exp = fac3->exp[fac3->num - 1];
+	    fac3->exp[fac3->num - 1] = 0;
+	    fac3->num--;
 
-            fmpz_factor_no_trial(fac2, fac->p + i);
+	    fmpz_factor_init(fac);
 
-            _fmpz_factor_concat(factor, fac2, fac->exp[i]);
+	    /* qsieve can't factor perfect powers */
+	    exp2 = fmpz_is_perfect_power(root, n2);
+
+	    if (exp2)
+                _fmpz_factor_append(fac, root, exp2);
+	    else
+	        qsieve_factor_threaded(fac, n2, FLINT_DEFAULT_THREAD_LIMIT);
+
+            for (i = 0; i < fac->num; i++)
+            {
+	       fmpz_factor_init(fac2);
+
+               fmpz_factor_no_trial(fac2, fac->p + i);
+
+               _fmpz_factor_concat(fac3, fac2, exp*fac->exp[i]);
  
-            fmpz_factor_clear(fac2);
-         }
+               fmpz_factor_clear(fac2);
+            }
 
-         fmpz_factor_clear(fac);
+            fmpz_factor_clear(fac);
+
+	    fmpz_clear(n2);
+	 }
+
+	 _fmpz_factor_concat(factor, fac3, 1);
+
+	 fmpz_factor_clear(fac3);
       }
+
+      fmpz_clear(root);
    }
 }

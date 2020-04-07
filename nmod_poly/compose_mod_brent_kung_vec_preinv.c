@@ -1,6 +1,7 @@
 /*
     Copyright (C) 2011 Fredrik Johansson
     Copyright (C) 2014 Martin Lee
+    Copyright (C) 2020 William Hart
 
     This file is part of FLINT.
 
@@ -21,6 +22,7 @@ void
 _nmod_poly_compose_mod_brent_kung_vec_preinv(nmod_poly_struct * res,
                                              const nmod_poly_struct * polys,
                                              slong lenpolys, slong l,
+                                             const mp_srcptr g, slong glen,
                                              mp_srcptr poly, slong len,
                                              mp_srcptr polyinv, slong leninv,
                                              nmod_t mod)
@@ -53,30 +55,44 @@ _nmod_poly_compose_mod_brent_kung_vec_preinv(nmod_poly_struct * res,
     }
 
     /* Set rows of A to powers of last element of polys */
-    A->rows[0][0] = UWORD(1);
-    _nmod_vec_set(A->rows[1], (polys + lenpolys - 1)->coeffs,
-                  (polys + lenpolys - 1)->length);
-    flint_mpn_zero(A->rows[1] + (polys + lenpolys - 1)->length,
-                   n - (polys + lenpolys - 1)->length);
-    for (i = 2; i < m; i++)
-        _nmod_poly_mulmod_preinv(A->rows[i], A->rows[i - 1], n, A->rows[1],
-                                 n, poly, len, polyinv, leninv, mod);
+    _nmod_poly_powers_mod_preinv_naive(A->rows, g, glen,
+	                 m, poly, len, polyinv, leninv, mod);
 
     nmod_mat_mul(C, B, A);
 
     /* Evaluate block composition using the Horner scheme */
-    _nmod_poly_mulmod_preinv(h, A->rows[m - 1], n, A->rows[1], n, poly,
-                             len, polyinv, leninv, mod);
-
+    if (n == 1)
+    {
+        h[0] = n_mulmod2_preinv(A->rows[m - 1][0],
+                                               A->rows[1][0], mod.n, mod.ninv);
+    } else
+    {
+        _nmod_poly_mulmod_preinv(h, A->rows[m - 1], n, A->rows[1], n, poly,
+                                                    len, polyinv, leninv, mod);
+    }
+    
     for (j = 0; j < len2; j++)
     {
         _nmod_vec_set((res + j)->coeffs, C->rows[(j + 1) * k - 1], n);
-        for (i = 2; i <= k; i++)
+
+        if (n == 1)
         {
-            _nmod_poly_mulmod_preinv(t, (res + j)->coeffs, n, h, n, poly, len,
-                                     polyinv, leninv, mod);
-            _nmod_poly_add((res + j)->coeffs, t, n, C->rows[(j + 1) * k - i], n,
-                           mod);
+            for (i = 2; i <= k; i++)
+            {
+                t[0] = n_mulmod2_preinv(res[j].coeffs[0],
+                                                        h[0], mod.n, mod.ninv);
+                res[j].coeffs[0] = n_addmod(t[0],
+                                           C->rows[(j + 1) * k - i][0], mod.n);
+            }
+        } else
+        {
+            for (i = 2; i <= k; i++)
+            {
+                _nmod_poly_mulmod_preinv(t, res[j].coeffs,
+                              n, h, n, poly, len, polyinv, leninv, mod);
+                _nmod_poly_add(res[j].coeffs, t, n,
+                                      C->rows[(j + 1) * k - i], n, mod);
+            }
         }
     }
 
@@ -92,6 +108,7 @@ void
 nmod_poly_compose_mod_brent_kung_vec_preinv(nmod_poly_struct * res,
                                             const nmod_poly_struct * polys,
                                             slong len1, slong n,
+                                            const nmod_poly_t g,
                                             const nmod_poly_t poly,
                                             const nmod_poly_t polyinv)
 {
@@ -125,30 +142,27 @@ nmod_poly_compose_mod_brent_kung_vec_preinv(nmod_poly_struct * res,
     if (len2 == 1)
     {
         for (i = 0; i < n; i++)
-        {
-            nmod_poly_init_preinv(res + i, poly->mod.n, poly->mod.ninv);
             nmod_poly_zero(res + i);
-        }
-        return;
+
+	return;
     }
 
     if (len2 == 2)
     {
         for (i = 0; i < n; i++)
-        {
-            nmod_poly_init_preinv(res + i, poly->mod.n, poly->mod.ninv);
             nmod_poly_set(res + i, polys + i);
-        }
-        return;
+
+	return;
     }
 
     for (i = 0; i < n; i++)
     {
-        nmod_poly_init2_preinv(res + i, poly->mod.n, poly->mod.ninv, len2 - 1);
-        _nmod_poly_set_length(res + i, len2 - 1);
+        nmod_poly_fit_length(res + i, len2 - 1);
+	_nmod_poly_set_length(res + i, len2 - 1);
     }
 
     _nmod_poly_compose_mod_brent_kung_vec_preinv(res, polys, len1, n,
+                                                 g->coeffs, g->length,
                                                  poly->coeffs, len2,
                                                  polyinv->coeffs,
                                                  polyinv->length, poly->mod);

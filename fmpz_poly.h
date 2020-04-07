@@ -173,6 +173,14 @@ FLINT_DLL void _fmpz_poly_reverse(fmpz * res, const fmpz * poly, slong len, slon
 
 FLINT_DLL void fmpz_poly_reverse(fmpz_poly_t res, const fmpz_poly_t poly, slong n);
 
+FLINT_DLL ulong fmpz_poly_deflation(const fmpz_poly_t input);
+
+FLINT_DLL void fmpz_poly_deflate(fmpz_poly_t result, const fmpz_poly_t input,
+                                                              ulong deflation);
+
+FLINT_DLL void fmpz_poly_inflate(fmpz_poly_t result, const fmpz_poly_t input,
+                                                              ulong inflation);
+
 FMPZ_POLY_INLINE
 void fmpz_poly_truncate(fmpz_poly_t poly, slong newlen)
 {
@@ -945,6 +953,9 @@ FLINT_DLL double _fmpz_poly_evaluate_horner_d_2exp(slong * exp,
 FLINT_DLL double fmpz_poly_evaluate_horner_d_2exp(slong * exp, 
                                              const fmpz_poly_t poly, double d);
 
+FLINT_DLL double fmpz_poly_evaluate_horner_d_2exp2(slong * exp,
+		     const fmpz_poly_t poly, double d, slong dexp, ulong prec);
+
 /*  Composition  *************************************************************/
 
 FLINT_DLL void _fmpz_poly_compose_horner(fmpz * res, const fmpz * poly1, slong len1, 
@@ -977,20 +988,15 @@ FLINT_DLL void _fmpz_poly_taylor_shift_divconquer(fmpz * poly, const fmpz_t c, s
 FLINT_DLL void fmpz_poly_taylor_shift_divconquer(fmpz_poly_t g, const fmpz_poly_t f,
     const fmpz_t c);
 
-FLINT_DLL void _fmpz_poly_taylor_shift_multi_mod_threaded(fmpz * poly, const fmpz_t c, slong n);
-
-FLINT_DLL void _fmpz_poly_taylor_shift_multi_mod_omp(fmpz * poly, const fmpz_t c, slong n);
+FLINT_DLL void _fmpz_poly_taylor_shift_multi_mod_threaded(fmpz * poly, const fmpz_t c, slong n, slong thread_limit);
 
 FMPZ_POLY_INLINE
 void fmpz_poly_taylor_shift_multi_mod(fmpz_poly_t g, const fmpz_poly_t f, const fmpz_t c)
 {
     if (f != g)
         fmpz_poly_set(g, f);
-#if FLINT_PREFER_OMP
-    _fmpz_poly_taylor_shift_multi_mod_omp(g->coeffs, c, g->length);
-#else
-    _fmpz_poly_taylor_shift_multi_mod_threaded(g->coeffs, c, g->length);
-#endif
+    _fmpz_poly_taylor_shift_multi_mod_threaded(g->coeffs, c,
+		                        g->length, FLINT_DEFAULT_THREAD_LIMIT);
 }
 
 FLINT_DLL void _fmpz_poly_taylor_shift(fmpz * poly, const fmpz_t c, slong n);
