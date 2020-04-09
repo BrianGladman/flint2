@@ -6,6 +6,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lib_flint", "lib_flint\lib_
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dll_flint", "dll_flint\dll_flint.vcxproj", "{41C2286F-4C78-4BB1-B70D-BE8C3B82AE78}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "flint_config", "..\build.vc\flint_config\flint_config.pyproj", "{47FC571F-818D-402A-AD42-510E25F5A305}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "build_tests", "..\build.vc\build_tests\build_tests.pyproj", "{CDBCE778-AFF7-4897-B08C-78A949438898}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +32,18 @@ Global
 		{41C2286F-4C78-4BB1-B70D-BE8C3B82AE78}.Release|Any CPU.ActiveCfg = Release|Win32
 		{41C2286F-4C78-4BB1-B70D-BE8C3B82AE78}.Release|Win32.ActiveCfg = Release|Win32
 		{41C2286F-4C78-4BB1-B70D-BE8C3B82AE78}.Release|x64.ActiveCfg = Release|x64
+		{47FC571F-818D-402A-AD42-510E25F5A305}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47FC571F-818D-402A-AD42-510E25F5A305}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{47FC571F-818D-402A-AD42-510E25F5A305}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{47FC571F-818D-402A-AD42-510E25F5A305}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47FC571F-818D-402A-AD42-510E25F5A305}.Release|Win32.ActiveCfg = Release|Any CPU
+		{47FC571F-818D-402A-AD42-510E25F5A305}.Release|x64.ActiveCfg = Release|Any CPU
+		{CDBCE778-AFF7-4897-B08C-78A949438898}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDBCE778-AFF7-4897-B08C-78A949438898}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{CDBCE778-AFF7-4897-B08C-78A949438898}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CDBCE778-AFF7-4897-B08C-78A949438898}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDBCE778-AFF7-4897-B08C-78A949438898}.Release|Win32.ActiveCfg = Release|Any CPU
+		{CDBCE778-AFF7-4897-B08C-78A949438898}.Release|x64.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
