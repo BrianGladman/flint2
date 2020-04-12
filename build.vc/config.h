@@ -339,12 +339,12 @@ MA 02111-1307, USA. */
 #define MSC_C_(x) #x  
 #define MSC_CC_(x)  MSC_C_(x)
 #define MSC_VERSION "Microsoft C++ (Version " MSC_CC_(_MSC_FULL_VER) ")"
+#endif
 
-#if defined (MSC_BUILD_DLL)
+#if defined (FLINT_BUILD_DLL)
 #define FLINT_DLL __declspec(dllexport)
 #elif defined(MSC_USE_DLL)
 #define FLINT_DLL __declspec(dllimport)
 #else
 #define FLINT_DLL
-#endif
 #endif

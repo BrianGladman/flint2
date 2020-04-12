@@ -124,7 +124,7 @@ def compiler_options(plat, proj_type, is_debug, inc_dirs, flib_type, outf):
     s1 = 'DEBUG;WIN32;_CONSOLE;PTW32_STATIC_LIB;'
     s2 = ''
   if proj_type == Project_Type.DLL:
-    s1 = 'DEBUG;WIN32;HAVE_CONFIG_H;MSC_BUILD_DLL;PTW32_BUILD;'
+    s1 = 'DEBUG;WIN32;HAVE_CONFIG_H;FLINT_BUILD_DLL;PTW32_BUILD;'
     s2 = 'DLL'
   elif proj_type == Project_Type.LIB:
     s1 = 'DEBUG;WIN32;_LIB;HAVE_CONFIG_H;PTW32_STATIC_LIB;'
