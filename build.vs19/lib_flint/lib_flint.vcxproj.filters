@@ -95,9 +95,6 @@
     <ClInclude Include="..\..\build.vc\unistd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\config.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\d_mat.h">
       <Filter>Header Files</Filter>
     </ClInclude>

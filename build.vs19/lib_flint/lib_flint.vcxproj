@@ -173,7 +173,6 @@
     <ClInclude Include="..\..\build.vc\cpimport.h" />
     <ClInclude Include="..\..\build.vc\getopt.h" />
     <ClInclude Include="..\..\build.vc\unistd.h" />
-    <ClInclude Include="..\..\config.h" />
     <ClInclude Include="..\..\d_mat.h" />
     <ClInclude Include="..\..\d_vec.h" />
     <ClInclude Include="..\..\double_extras.h" />
