@@ -95,6 +95,9 @@
     <ClInclude Include="..\..\build.vc\unistd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\d_mat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1022,6 +1025,12 @@
       <Filter>Source Files\fmpq</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpq\reconstruct_fmpz.c">
+      <Filter>Source Files\fmpq</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpq\reconstruct_fmpz_2.c">
+      <Filter>Source Files\fmpq</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpq\reconstruct_fmpz_2_naive.c">
       <Filter>Source Files\fmpq</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpq\set_cfrac.c">
@@ -4037,6 +4046,9 @@
       <Filter>Source Files\fmpz_poly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_poly\inv_series_newton.c">
+      <Filter>Source Files\fmpz_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_poly\is_cyclotomic.c">
       <Filter>Source Files\fmpz_poly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_poly\is_squarefree.c">
@@ -7388,6 +7400,9 @@
       <Filter>Source Files\mpn_extras</Filter>
     </ClCompile>
     <ClCompile Include="..\..\mpn_extras\factor_trial_tree.c">
+      <Filter>Source Files\mpn_extras</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\mpn_extras\fmms1.c">
       <Filter>Source Files\mpn_extras</Filter>
     </ClCompile>
     <ClCompile Include="..\..\mpn_extras\gcd_full.c">

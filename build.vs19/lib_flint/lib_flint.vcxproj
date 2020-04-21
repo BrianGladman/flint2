@@ -173,6 +173,7 @@
     <ClInclude Include="..\..\build.vc\cpimport.h" />
     <ClInclude Include="..\..\build.vc\getopt.h" />
     <ClInclude Include="..\..\build.vc\unistd.h" />
+    <ClInclude Include="..\..\config.h" />
     <ClInclude Include="..\..\d_mat.h" />
     <ClInclude Include="..\..\d_vec.h" />
     <ClInclude Include="..\..\double_extras.h" />
@@ -484,6 +485,8 @@
     <ClCompile Include="..\..\fmpq\randbits.c" />
     <ClCompile Include="..\..\fmpq\randtest.c" />
     <ClCompile Include="..\..\fmpq\reconstruct_fmpz.c" />
+    <ClCompile Include="..\..\fmpq\reconstruct_fmpz_2.c" />
+    <ClCompile Include="..\..\fmpq\reconstruct_fmpz_2_naive.c" />
     <ClCompile Include="..\..\fmpq\set_cfrac.c" />
     <ClCompile Include="..\..\fmpq\set_fmpz_frac.c" />
     <ClCompile Include="..\..\fmpq\set_si.c" />
@@ -1489,6 +1492,7 @@
     <ClCompile Include="..\..\fmpz_poly\inv_series.c" />
     <ClCompile Include="..\..\fmpz_poly\inv_series_basecase.c" />
     <ClCompile Include="..\..\fmpz_poly\inv_series_newton.c" />
+    <ClCompile Include="..\..\fmpz_poly\is_cyclotomic.c" />
     <ClCompile Include="..\..\fmpz_poly\is_squarefree.c" />
     <ClCompile Include="..\..\fmpz_poly\lcm.c" />
     <ClCompile Include="..\..\fmpz_poly\legendre_pt.c" />
@@ -2616,6 +2620,7 @@
     <ClCompile Include="..\..\mpn_extras\divrem_preinvn.c" />
     <ClCompile Include="..\..\mpn_extras\factor_trial.c" />
     <ClCompile Include="..\..\mpn_extras\factor_trial_tree.c" />
+    <ClCompile Include="..\..\mpn_extras\fmms1.c" />
     <ClCompile Include="..\..\mpn_extras\gcd_full.c" />
     <ClCompile Include="..\..\mpn_extras\mod_preinvn.c" />
     <ClCompile Include="..\..\mpn_extras\mulmod_2expp1_basecase.c" />
