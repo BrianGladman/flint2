@@ -104,6 +104,18 @@ main(void)
             abort();
         }
 
+        if (n == m)
+        {
+            TEMPLATE(T, mat_mul) (C, A, B, ctx);
+	    TEMPLATE(T, mat_mul) (A, A, B, ctx);
+
+            if (!TEMPLATE(T, mat_equal) (A, C, ctx))
+            {
+                flint_printf("FAIL: aliasing failed\n");
+                flint_abort();
+            }
+        }
+
         TEMPLATE(T, mat_clear) (A, ctx);
         TEMPLATE(T, mat_clear) (B, ctx);
         TEMPLATE(T, mat_clear) (C, ctx);
