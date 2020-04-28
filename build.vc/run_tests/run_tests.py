@@ -10,6 +10,10 @@ import subprocess
 import code
 import sys
 import re
+from time import sleep
+
+# timeout for running each test
+test_time_limit = 60
 
 vs_version = 19
 if len(sys.argv) > 1:
@@ -59,9 +63,10 @@ for root, dirs, files in walk(exe_dir, topdown=False):
 build_fail = 0
 run_ok = 0
 run_fail = 0
+timed_out_fail = 0
 print(len(exe))
 
-fails = []
+fails, timed_out = [], []
 for ef in exe:
   fdn, fx = splitext(ef)
   fd, fn = split(fdn)
@@ -71,14 +76,24 @@ for ef in exe:
     prc = subprocess.Popen( ef, stdout = subprocess.PIPE,
       stderr = subprocess.STDOUT, creationflags = 0x08000000 )
   except Exception as str:
-    print(fd, ': ERROR (', str, ')')
+    print(fd, ' ... ERROR (', str, ')')
     run_fail += 1
     continue
-  output = prc.communicate()[0]
+  for _ in range(test_time_limit):
+    sleep(1)
+    if prc.poll() is not None:
+      output = prc.communicate()[0]
+      break
+  else:
+    print(fd + '... ERROR (test timed out)')
+    prc.kill()
+    timed_out_fail += 1
+    timed_out += [fd]
+    continue
   if output:
     op = output.decode().replace('\n', '')
   if prc.returncode:
-    t = fd + ' ' + 'ERROR {}'.format(prc.returncode)
+    t = fd + ' ...ERROR {}'.format(prc.returncode)
     print(t, end=' ')
     fails += [t + ' ' + op]
     run_fail += 1
@@ -87,9 +102,9 @@ for ef in exe:
   if output:
     op = output.decode().replace('\n', '')
     if 'PASS' in op:
-      print(fd + '... PASS')
+      print(fd + ' ... PASS')
     elif 'SKIPPED' in op:
-      print(fd + '... SKIPPED')
+      print(fd + ' ... SKIPPED')
     else:
       print('output from ' + op)
   else:
@@ -104,8 +119,14 @@ if run_ok > 0:
   print("\t{0} ran correctly".format(run_ok))
 if run_fail > 0:
   print("\t{0} failed".format(run_fail))
+if timed_out_fail > 0:
+  print("\t{0} timed out".format(timed_out_fail))
 
+print('Failed:')
 for t in fails:
+  print(t)
+print('Timed out:')
+for t in timed_out:
   print(t)
 
 if len(sys.argv) == 1:
