@@ -499,13 +499,8 @@ FLINT_DLL void _fmpz_mod_poly_powers_mod_preinv_threaded_pool(fmpz ** res,
                           const fmpz * ginv, slong ginvlen, const fmpz_t p,
 	                      thread_pool_handle * threads, slong num_threads);
 
-FLINT_DLL void _fmpz_mod_poly_powers_mod_preinv_threaded(fmpz ** res,
-          const fmpz * f, slong flen, slong n, const fmpz * g, slong glen,
-         const fmpz * ginv, slong ginvlen, const fmpz_t p, slong thread_limit);
- 
-FLINT_DLL void fmpz_mod_poly_powers_mod_bsgs_threaded(fmpz_mod_poly_struct * res,
-                            const fmpz_mod_poly_t f, slong n,
-                                  const fmpz_mod_poly_t g, slong thread_limit);
+FLINT_DLL void fmpz_mod_poly_powers_mod_bsgs(fmpz_mod_poly_struct * res,
+                    const fmpz_mod_poly_t f, slong n, const fmpz_mod_poly_t g);
 
 FLINT_DLL void fmpz_mod_poly_frobenius_powers_2exp_precomp(fmpz_mod_poly_frobenius_powers_2exp_t pow, 
                  const fmpz_mod_poly_t f, const fmpz_mod_poly_t finv, ulong m);
@@ -1114,7 +1109,7 @@ FLINT_DLL void
 fmpz_mod_poly_compose_mod_brent_kung_vec_preinv_threaded(fmpz_mod_poly_struct * res,
                     const fmpz_mod_poly_struct * polys, slong len1, slong n,
                     const fmpz_mod_poly_t g, const fmpz_mod_poly_t poly,
-                            const fmpz_mod_poly_t polyinv, slong thread_limit);
+                                                const fmpz_mod_poly_t polyinv);
  
 /*  Radix conversion *********************************************************/
 

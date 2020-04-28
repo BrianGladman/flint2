@@ -126,6 +126,18 @@ Comparison
 
     Returns negative if `x < y`, zero if `x = y`, and positive if `x > y`.
 
+.. function:: int fmpq_cmp_si(const fmpq_t x, slong y)
+
+     Returns negative if `x < y`, zero if `x = y`, and positive if `x > y`.
+
+.. function:: int fmpq_equal_ui(const fmpq_t x, ulong y)
+
+    Returns `1` if `x = y`, otherwise returns `0`.
+
+.. function:: int fmpq_equal_si(const fmpq_t x, slong y)
+
+    Returns `1` if `x = y`, otherwise returns `0`.
+
 .. function:: void fmpq_height(fmpz_t height, const fmpq_t x)
 
     Sets ``height`` to the height of `x`, defined as the larger of
@@ -156,6 +168,15 @@ Conversion
     Sets ``res`` to the canonical form of the fraction ``p / q``.
 
 .. function:: void _fmpq_set_si(fmpz_t rnum, fmpz_t rden, slong p, ulong q)
+
+    Sets ``(rnum, rden)`` to the canonical form of the fraction
+    ``p / q``. ``rnum`` and ``rden`` may not be aliased.
+
+.. function:: void fmpq_set_ui(fmpq_t res, ulong p, ulong q)
+
+    Sets ``res`` to the canonical form of the fraction ``p / q``.
+
+.. function:: void _fmpq_set_ui(fmpz_t rnum, fmpz_t rden, ulong p, ulong q)
 
     Sets ``(rnum, rden)`` to the canonical form of the fraction
     ``p / q``. ``rnum`` and ``rden`` may not be aliased.
@@ -377,7 +398,11 @@ Arithmetic
 .. function:: void _fmpq_add_si(fmpz_t rnum, fmpz_t rden, const fmpz_t p, const fmpz_t q, slong r)
 
 .. function:: void _fmpq_sub_si(fmpz_t rnum, fmpz_t rden, const fmpz_t p, const fmpz_t q, slong r)
-    
+
+.. function:: void _fmpq_add_ui(fmpz_t rnum, fmpz_t rden, const fmpz_t p, const fmpz_t q, ulong r)
+
+.. function:: void _fmpq_sub_ui(fmpz_t rnum, fmpz_t rden, const fmpz_t p, const fmpz_t q, ulong r)
+
 .. function:: void _fmpq_add_fmpz(fmpz_t rnum, fmpz_t rden, const fmpz_t p, const fmpz_t q, const fmpz_t r)
 
 .. function:: void _fmpq_sub_fmpz(fmpz_t rnum, fmpz_t rden, const fmpz_t p, const fmpz_t q, const fmpz_t r)
@@ -390,12 +415,32 @@ Arithmetic
 
 .. function:: void fmpq_sub_si(fmpq_t res, const fmpq_t op1, slong c)
 
+.. function:: void fmpq_add_ui(fmpq_t res, const fmpq_t op1, ulong c)
+
+.. function:: void fmpq_sub_ui(fmpq_t res, const fmpq_t op1, ulong c)
+                                                                               
 .. function:: void fmpq_add_fmpz(fmpq_t res, const fmpq_t op1, const fmpz_t c);
 
 .. function:: void fmpq_sub_fmpz(fmpq_t res, const fmpq_t op1, const fmpz_t c);
 
    Sets ``res`` to the sum or difference respectively, of the fraction 
    ``op1`` and the integer `c`.
+
+.. function:: void _fmpq_mul_si(fmpz_t rnum, fmpz_t rden, const fmpz_t p, const fmpz_t q, slong r)
+
+   Sets ``(rnum, rden)`` to the product of ``(p, q)`` and the integer `r`.
+
+.. function:: void fmpq_mul_si(fmpq_t res, const fmpq_t op1, slong c)
+
+   Sets ``res`` to the product of ``op1`` and the integer `c`.
+
+.. function:: void _fmpq_mul_ui(fmpz_t rnum, fmpz_t rden, const fmpz_t p, const fmpz_t q, ulong r)                                                            
+
+   Sets ``(rnum, rden)`` to the product of ``(p, q)`` and the integer `r`.     
+
+.. function:: void fmpq_mul_ui(fmpq_t res, const fmpq_t op1, ulong c)
+
+   Sets ``res`` to the product of ``op1`` and the integer `c`.
 
 .. function:: void fmpq_addmul(fmpq_t res, const fmpq_t op1, const fmpq_t op2)
 

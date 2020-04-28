@@ -21,7 +21,7 @@ main(void)
     int i;
     FLINT_TEST_INIT(state);
     
-    flint_printf("cmp....");
+    flint_printf("cmp_ui....");
     fflush(stdout);
 
     for (i = 0; i < 10000; i++)

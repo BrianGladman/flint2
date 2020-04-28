@@ -673,11 +673,10 @@ FLINT_DLL void _nmod_poly_powers_mod_preinv_threaded_pool(mp_ptr * res,
 FLINT_DLL void
 _nmod_poly_powers_mod_preinv_threaded(mp_ptr * res, mp_srcptr f,
 		                 slong flen, slong n, mp_srcptr g, slong glen,
-				 mp_srcptr ginv, slong ginvlen,
-				         const nmod_t mod, slong thread_limit);
+                              mp_srcptr ginv, slong ginvlen, const nmod_t mod);
 
-FLINT_DLL void nmod_poly_powers_mod_bsgs_threaded(nmod_poly_struct * res,
-        const nmod_poly_t f, slong n, const nmod_poly_t g, slong thread_limit);
+FLINT_DLL void nmod_poly_powers_mod_bsgs(nmod_poly_struct * res,
+                            const nmod_poly_t f, slong n, const nmod_poly_t g);
 
 /* Division  *****************************************************************/
 
@@ -1031,8 +1030,7 @@ FLINT_DLL void nmod_poly_compose_mod_brent_kung_vec_preinv_threaded(nmod_poly_st
                                             slong len1, slong n,
                                             const nmod_poly_t g,
 					    const nmod_poly_t poly,
-                                            const nmod_poly_t polyinv,
-					    slong thread_limit);
+                                            const nmod_poly_t polyinv);
 
 FLINT_DLL void _nmod_poly_compose_mod_horner(mp_ptr res,
     mp_srcptr f, slong lenf, mp_srcptr g, mp_srcptr h, slong lenh, nmod_t mod);
