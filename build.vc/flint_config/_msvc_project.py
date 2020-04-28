@@ -172,6 +172,8 @@ def vcx_pre_build(outf):
   f1 = r'''    <PreBuildEvent>
         <Command>..\..\build.vc\out_copy_rename.bat ..\..\build.vc\cpimport.h ..\..\qadic\ cpimport.h
         </Command>
+        <Command>..\..\build.vc\out_copy_rename.bat ..\..\build.vc\config.h ..\..\ flint-config.h
+        </Command>
     </PreBuildEvent>
 '''
 

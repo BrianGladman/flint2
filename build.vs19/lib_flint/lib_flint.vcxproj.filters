@@ -116,6 +116,9 @@
     <ClInclude Include="..\..\fft_tuning.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\flint-config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\flint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -337,7 +340,7 @@
     <ClCompile Include="..\..\aprcl\is_mul_coprime.c">
       <Filter>Source Files\aprcl</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\aprcl\is_prime_aprcl.c">
+    <ClCompile Include="..\..\aprcl\is_prime.c">
       <Filter>Source Files\aprcl</Filter>
     </ClCompile>
     <ClCompile Include="..\..\aprcl\is_prime_divisors_in_residue.c">
@@ -889,6 +892,9 @@
     <ClCompile Include="..\..\fmpq\add_si.c">
       <Filter>Source Files\fmpq</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpq\add_ui.c">
+      <Filter>Source Files\fmpq</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpq\addmul.c">
       <Filter>Source Files\fmpq</Filter>
     </ClCompile>
@@ -908,6 +914,9 @@
       <Filter>Source Files\fmpq</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpq\cmp_fmpz.c">
+      <Filter>Source Files\fmpq</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpq\cmp_si.c">
       <Filter>Source Files\fmpq</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpq\cmp_ui.c">
@@ -1000,6 +1009,12 @@
     <ClCompile Include="..\..\fmpq\mul_fmpz.c">
       <Filter>Source Files\fmpq</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpq\mul_si.c">
+      <Filter>Source Files\fmpq</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpq\mul_ui.c">
+      <Filter>Source Files\fmpq</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpq\next_calkin_wilf.c">
       <Filter>Source Files\fmpq</Filter>
     </ClCompile>
@@ -1045,6 +1060,9 @@
     <ClCompile Include="..\..\fmpq\set_str.c">
       <Filter>Source Files\fmpq</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpq\set_ui.c">
+      <Filter>Source Files\fmpq</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpq\simplest_between.c">
       <Filter>Source Files\fmpq</Filter>
     </ClCompile>
@@ -1055,6 +1073,9 @@
       <Filter>Source Files\fmpq</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpq\sub_si.c">
+      <Filter>Source Files\fmpq</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpq\sub_ui.c">
       <Filter>Source Files\fmpq</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpq\submul.c">
@@ -2089,9 +2110,6 @@
     <ClCompile Include="..\..\fmpz\mod_ui.c">
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\fmpz\mods.c">
-      <Filter>Source Files\fmpz</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\fmpz\moebius_mu.c">
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
@@ -2234,6 +2252,9 @@
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz\sizeinbase.c">
+      <Filter>Source Files\fmpz</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz\smod.c">
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz\sqrt.c">

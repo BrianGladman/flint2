@@ -86,6 +86,8 @@
     <PreBuildEvent>
         <Command>..\..\build.vc\out_copy_rename.bat ..\..\build.vc\cpimport.h ..\..\qadic\ cpimport.h
         </Command>
+        <Command>..\..\build.vc\out_copy_rename.bat ..\..\build.vc\config.h ..\..\ flint-config.h
+        </Command>
     </PreBuildEvent>
     <ClCompile>
     <Optimization>Full</Optimization>
@@ -105,6 +107,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PreBuildEvent>
         <Command>..\..\build.vc\out_copy_rename.bat ..\..\build.vc\cpimport.h ..\..\qadic\ cpimport.h
+        </Command>
+        <Command>..\..\build.vc\out_copy_rename.bat ..\..\build.vc\config.h ..\..\ flint-config.h
         </Command>
     </PreBuildEvent>
     <ClCompile>
@@ -126,6 +130,8 @@
     <PreBuildEvent>
         <Command>..\..\build.vc\out_copy_rename.bat ..\..\build.vc\cpimport.h ..\..\qadic\ cpimport.h
         </Command>
+        <Command>..\..\build.vc\out_copy_rename.bat ..\..\build.vc\config.h ..\..\ flint-config.h
+        </Command>
     </PreBuildEvent>
     <ClCompile>
     <Optimization>Full</Optimization>
@@ -145,6 +151,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PreBuildEvent>
         <Command>..\..\build.vc\out_copy_rename.bat ..\..\build.vc\cpimport.h ..\..\qadic\ cpimport.h
+        </Command>
+        <Command>..\..\build.vc\out_copy_rename.bat ..\..\build.vc\config.h ..\..\ flint-config.h
         </Command>
     </PreBuildEvent>
     <ClCompile>
@@ -180,6 +188,7 @@
     <ClInclude Include="..\..\exception.h" />
     <ClInclude Include="..\..\fft.h" />
     <ClInclude Include="..\..\fft_tuning.h" />
+    <ClInclude Include="..\..\flint-config.h" />
     <ClInclude Include="..\..\flint.h" />
     <ClInclude Include="..\..\fmpq.h" />
     <ClInclude Include="..\..\fmpq_mat.h" />
@@ -255,7 +264,7 @@
     <ClCompile Include="..\..\aprcl\config_jacobi.c" />
     <ClCompile Include="..\..\aprcl\f_table.c" />
     <ClCompile Include="..\..\aprcl\is_mul_coprime.c" />
-    <ClCompile Include="..\..\aprcl\is_prime_aprcl.c" />
+    <ClCompile Include="..\..\aprcl\is_prime.c" />
     <ClCompile Include="..\..\aprcl\is_prime_divisors_in_residue.c" />
     <ClCompile Include="..\..\aprcl\is_prime_final_division.c" />
     <ClCompile Include="..\..\aprcl\is_prime_gauss.c" />
@@ -439,6 +448,7 @@
     <ClCompile Include="..\..\fmpq\add.c" />
     <ClCompile Include="..\..\fmpq\add_fmpz.c" />
     <ClCompile Include="..\..\fmpq\add_si.c" />
+    <ClCompile Include="..\..\fmpq\add_ui.c" />
     <ClCompile Include="..\..\fmpq\addmul.c" />
     <ClCompile Include="..\..\fmpq\ball.c" />
     <ClCompile Include="..\..\fmpq\canonicalise.c" />
@@ -446,6 +456,7 @@
     <ClCompile Include="..\..\fmpq\clear_readonly.c" />
     <ClCompile Include="..\..\fmpq\cmp.c" />
     <ClCompile Include="..\..\fmpq\cmp_fmpz.c" />
+    <ClCompile Include="..\..\fmpq\cmp_si.c" />
     <ClCompile Include="..\..\fmpq\cmp_ui.c" />
     <ClCompile Include="..\..\fmpq\dedekind_sum.c" />
     <ClCompile Include="..\..\fmpq\dedekind_sum_naive.c" />
@@ -476,6 +487,8 @@
     <ClCompile Include="..\..\fmpq\mul.c" />
     <ClCompile Include="..\..\fmpq\mul_2exp.c" />
     <ClCompile Include="..\..\fmpq\mul_fmpz.c" />
+    <ClCompile Include="..\..\fmpq\mul_si.c" />
+    <ClCompile Include="..\..\fmpq\mul_ui.c" />
     <ClCompile Include="..\..\fmpq\next_calkin_wilf.c" />
     <ClCompile Include="..\..\fmpq\next_minimal.c" />
     <ClCompile Include="..\..\fmpq\next_signed_calkin_wilf.c" />
@@ -491,10 +504,12 @@
     <ClCompile Include="..\..\fmpq\set_fmpz_frac.c" />
     <ClCompile Include="..\..\fmpq\set_si.c" />
     <ClCompile Include="..\..\fmpq\set_str.c" />
+    <ClCompile Include="..\..\fmpq\set_ui.c" />
     <ClCompile Include="..\..\fmpq\simplest_between.c" />
     <ClCompile Include="..\..\fmpq\sub.c" />
     <ClCompile Include="..\..\fmpq\sub_fmpz.c" />
     <ClCompile Include="..\..\fmpq\sub_si.c" />
+    <ClCompile Include="..\..\fmpq\sub_ui.c" />
     <ClCompile Include="..\..\fmpq\submul.c" />
     <ClCompile Include="..\..\fmpq_mat\add.c" />
     <ClCompile Include="..\..\fmpq_mat\charpoly.c" />
@@ -839,7 +854,6 @@
     <ClCompile Include="..\..\fmpz\lucas_chain.c" />
     <ClCompile Include="..\..\fmpz\mod.c" />
     <ClCompile Include="..\..\fmpz\mod_ui.c" />
-    <ClCompile Include="..\..\fmpz\mods.c" />
     <ClCompile Include="..\..\fmpz\moebius_mu.c" />
     <ClCompile Include="..\..\fmpz\mpz_clear_readonly.c" />
     <ClCompile Include="..\..\fmpz\mpz_init_set_readonly.c" />
@@ -888,6 +902,7 @@
     <ClCompile Include="..\..\fmpz\sgn.c" />
     <ClCompile Include="..\..\fmpz\size.c" />
     <ClCompile Include="..\..\fmpz\sizeinbase.c" />
+    <ClCompile Include="..\..\fmpz\smod.c" />
     <ClCompile Include="..\..\fmpz\sqrt.c" />
     <ClCompile Include="..\..\fmpz\sqrtmod.c" />
     <ClCompile Include="..\..\fmpz\sqrtrem.c" />
