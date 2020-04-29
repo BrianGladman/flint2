@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2011 Sebastian Pancratz
+    Copyright (C) 2013 Mike Hansen
 
     This file is part of FLINT.
 
@@ -9,12 +9,14 @@
     (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 */
 
-#include "fmpq.h"
+#include "fq_zech_poly.h"
 
-void fmpq_mul_fmpz(fmpq_t res, const fmpq_t op, const fmpz_t x)
-{
-    fmpz_t y;
-    *y = 1;
-    _fmpq_mul(fmpq_numref(res), fmpq_denref(res),
-              fmpq_numref(op), fmpq_denref(op), x, y);
-}
+#ifdef T
+#undef T
+#endif
+
+#define T fq_zech
+#define CAP_T FQ_ZECH
+#include "fq_poly_templates/test/t-scalar_div_fq.c"
+#undef CAP_T
+#undef T

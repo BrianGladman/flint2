@@ -309,8 +309,8 @@ Scalar multiplication and division
 
 .. function:: void fq_nmod_poly_scalar_mul_fq_nmod(fq_nmod_poly_t rop, const fq_nmod_poly_t op, const fq_nmod_t x, const fq_nmod_ctx_t ctx)
 
-    Sets ``(rop,len)`` to the product of ``(op,len)`` by the
-    scalar ``x``, in the context defined by ``ctx``.
+    Sets ``rop`` to the product of ``op`` by the scalar ``x``, in the context
+    defined by ``ctx``.
 
 .. function:: void _fq_nmod_poly_scalar_addmul_fq_nmod(fq_nmod_struct *rop, const fq_nmod_struct *op, slong len, const fq_nmod_t x, const fq_nmod_ctx_t ctx)
 
@@ -336,6 +336,16 @@ Scalar multiplication and division
     Substracts from ``rop`` the product of ``op`` by the
     scalar ``x``, in the context defined by ``ctx``.
 
+.. function:: void _fq_nmod_poly_scalar_div_fq(fq_nmod_struct *rop, const fq_nmod_struct *op, slong len, const fq_nmod_t x, const fq_nmod_ctx_t ctx)
+
+    Sets ``(rop,len)`` to the quotient of ``(op,len)`` by the
+    scalar ``x``, in the context defined by ``ctx``. An exception is raised
+    if ``x`` is zero.
+ 
+.. function:: void fq_nmod_poly_scalar_div_fq(fq_nmod_poly_t rop, const fq_nmod_poly_t op, const fq_nmod_t x, const fq_nmod_ctx_t ctx)
+
+    Sets ``rop`` to the quotient of ``op`` by the scalar ``x``, in the context
+    defined by ``ctx``. An exception is raised if ``x`` is zero.
 
 Multiplication
 --------------------------------------------------------------------------------
@@ -396,8 +406,8 @@ Multiplication
     Sets ``(rop, len1 + len2 - 1)`` to the product of ``(op1, len1)``
     and ``(op2, len2)``.
 
-    Permits zero padding and places no assumptions on the
-    lengths ``len1`` and ``len2``.  Supports aliasing.
+    Permits zero padding and makes no assumptions on ``len1`` and ``len2``. 
+    Supports aliasing.
 
 .. function:: void fq_nmod_poly_mul_univariate(fq_nmod_poly_t rop, const fq_nmod_poly_t op1, const fq_nmod_poly_t op2, const fq_nmod_ctx_t ctx)
 
