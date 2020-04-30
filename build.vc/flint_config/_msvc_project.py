@@ -134,7 +134,7 @@ def compiler_options(plat, proj_type, is_debug, inc_dirs, flib_type, outf):
   if flib_type == 'single':
     s1 += 'FLINT_REENTRANT=0;HAVE_TLS=1;'
   elif flib_type == 'reentrant':
-    s1 += 'FLINT_REENTRANT=1;'
+    s1 += 'FLINT_REENTRANT=1;HAVE_TLS=1;'
   else:
     pass
   if plat == 'x64':

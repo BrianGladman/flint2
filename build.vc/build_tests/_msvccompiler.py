@@ -290,7 +290,7 @@ class MSVCCompiler(CCompiler) :
         self.compile_options = [
             '/nologo', '/Ox', '/W3', '/GL', '/DNDEBUG'
         ]
-        self.compile_options.append('/MD' if self._vcruntime_redist else '/MT')
+        self.compile_options.append('/MT' if self._vcruntime_redist else '/MT')
 
         self.compile_options_debug = [
             '/nologo', '/Od', '/MDd', '/Zi', '/W3', '/D_DEBUG'
@@ -300,7 +300,7 @@ class MSVCCompiler(CCompiler) :
             '/nologo', '/INCREMENTAL:NO', '/LTCG'
         ]
         if not self._vcruntime_redist:
-            ldflags.extend(('/nodefaultlib:libucrt.lib', 'ucrt.lib'))
+            ldflags.extend(('/nodefaultlib:libucrt.lib', '/nodefaultlib:msvcrt.lib', '/nodefaultlib:libcmtd.lib', '/nodefaultlib:msvcrtd.lib', 'ucrt.lib'))
 
         ldflags_debug = [
             '/nologo', '/INCREMENTAL:NO', '/LTCG', '/DEBUG:FULL'

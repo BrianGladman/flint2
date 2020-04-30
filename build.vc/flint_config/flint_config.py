@@ -34,7 +34,7 @@ path.append(build_root_dir)
 from version_info import vs_info
 
 # add user choice (duplicate in _msvc_project.py)
-flib_type = 'single' # ('gc', 'reentrant', 'single')
+flib_type = 'reentrant' # ('gc', 'reentrant', 'single')
 
 # The path to flint, solution and project directories
 flint_dir = abspath(join(script_dir, '../../'))
@@ -59,7 +59,7 @@ def write_f(ipath, opath):
         return
     copy(ipath, opath)
 
-ignore_dirs = ( '.git', '.vs', 'doc', 'examples', 'lib', 'exe', 'dll', 'win_hdrs')
+ignore_dirs = ( '.git', '.vs', 'doc', 'examples', 'lib', 'exe', 'dll', 'win_hdrs', 'link')
 req_extns = ( '.h', '.c', '.cc', '.cpp' )
 
 def find_src(path):
@@ -197,7 +197,7 @@ def write_hdrs(h):
     makedirs(hdr_dir)
 
   for hf in sorted(d.keys()):
-    out_name = hf.replace('build.vc14\\', '')
+    out_name = hf.replace('build.vs19\\', '')
     inf = open(join(flint_dir, hf), 'r')
     outf = open(join(flint_dir, join(hdr_dir, out_name)), 'w')
     lines = inf.readlines()
@@ -218,6 +218,12 @@ def write_def_file(name, h):
 
 # end of parser code
 
+# add appropriate source code files for memory management 
+fn = join(flint_dir, 'fmpz-conversions-{}.in'.format(flib_type))
+copy(fn , join(flint_dir, 'fmpz-conversions.h'))
+
+fn = join(flint_dir, 'fmpz\\link', 'fmpz_{}.c'.format(flib_type))
+copy(fn , join(flint_dir, 'fmpz', 'fmpz.c'))
 
 # add project files to the solution
 
@@ -238,8 +244,6 @@ if not debug:
   write_f('tmp.h', join(build_aux_dir, 'cpimport.h'))
   remove('tmp.h')
 
-  fn = join(flint_dir, 'fmpz-conversions-{}.in'.format(flib_type))
-  copy(fn , join(flint_dir, 'fmpz-conversions.h'))
   # fn = join(flint_dir, 'fft_tuning32.in')
   fn = join(flint_dir, 'fft_tuning64.in')
   copy(fn , join(flint_dir, 'fft_tuning.h'))
