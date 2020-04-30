@@ -50,7 +50,6 @@
     <Filter Include="Source Files\fq_zech_poly" />
     <Filter Include="Source Files\fq_zech_poly_factor" />
     <Filter Include="Source Files\fq_zech_vec" />
-    <Filter Include="Source Files\link" />
     <Filter Include="Source Files\long_extras" />
     <Filter Include="Source Files\mpf_mat" />
     <Filter Include="Source Files\mpf_vec" />
@@ -892,6 +891,9 @@
     <ClCompile Include="..\..\fmpq\add_si.c">
       <Filter>Source Files\fmpq</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpq\add_small.c">
+      <Filter>Source Files\fmpq</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpq\add_ui.c">
       <Filter>Source Files\fmpq</Filter>
     </ClCompile>
@@ -1010,6 +1012,9 @@
       <Filter>Source Files\fmpq</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpq\mul_si.c">
+      <Filter>Source Files\fmpq</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpq\mul_small.c">
       <Filter>Source Files\fmpq</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpq\mul_ui.c">
@@ -2006,6 +2011,9 @@
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz\fmms.c">
+      <Filter>Source Files\fmpz</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz\fmpz.c">
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz\fprint.c">
@@ -7236,15 +7244,6 @@
     </ClCompile>
     <ClCompile Include="..\..\fq_zech_vec\zero.c">
       <Filter>Source Files\fq_zech_vec</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\fmpz\link\fmpz_gc.c">
-      <Filter>Source Files\link</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\fmpz\link\fmpz_reentrant.c">
-      <Filter>Source Files\link</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\fmpz\link\fmpz_single.c">
-      <Filter>Source Files\link</Filter>
     </ClCompile>
     <ClCompile Include="..\..\long_extras\inlines.c">
       <Filter>Source Files\long_extras</Filter>

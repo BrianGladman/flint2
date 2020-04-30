@@ -93,7 +93,7 @@
     <Optimization>Full</Optimization>
     <IntrinsicFunctions>true</IntrinsicFunctions>
     <AdditionalIncludeDirectories>..\..\;..\..\build.vc;..\..\..\mpir\lib\$(IntDir);..\..\..\mpfr\lib\$(IntDir);..\..\..\pthreads\lib\$(IntDir)</AdditionalIncludeDirectories>
-    <PreprocessorDefinitions>NDEBUG;WIN32;_LIB;HAVE_CONFIG_H;PTW32_STATIC_LIB;FLINT_REENTRANT=0;HAVE_TLS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    <PreprocessorDefinitions>NDEBUG;WIN32;_LIB;HAVE_CONFIG_H;PTW32_STATIC_LIB;FLINT_REENTRANT=1;HAVE_TLS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     <ProgramDataBaseFileName>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFileName>
     <DebugInformationFormat>None</DebugInformationFormat>
@@ -115,7 +115,7 @@
     <Optimization>Disabled</Optimization>
     <IntrinsicFunctions>true</IntrinsicFunctions>
     <AdditionalIncludeDirectories>..\..\;..\..\build.vc;..\..\..\mpir\lib\$(IntDir);..\..\..\mpfr\lib\$(IntDir);..\..\..\pthreads\lib\$(IntDir)</AdditionalIncludeDirectories>
-    <PreprocessorDefinitions>_DEBUG;WIN32;_LIB;HAVE_CONFIG_H;PTW32_STATIC_LIB;FLINT_REENTRANT=0;HAVE_TLS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    <PreprocessorDefinitions>_DEBUG;WIN32;_LIB;HAVE_CONFIG_H;PTW32_STATIC_LIB;FLINT_REENTRANT=1;HAVE_TLS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     <ProgramDataBaseFileName>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFileName>
     <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -137,7 +137,7 @@
     <Optimization>Full</Optimization>
     <IntrinsicFunctions>true</IntrinsicFunctions>
     <AdditionalIncludeDirectories>..\..\;..\..\build.vc;..\..\..\mpir\lib\$(IntDir);..\..\..\mpfr\lib\$(IntDir);..\..\..\pthreads\lib\$(IntDir)</AdditionalIncludeDirectories>
-    <PreprocessorDefinitions>NDEBUG;WIN32;_LIB;HAVE_CONFIG_H;PTW32_STATIC_LIB;FLINT_REENTRANT=0;HAVE_TLS=1;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    <PreprocessorDefinitions>NDEBUG;WIN32;_LIB;HAVE_CONFIG_H;PTW32_STATIC_LIB;FLINT_REENTRANT=1;HAVE_TLS=1;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     <ProgramDataBaseFileName>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFileName>
     <DebugInformationFormat>None</DebugInformationFormat>
@@ -159,7 +159,7 @@
     <Optimization>Disabled</Optimization>
     <IntrinsicFunctions>true</IntrinsicFunctions>
     <AdditionalIncludeDirectories>..\..\;..\..\build.vc;..\..\..\mpir\lib\$(IntDir);..\..\..\mpfr\lib\$(IntDir);..\..\..\pthreads\lib\$(IntDir)</AdditionalIncludeDirectories>
-    <PreprocessorDefinitions>_DEBUG;WIN32;_LIB;HAVE_CONFIG_H;PTW32_STATIC_LIB;FLINT_REENTRANT=0;HAVE_TLS=1;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    <PreprocessorDefinitions>_DEBUG;WIN32;_LIB;HAVE_CONFIG_H;PTW32_STATIC_LIB;FLINT_REENTRANT=1;HAVE_TLS=1;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     <ProgramDataBaseFileName>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFileName>
     <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -448,6 +448,7 @@
     <ClCompile Include="..\..\fmpq\add.c" />
     <ClCompile Include="..\..\fmpq\add_fmpz.c" />
     <ClCompile Include="..\..\fmpq\add_si.c" />
+    <ClCompile Include="..\..\fmpq\add_small.c" />
     <ClCompile Include="..\..\fmpq\add_ui.c" />
     <ClCompile Include="..\..\fmpq\addmul.c" />
     <ClCompile Include="..\..\fmpq\ball.c" />
@@ -488,6 +489,7 @@
     <ClCompile Include="..\..\fmpq\mul_2exp.c" />
     <ClCompile Include="..\..\fmpq\mul_fmpz.c" />
     <ClCompile Include="..\..\fmpq\mul_si.c" />
+    <ClCompile Include="..\..\fmpq\mul_small.c" />
     <ClCompile Include="..\..\fmpq\mul_ui.c" />
     <ClCompile Include="..\..\fmpq\next_calkin_wilf.c" />
     <ClCompile Include="..\..\fmpq\next_minimal.c" />
@@ -820,6 +822,7 @@
     <ClCompile Include="..\..\fmpz\flog_ui.c" />
     <ClCompile Include="..\..\fmpz\fmma.c" />
     <ClCompile Include="..\..\fmpz\fmms.c" />
+    <ClCompile Include="..\..\fmpz\fmpz.c" />
     <ClCompile Include="..\..\fmpz\fprint.c" />
     <ClCompile Include="..\..\fmpz\fread.c" />
     <ClCompile Include="..\..\fmpz\gcd.c" />
@@ -2563,19 +2566,6 @@
     <ClCompile Include="..\..\fq_zech_vec\sub.c" />
     <ClCompile Include="..\..\fq_zech_vec\swap.c" />
     <ClCompile Include="..\..\fq_zech_vec\zero.c" />
-    <ClCompile Include="..\..\fmpz\link\fmpz_gc.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\fmpz\link\fmpz_reentrant.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\fmpz\link\fmpz_single.c" />
     <ClCompile Include="..\..\long_extras\inlines.c" />
     <ClCompile Include="..\..\long_extras\randint.c" />
     <ClCompile Include="..\..\long_extras\randtest.c" />
