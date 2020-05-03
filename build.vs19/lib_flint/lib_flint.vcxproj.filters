@@ -8448,6 +8448,12 @@
     <ClCompile Include="..\..\nmod_poly\powers_mod_naive.c">
       <Filter>Source Files\nmod_poly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\nmod_poly\powmod_fmpz_binexp.c">
+      <Filter>Source Files\nmod_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_poly\powmod_fmpz_binexp_preinv.c">
+      <Filter>Source Files\nmod_poly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\nmod_poly\powmod_mpz_binexp.c">
       <Filter>Source Files\nmod_poly</Filter>
     </ClCompile>
@@ -8458,6 +8464,9 @@
       <Filter>Source Files\nmod_poly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\nmod_poly\powmod_ui_binexp_preinv.c">
+      <Filter>Source Files\nmod_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_poly\powmod_x_fmpz_preinv.c">
       <Filter>Source Files\nmod_poly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\nmod_poly\powmod_x_ui_preinv.c">

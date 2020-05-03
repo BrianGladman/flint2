@@ -2,7 +2,7 @@
 ----------------------------------------------------------------------------
 Copyright © 2001-2020 Python Software Foundation; All Rights Reserved
 
-This file is distributed under the terms of this license: 
+This file is distributed under the terms of this license:
 
     https://docs.python.org/3/license.html
 
@@ -75,7 +75,6 @@ def _find_vc2017():
     If vswhere.exe is not available, by definition, VS 2017 is not
     installed.
     """
-    import json
 
     root = os.environ.get("ProgramFiles(x86)") or os.environ.get("ProgramFiles")
     if not root:

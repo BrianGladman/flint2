@@ -115,7 +115,8 @@ c, h, cx, hx, t, tx, p = find_src(flint_dir)
 #       export_symbols=None, debug=0, extra_preargs=None,
 #       extra_postargs=None, build_temp=None, target_lang=None):
 
-intd = '\\x64\\Release\\'
+lib_dir = 'lib\\'
+int_dir = 'x64\\Release\\'
 
 cc = MSVCCompiler()
 error_list = []
@@ -126,20 +127,20 @@ for l2, fp in t:
   inc_dirs = [
     '..\\',
     '..\\..\\',
-    '..\\..\\..\\mpir\\lib' + intd,
-    '..\\..\\..\\mpfr\\lib' + intd,
-    '..\\..\\..\\pthreads\\lib' + intd
+    '..\\..\\..\\mpir\\' + lib_dir + int_dir,
+    '..\\..\\..\\mpfr\\' + lib_dir + int_dir,
+    '..\\..\\..\\pthreads\\' + lib_dir + int_dir
     ]
   libs = [
-    '..\\..\\lib' + intd + 'lib_flint',
-    '..\\..\\..\\mpir\\lib' + intd + 'mpir',
-    '..\\..\\..\\mpfr\\lib' + intd + 'mpfr',
-    '..\\..\\..\\pthreads\\lib' + intd + 'pthreads'
+    '..\\..\\' + lib_dir + int_dir + 'lib_flint',
+    '..\\..\\..\\mpir\\' + lib_dir + int_dir + 'mpir',
+    '..\\..\\..\\mpfr\\' + lib_dir + int_dir + 'mpfr',
+    '..\\..\\..\\pthreads\\' + lib_dir + int_dir + 'pthreads'
     ]
   p = fd.rfind('test')
   assert p >= 0
   tmp_dir = 'test\\test'
-  outd = '..\\tests\\' + fd[:p] + intd
+  outd = '..\\tests\\' + fd[:p] + int_dir
   try:
     obj = cc.compile(source, output_dir=tmp_dir, include_dirs=inc_dirs, macros=[('PTW32_STATIC_LIB',1)])
     cc.link("executable", obj, fn + '.exe', output_dir=outd, libraries=libs)

@@ -2967,10 +2967,13 @@
     <ClCompile Include="..\..\nmod_poly\power_sums_to_poly_schoenhage.c" />
     <ClCompile Include="..\..\nmod_poly\powers_mod_bsgs_threaded.c" />
     <ClCompile Include="..\..\nmod_poly\powers_mod_naive.c" />
+    <ClCompile Include="..\..\nmod_poly\powmod_fmpz_binexp.c" />
+    <ClCompile Include="..\..\nmod_poly\powmod_fmpz_binexp_preinv.c" />
     <ClCompile Include="..\..\nmod_poly\powmod_mpz_binexp.c" />
     <ClCompile Include="..\..\nmod_poly\powmod_mpz_binexp_preinv.c" />
     <ClCompile Include="..\..\nmod_poly\powmod_ui_binexp.c" />
     <ClCompile Include="..\..\nmod_poly\powmod_ui_binexp_preinv.c" />
+    <ClCompile Include="..\..\nmod_poly\powmod_x_fmpz_preinv.c" />
     <ClCompile Include="..\..\nmod_poly\powmod_x_ui_preinv.c" />
     <ClCompile Include="..\..\nmod_poly\product_roots_nmod_vec.c" />
     <ClCompile Include="..\..\nmod_poly\randtest.c" />
