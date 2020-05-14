@@ -210,10 +210,13 @@ int fmpz_mod_poly_is_one(const fmpz_mod_poly_t poly)
 }
 
 FMPZ_MOD_POLY_INLINE
-int fmpz_mod_poly_is_x(const fmpz_mod_poly_t op)
+int fmpz_mod_poly_is_gen(const fmpz_mod_poly_t op)
 {
     return (op->length) == 2 && (*(op->coeffs + 1) == WORD(1)) && (*(op->coeffs + 0) == WORD(0));
 }
+
+/* Deprecated */
+#define fmpz_mod_poly_is_x fmpz_mod_poly_is_gen
 
 /*  Assignment and basic manipulation ****************************************/
 
@@ -1185,6 +1188,11 @@ FLINT_DLL void fmpz_mod_poly_product_roots_fmpz_vec(fmpz_poly_t poly, const fmpz
 FLINT_DLL int fmpz_mod_poly_find_distinct_nonzero_roots(fmpz * roots,
                                                       const fmpz_mod_poly_t P);
 
+FLINT_DLL void _fmpz_mod_poly_split_rabin(fmpz_mod_poly_t a, fmpz_mod_poly_t b,
+                                   const fmpz_mod_poly_t f, const fmpz_t halfp,
+                fmpz_mod_poly_t t, fmpz_mod_poly_t t2, flint_rand_t randstate);
+
+
 /* Berlekamp-Massey Algorithm - see fmpz_mod_poly/berlekamp_massey.c for more info ********/
 typedef struct {
     slong npoints;
@@ -1259,6 +1267,15 @@ FMPZ_MOD_POLY_INLINE const fmpz_mod_poly_struct * fmpz_mod_berlekamp_massey_R_po
 {
     return B->R1;
 }
+
+/* Inlines *******************************************************************/
+
+FLINT_DLL void fmpz_mod_poly_add_si(fmpz_mod_poly_t res, const fmpz_mod_poly_t poly, slong c);
+FLINT_DLL void fmpz_mod_poly_sub_si(fmpz_mod_poly_t res, const fmpz_mod_poly_t poly, slong c);
+FLINT_DLL void fmpz_mod_poly_si_sub(fmpz_mod_poly_t res, slong c, const fmpz_mod_poly_t poly);
+FLINT_DLL void fmpz_mod_poly_add_fmpz(fmpz_mod_poly_t res, const fmpz_mod_poly_t poly, fmpz_t c);
+FLINT_DLL void fmpz_mod_poly_sub_fmpz(fmpz_mod_poly_t res, const fmpz_mod_poly_t poly, fmpz_t c);
+FLINT_DLL void fmpz_mod_poly_fmpz_sub(fmpz_mod_poly_t res, fmpz_t c, const fmpz_mod_poly_t poly);
 
 #ifdef __cplusplus
 }

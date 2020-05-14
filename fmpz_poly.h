@@ -273,10 +273,13 @@ int fmpz_poly_is_unit(const fmpz_poly_t op)
 }
 
 FMPZ_POLY_INLINE
-int fmpz_poly_is_x(const fmpz_poly_t op)
+int fmpz_poly_is_gen(const fmpz_poly_t op)
 {
     return (op->length) == 2 && (*(op->coeffs + 1) == WORD(1)) && (*(op->coeffs + 0) == WORD(0));
 }
+
+/* Deprecated */
+#define fmpz_poly_is_x fmpz_poly_is_gen
 
 FMPZ_POLY_INLINE
 int fmpz_poly_equal_fmpz(const fmpz_poly_t poly, const fmpz_t c)
@@ -841,11 +844,11 @@ FLINT_DLL void _fmpz_poly_div_series_divconquer(fmpz * Q, const fmpz * A, slong 
 FLINT_DLL void _fmpz_poly_div_series(fmpz * Q, const fmpz * A, slong Alen,
     const fmpz * B, slong Blen, slong n);
 
-FLINT_DLL void fmpz_poly_div_series_basecase(fmpz_poly_t Q, const fmpz_poly_t A,
-                                         const fmpz_poly_t B, slong n);
+FLINT_DLL void fmpz_poly_div_series_basecase(fmpz_poly_t Q,
+		    const fmpz_poly_t A, const fmpz_poly_t B, slong n);
 
-FLINT_DLL void fmpz_poly_div_series_divconquer(fmpz_poly_t Q, const fmpz_poly_t A,
-                                         const fmpz_poly_t B, slong n);
+FLINT_DLL void fmpz_poly_div_series_divconquer(fmpz_poly_t Q,
+		    const fmpz_poly_t A, const fmpz_poly_t B, slong n);
 
 FLINT_DLL void fmpz_poly_div_series(fmpz_poly_t Q, const fmpz_poly_t A, 
                                          const fmpz_poly_t B, slong n);
@@ -853,10 +856,13 @@ FLINT_DLL void fmpz_poly_div_series(fmpz_poly_t Q, const fmpz_poly_t A,
 /*  Divisibility testing  ***************************************************/
 
 FLINT_DLL int _fmpz_poly_divides(fmpz * q, const fmpz * a, 
-                                         slong len1, const fmpz * b, slong len2);
+                                       slong len1, const fmpz * b, slong len2);
 
-FLINT_DLL int fmpz_poly_divides(fmpz_poly_t q, const fmpz_poly_t a, const fmpz_poly_t b);
+FLINT_DLL int fmpz_poly_divides(fmpz_poly_t q,
+		                     const fmpz_poly_t a, const fmpz_poly_t b);
 
+FLINT_DLL slong fmpz_poly_remove(fmpz_poly_t res, const fmpz_poly_t poly1,
+		                                      const fmpz_poly_t poly2);
 
 /*  Pseudo division  *********************************************************/
 
@@ -1407,6 +1413,15 @@ FLINT_DLL void fmpz_poly_eta_qexp(fmpz_poly_t f, slong e, slong n);
 FLINT_DLL void _fmpz_poly_theta_qexp(fmpz * f, slong e, slong n);
 
 FLINT_DLL void fmpz_poly_theta_qexp(fmpz_poly_t f, slong e, slong n);
+
+/* Inlines *******************************************************************/
+
+FLINT_DLL void fmpz_poly_add_si(fmpz_poly_t res, const fmpz_poly_t poly, slong c);
+FLINT_DLL void fmpz_poly_sub_si(fmpz_poly_t res, const fmpz_poly_t poly, slong c);
+FLINT_DLL void fmpz_poly_si_sub(fmpz_poly_t res, slong c, const fmpz_poly_t poly);
+FLINT_DLL void fmpz_poly_add_fmpz(fmpz_poly_t res, const fmpz_poly_t poly, fmpz_t c);
+FLINT_DLL void fmpz_poly_sub_fmpz(fmpz_poly_t res, const fmpz_poly_t poly, fmpz_t c);
+FLINT_DLL void fmpz_poly_fmpz_sub(fmpz_poly_t res, fmpz_t c, const fmpz_poly_t poly);
 
 #ifdef __cplusplus
 }
