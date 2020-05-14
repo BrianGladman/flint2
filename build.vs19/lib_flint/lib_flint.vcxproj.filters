@@ -1500,6 +1500,9 @@
     <ClCompile Include="..\..\fmpq_poly\div_series.c">
       <Filter>Source Files\fmpq_poly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpq_poly\divides.c">
+      <Filter>Source Files\fmpq_poly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpq_poly\divrem.c">
       <Filter>Source Files\fmpq_poly</Filter>
     </ClCompile>
@@ -1648,6 +1651,9 @@
       <Filter>Source Files\fmpq_poly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpq_poly\rem_powers_precomp.c">
+      <Filter>Source Files\fmpq_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpq_poly\remove.c">
       <Filter>Source Files\fmpq_poly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpq_poly\rescale.c">
@@ -1936,6 +1942,9 @@
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz\divexact_ui.c">
+      <Filter>Source Files\fmpz</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz\divides_mod_list.c">
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz\divisible.c">
@@ -3426,6 +3435,12 @@
     <ClCompile Include="..\..\fmpz_mod_poly_factor\realloc.c">
       <Filter>Source Files\fmpz_mod_poly_factor</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_poly_factor\roots.c">
+      <Filter>Source Files\fmpz_mod_poly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_poly_factor\roots_factored.c">
+      <Filter>Source Files\fmpz_mod_poly_factor</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mod_poly_factor\set.c">
       <Filter>Source Files\fmpz_mod_poly_factor</Filter>
     </ClCompile>
@@ -4236,6 +4251,9 @@
     <ClCompile Include="..\..\fmpz_poly\rem_powers_precomp.c">
       <Filter>Source Files\fmpz_poly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_poly\remove.c">
+      <Filter>Source Files\fmpz_poly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_poly\remove_content_2exp.c">
       <Filter>Source Files\fmpz_poly</Filter>
     </ClCompile>
@@ -4456,6 +4474,9 @@
       <Filter>Source Files\fmpz_poly_factor</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_poly_factor\factor.c">
+      <Filter>Source Files\fmpz_poly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_poly_factor\factor_quadratic.c">
       <Filter>Source Files\fmpz_poly_factor</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_poly_factor\factor_squarefree.c">
@@ -5013,6 +5034,9 @@
     <ClCompile Include="..\..\fq\pth_root.c">
       <Filter>Source Files\fq</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq\rand.c">
+      <Filter>Source Files\fq</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq\randtest.c">
       <Filter>Source Files\fq</Filter>
     </ClCompile>
@@ -5257,6 +5281,9 @@
       <Filter>Source Files\fq_nmod</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_nmod\pth_root.c">
+      <Filter>Source Files\fq_nmod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod\rand.c">
       <Filter>Source Files\fq_nmod</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_nmod\randtest.c">
@@ -5736,6 +5763,9 @@
     <ClCompile Include="..\..\fq_nmod_poly\add_series.c">
       <Filter>Source Files\fq_nmod_poly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_poly\add_si.c">
+      <Filter>Source Files\fq_nmod_poly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_nmod_poly\clear.c">
       <Filter>Source Files\fq_nmod_poly</Filter>
     </ClCompile>
@@ -5925,6 +5955,12 @@
     <ClCompile Include="..\..\fq_nmod_poly\pow.c">
       <Filter>Source Files\fq_nmod_poly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_poly\pow_trunc.c">
+      <Filter>Source Files\fq_nmod_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_poly\pow_trunc_binexp.c">
+      <Filter>Source Files\fq_nmod_poly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_nmod_poly\powmod_fmpz_binexp.c">
       <Filter>Source Files\fq_nmod_poly</Filter>
     </ClCompile>
@@ -6099,6 +6135,9 @@
     <ClCompile Include="..\..\fq_nmod_poly_factor\realloc.c">
       <Filter>Source Files\fq_nmod_poly_factor</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_poly_factor\roots.c">
+      <Filter>Source Files\fq_nmod_poly_factor</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_nmod_poly_factor\set.c">
       <Filter>Source Files\fq_nmod_poly_factor</Filter>
     </ClCompile>
@@ -6157,6 +6196,9 @@
       <Filter>Source Files\fq_poly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_poly\add_series.c">
+      <Filter>Source Files\fq_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_poly\add_si.c">
       <Filter>Source Files\fq_poly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_poly\clear.c">
@@ -6351,6 +6393,12 @@
     <ClCompile Include="..\..\fq_poly\pow.c">
       <Filter>Source Files\fq_poly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_poly\pow_trunc.c">
+      <Filter>Source Files\fq_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_poly\pow_trunc_binexp.c">
+      <Filter>Source Files\fq_poly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_poly\powmod_fmpz_binexp.c">
       <Filter>Source Files\fq_poly</Filter>
     </ClCompile>
@@ -6528,6 +6576,9 @@
     <ClCompile Include="..\..\fq_poly_factor\realloc.c">
       <Filter>Source Files\fq_poly_factor</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_poly_factor\roots.c">
+      <Filter>Source Files\fq_poly_factor</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_poly_factor\set.c">
       <Filter>Source Files\fq_poly_factor</Filter>
     </ClCompile>
@@ -6664,6 +6715,9 @@
       <Filter>Source Files\fq_zech</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_zech\pth_root.c">
+      <Filter>Source Files\fq_zech</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech\rand.c">
       <Filter>Source Files\fq_zech</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_zech\randtest.c">
@@ -6832,6 +6886,9 @@
       <Filter>Source Files\fq_zech_poly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_zech_poly\add_series.c">
+      <Filter>Source Files\fq_zech_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_poly\add_si.c">
       <Filter>Source Files\fq_zech_poly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_zech_poly\clear.c">
@@ -7017,6 +7074,12 @@
     <ClCompile Include="..\..\fq_zech_poly\pow.c">
       <Filter>Source Files\fq_zech_poly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_zech_poly\pow_trunc.c">
+      <Filter>Source Files\fq_zech_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_poly\pow_trunc_binexp.c">
+      <Filter>Source Files\fq_zech_poly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_zech_poly\powmod_fmpz_binexp.c">
       <Filter>Source Files\fq_zech_poly</Filter>
     </ClCompile>
@@ -7189,6 +7252,9 @@
       <Filter>Source Files\fq_zech_poly_factor</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_zech_poly_factor\realloc.c">
+      <Filter>Source Files\fq_zech_poly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_poly_factor\roots.c">
       <Filter>Source Files\fq_zech_poly_factor</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_zech_poly_factor\set.c">
@@ -8121,6 +8187,9 @@
     <ClCompile Include="..\..\nmod_poly\add_series.c">
       <Filter>Source Files\nmod_poly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\nmod_poly\add_ui.c">
+      <Filter>Source Files\nmod_poly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\nmod_poly\asin_series.c">
       <Filter>Source Files\nmod_poly</Filter>
     </ClCompile>
@@ -8553,6 +8622,9 @@
     <ClCompile Include="..\..\nmod_poly\sub_series.c">
       <Filter>Source Files\nmod_poly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\nmod_poly\sub_ui.c">
+      <Filter>Source Files\nmod_poly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\nmod_poly\tan_series.c">
       <Filter>Source Files\nmod_poly</Filter>
     </ClCompile>
@@ -8644,6 +8716,12 @@
       <Filter>Source Files\nmod_poly_factor</Filter>
     </ClCompile>
     <ClCompile Include="..\..\nmod_poly_factor\realloc.c">
+      <Filter>Source Files\nmod_poly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_poly_factor\roots.c">
+      <Filter>Source Files\nmod_poly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_poly_factor\roots_factored.c">
       <Filter>Source Files\nmod_poly_factor</Filter>
     </ClCompile>
     <ClCompile Include="..\..\nmod_poly_factor\set.c">
@@ -9296,6 +9374,9 @@
     </ClCompile>
     <ClCompile Include="..\..\thread_pool\wake.c">
       <Filter>Source Files\thread_pool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ulong_extras\CRT.c">
+      <Filter>Source Files\ulong_extras</Filter>
     </ClCompile>
     <ClCompile Include="..\..\ulong_extras\cbrt.c">
       <Filter>Source Files\ulong_extras</Filter>

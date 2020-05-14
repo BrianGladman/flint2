@@ -651,6 +651,7 @@
     <ClCompile Include="..\..\fmpq_poly\derivative.c" />
     <ClCompile Include="..\..\fmpq_poly\div.c" />
     <ClCompile Include="..\..\fmpq_poly\div_series.c" />
+    <ClCompile Include="..\..\fmpq_poly\divides.c" />
     <ClCompile Include="..\..\fmpq_poly\divrem.c" />
     <ClCompile Include="..\..\fmpq_poly\equal.c" />
     <ClCompile Include="..\..\fmpq_poly\equal_trunc.c" />
@@ -701,6 +702,7 @@
     <ClCompile Include="..\..\fmpq_poly\realloc.c" />
     <ClCompile Include="..\..\fmpq_poly\rem.c" />
     <ClCompile Include="..\..\fmpq_poly\rem_powers_precomp.c" />
+    <ClCompile Include="..\..\fmpq_poly\remove.c" />
     <ClCompile Include="..\..\fmpq_poly\rescale.c" />
     <ClCompile Include="..\..\fmpq_poly\resultant.c" />
     <ClCompile Include="..\..\fmpq_poly\resultant_modular_div.c" />
@@ -797,6 +799,7 @@
     <ClCompile Include="..\..\fmpz\divexact.c" />
     <ClCompile Include="..\..\fmpz\divexact_si.c" />
     <ClCompile Include="..\..\fmpz\divexact_ui.c" />
+    <ClCompile Include="..\..\fmpz\divides_mod_list.c" />
     <ClCompile Include="..\..\fmpz\divisible.c" />
     <ClCompile Include="..\..\fmpz\divisible_si.c" />
     <ClCompile Include="..\..\fmpz\divisor_in_residue_class_lenstra.c" />
@@ -1293,6 +1296,8 @@
     <ClCompile Include="..\..\fmpz_mod_poly_factor\pow.c" />
     <ClCompile Include="..\..\fmpz_mod_poly_factor\print.c" />
     <ClCompile Include="..\..\fmpz_mod_poly_factor\realloc.c" />
+    <ClCompile Include="..\..\fmpz_mod_poly_factor\roots.c" />
+    <ClCompile Include="..\..\fmpz_mod_poly_factor\roots_factored.c" />
     <ClCompile Include="..\..\fmpz_mod_poly_factor\set.c" />
     <ClCompile Include="..\..\fmpz_mpoly\add.c" />
     <ClCompile Include="..\..\fmpz_mpoly\add_fmpz.c" />
@@ -1563,6 +1568,7 @@
     <ClCompile Include="..\..\fmpz_poly\rem.c" />
     <ClCompile Include="..\..\fmpz_poly\rem_basecase.c" />
     <ClCompile Include="..\..\fmpz_poly\rem_powers_precomp.c" />
+    <ClCompile Include="..\..\fmpz_poly\remove.c" />
     <ClCompile Include="..\..\fmpz_poly\remove_content_2exp.c" />
     <ClCompile Include="..\..\fmpz_poly\resultant.c" />
     <ClCompile Include="..\..\fmpz_poly\resultant_euclidean.c" />
@@ -1637,6 +1643,7 @@
     <ClCompile Include="..\..\fmpz_poly_factor\clear.c" />
     <ClCompile Include="..\..\fmpz_poly_factor\concat.c" />
     <ClCompile Include="..\..\fmpz_poly_factor\factor.c" />
+    <ClCompile Include="..\..\fmpz_poly_factor\factor_quadratic.c" />
     <ClCompile Include="..\..\fmpz_poly_factor\factor_squarefree.c" />
     <ClCompile Include="..\..\fmpz_poly_factor\factor_van_hoeij.c" />
     <ClCompile Include="..\..\fmpz_poly_factor\factor_zassenhaus.c" />
@@ -1822,6 +1829,7 @@
     <ClCompile Include="..\..\fq\pow.c" />
     <ClCompile Include="..\..\fq\pow_ui.c" />
     <ClCompile Include="..\..\fq\pth_root.c" />
+    <ClCompile Include="..\..\fq\rand.c" />
     <ClCompile Include="..\..\fq\randtest.c" />
     <ClCompile Include="..\..\fq\sqr.c" />
     <ClCompile Include="..\..\fq\sub.c" />
@@ -1904,6 +1912,7 @@
     <ClCompile Include="..\..\fq_nmod\norm.c" />
     <ClCompile Include="..\..\fq_nmod\pow.c" />
     <ClCompile Include="..\..\fq_nmod\pth_root.c" />
+    <ClCompile Include="..\..\fq_nmod\rand.c" />
     <ClCompile Include="..\..\fq_nmod\randtest.c" />
     <ClCompile Include="..\..\fq_nmod\sqr.c" />
     <ClCompile Include="..\..\fq_nmod\sub.c" />
@@ -2063,6 +2072,7 @@
     <ClCompile Include="..\..\fq_nmod_mpoly\univar.c" />
     <ClCompile Include="..\..\fq_nmod_poly\add.c" />
     <ClCompile Include="..\..\fq_nmod_poly\add_series.c" />
+    <ClCompile Include="..\..\fq_nmod_poly\add_si.c" />
     <ClCompile Include="..\..\fq_nmod_poly\clear.c" />
     <ClCompile Include="..\..\fq_nmod_poly\compose.c" />
     <ClCompile Include="..\..\fq_nmod_poly\compose_divconquer.c" />
@@ -2126,6 +2136,8 @@
     <ClCompile Include="..\..\fq_nmod_poly\normalise.c" />
     <ClCompile Include="..\..\fq_nmod_poly\one.c" />
     <ClCompile Include="..\..\fq_nmod_poly\pow.c" />
+    <ClCompile Include="..\..\fq_nmod_poly\pow_trunc.c" />
+    <ClCompile Include="..\..\fq_nmod_poly\pow_trunc_binexp.c" />
     <ClCompile Include="..\..\fq_nmod_poly\powmod_fmpz_binexp.c" />
     <ClCompile Include="..\..\fq_nmod_poly\powmod_fmpz_binexp_preinv.c" />
     <ClCompile Include="..\..\fq_nmod_poly\powmod_fmpz_sliding_preinv.c" />
@@ -2184,6 +2196,7 @@
     <ClCompile Include="..\..\fq_nmod_poly_factor\print.c" />
     <ClCompile Include="..\..\fq_nmod_poly_factor\print_pretty.c" />
     <ClCompile Include="..\..\fq_nmod_poly_factor\realloc.c" />
+    <ClCompile Include="..\..\fq_nmod_poly_factor\roots.c" />
     <ClCompile Include="..\..\fq_nmod_poly_factor\set.c" />
     <ClCompile Include="..\..\fq_nmod_vec\add.c" />
     <ClCompile Include="..\..\fq_nmod_vec\clear.c" />
@@ -2204,6 +2217,7 @@
     <ClCompile Include="..\..\fq_nmod_vec\zero.c" />
     <ClCompile Include="..\..\fq_poly\add.c" />
     <ClCompile Include="..\..\fq_poly\add_series.c" />
+    <ClCompile Include="..\..\fq_poly\add_si.c" />
     <ClCompile Include="..\..\fq_poly\clear.c" />
     <ClCompile Include="..\..\fq_poly\compose.c" />
     <ClCompile Include="..\..\fq_poly\compose_divconquer.c" />
@@ -2268,6 +2282,8 @@
     <ClCompile Include="..\..\fq_poly\normalise.c" />
     <ClCompile Include="..\..\fq_poly\one.c" />
     <ClCompile Include="..\..\fq_poly\pow.c" />
+    <ClCompile Include="..\..\fq_poly\pow_trunc.c" />
+    <ClCompile Include="..\..\fq_poly\pow_trunc_binexp.c" />
     <ClCompile Include="..\..\fq_poly\powmod_fmpz_binexp.c" />
     <ClCompile Include="..\..\fq_poly\powmod_fmpz_binexp_preinv.c" />
     <ClCompile Include="..\..\fq_poly\powmod_fmpz_sliding_preinv.c" />
@@ -2327,6 +2343,7 @@
     <ClCompile Include="..\..\fq_poly_factor\print.c" />
     <ClCompile Include="..\..\fq_poly_factor\print_pretty.c" />
     <ClCompile Include="..\..\fq_poly_factor\realloc.c" />
+    <ClCompile Include="..\..\fq_poly_factor\roots.c" />
     <ClCompile Include="..\..\fq_poly_factor\set.c" />
     <ClCompile Include="..\..\fq_vec\add.c" />
     <ClCompile Include="..\..\fq_vec\clear.c" />
@@ -2373,6 +2390,7 @@
     <ClCompile Include="..\..\fq_zech\norm.c" />
     <ClCompile Include="..\..\fq_zech\pow.c" />
     <ClCompile Include="..\..\fq_zech\pth_root.c" />
+    <ClCompile Include="..\..\fq_zech\rand.c" />
     <ClCompile Include="..\..\fq_zech\randtest.c" />
     <ClCompile Include="..\..\fq_zech\set_fmpz.c" />
     <ClCompile Include="..\..\fq_zech\set_fq_nmod.c" />
@@ -2429,6 +2447,7 @@
     <ClCompile Include="..\..\fq_zech_mat\zero.c" />
     <ClCompile Include="..\..\fq_zech_poly\add.c" />
     <ClCompile Include="..\..\fq_zech_poly\add_series.c" />
+    <ClCompile Include="..\..\fq_zech_poly\add_si.c" />
     <ClCompile Include="..\..\fq_zech_poly\clear.c" />
     <ClCompile Include="..\..\fq_zech_poly\compose.c" />
     <ClCompile Include="..\..\fq_zech_poly\compose_divconquer.c" />
@@ -2490,6 +2509,8 @@
     <ClCompile Include="..\..\fq_zech_poly\normalise.c" />
     <ClCompile Include="..\..\fq_zech_poly\one.c" />
     <ClCompile Include="..\..\fq_zech_poly\pow.c" />
+    <ClCompile Include="..\..\fq_zech_poly\pow_trunc.c" />
+    <ClCompile Include="..\..\fq_zech_poly\pow_trunc_binexp.c" />
     <ClCompile Include="..\..\fq_zech_poly\powmod_fmpz_binexp.c" />
     <ClCompile Include="..\..\fq_zech_poly\powmod_fmpz_binexp_preinv.c" />
     <ClCompile Include="..\..\fq_zech_poly\powmod_fmpz_sliding_preinv.c" />
@@ -2548,6 +2569,7 @@
     <ClCompile Include="..\..\fq_zech_poly_factor\print.c" />
     <ClCompile Include="..\..\fq_zech_poly_factor\print_pretty.c" />
     <ClCompile Include="..\..\fq_zech_poly_factor\realloc.c" />
+    <ClCompile Include="..\..\fq_zech_poly_factor\roots.c" />
     <ClCompile Include="..\..\fq_zech_poly_factor\set.c" />
     <ClCompile Include="..\..\fq_zech_vec\add.c" />
     <ClCompile Include="..\..\fq_zech_vec\clear.c" />
@@ -2858,6 +2880,7 @@
     <ClCompile Include="..\..\nmod_poly\KS2_unpack.c" />
     <ClCompile Include="..\..\nmod_poly\add.c" />
     <ClCompile Include="..\..\nmod_poly\add_series.c" />
+    <ClCompile Include="..\..\nmod_poly\add_ui.c" />
     <ClCompile Include="..\..\nmod_poly\asin_series.c" />
     <ClCompile Include="..\..\nmod_poly\asinh_series.c" />
     <ClCompile Include="..\..\nmod_poly\atan_series.c" />
@@ -3002,6 +3025,7 @@
     <ClCompile Include="..\..\nmod_poly\sqrt_series.c" />
     <ClCompile Include="..\..\nmod_poly\sub.c" />
     <ClCompile Include="..\..\nmod_poly\sub_series.c" />
+    <ClCompile Include="..\..\nmod_poly\sub_ui.c" />
     <ClCompile Include="..\..\nmod_poly\tan_series.c" />
     <ClCompile Include="..\..\nmod_poly\tanh_series.c" />
     <ClCompile Include="..\..\nmod_poly\taylor_shift.c" />
@@ -3033,6 +3057,8 @@
     <ClCompile Include="..\..\nmod_poly_factor\pow.c" />
     <ClCompile Include="..\..\nmod_poly_factor\print.c" />
     <ClCompile Include="..\..\nmod_poly_factor\realloc.c" />
+    <ClCompile Include="..\..\nmod_poly_factor\roots.c" />
+    <ClCompile Include="..\..\nmod_poly_factor\roots_factored.c" />
     <ClCompile Include="..\..\nmod_poly_factor\set.c" />
     <ClCompile Include="..\..\nmod_poly_mat\add.c" />
     <ClCompile Include="..\..\nmod_poly_mat\clear.c" />
@@ -3250,6 +3276,7 @@
     <ClCompile Include="..\..\thread_pool\set_size.c" />
     <ClCompile Include="..\..\thread_pool\wait.c" />
     <ClCompile Include="..\..\thread_pool\wake.c" />
+    <ClCompile Include="..\..\ulong_extras\CRT.c" />
     <ClCompile Include="..\..\ulong_extras\cbrt.c" />
     <ClCompile Include="..\..\ulong_extras\cbrt_binary_search.c" />
     <ClCompile Include="..\..\ulong_extras\cbrt_chebyshev_approximation.c" />
