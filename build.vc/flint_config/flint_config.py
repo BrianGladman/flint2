@@ -5,8 +5,8 @@ Copyright (C) 2011, 2012, 2013, 2014 Brian Gladman
 '''
 
 from operator import itemgetter
-from os import scandir, walk, unlink, makedirs, remove
-from os.path import join, split, splitext, isdir, exists
+from os import scandir, walk, unlink, mkdir, makedirs, remove
+from os.path import join, split, splitext, isdir, isfile, exists
 from os.path import dirname, abspath, relpath, realpath, normpath
 from copy import deepcopy
 from sys import argv, exit, path
@@ -21,6 +21,21 @@ from _msvc_filters import gen_filter
 from _msvc_project import Project_Type, gen_vcxproj
 from _msvc_solution import msvc_solution
 
+# copy from file ipath to file opath but avoid copying if
+# opath exists and is the same as ipath (this is to avoid
+# triggering an unecessary rebuild).
+
+def write_f(ipath, opath):
+  if exists(ipath) and not isdir(ipath):
+    if exists(opath) and isfile(opath) and cmp(ipath, opath):
+      return
+    dp , f = split(opath) 
+    try:
+      mkdir(dp)
+    except FileExistsError:
+      pass
+    copy(ipath, opath)
+
 vs_version = 19
 if len(argv) > 1:
   vs_version = int(argv[1])
@@ -28,12 +43,13 @@ if len(argv) > 1:
 project_name = 'flint'
 script_dir = dirname(realpath(__file__))
 build_dir_name = 'build.vs{0:d}'.format(vs_version)
-build_root_dir = abspath(join(script_dir, '..\\..\\' + build_dir_name))
-build_aux_dir = abspath(join(script_dir, '..\\..\\' + 'build.vc'))
+build_root_dir = abspath(join(script_dir, '..', '..', build_dir_name)) + '\\'
+build_aux_dir = abspath(join(script_dir, '..', '..', 'build.vc')) + '\\'
 path.append(build_root_dir)
+write_f(join(build_aux_dir, 'version_info.py'), build_root_dir)
 from version_info import vs_info
 
-# add user choice (duplicate in _msvc_project.py)
+# add user choice (duplicate this in _msvc_project.py)
 flib_type = 'reentrant' # ('gc', 'reentrant', 'single')
 
 # The path to flint, solution and project directories
@@ -47,17 +63,6 @@ build_lib = True
 build_dll = True
 build_tests = False
 build_profiles = False
-
-# copy from file ipath to file opath but avoid copying if
-# opath exists and is the same as ipath (this is to avoid
-# triggering an unecessary rebuild).
-
-def write_f(ipath, opath):
-  if exists(ipath) and not isdir(ipath):
-    if exists(opath):
-      if isdir(opath) or cmp(ipath, opath):
-        return
-    copy(ipath, opath)
 
 ignore_dirs = ( '.git', '.vs', 'doc', 'examples', 'lib', 'exe', 'dll', 'win_hdrs', 'link')
 req_extns = ( '.h', '.c', '.cc', '.cpp' )
