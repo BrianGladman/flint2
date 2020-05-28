@@ -46,7 +46,9 @@ build_dir_name = 'build.vs{0:d}'.format(vs_version)
 build_root_dir = abspath(join(script_dir, '..', '..', build_dir_name)) + '\\'
 build_aux_dir = abspath(join(script_dir, '..', '..', 'build.vc')) + '\\'
 path.append(build_root_dir)
-write_f(join(build_aux_dir, 'version_info.py'), build_root_dir)
+
+write_f(join(build_aux_dir, f'version_info{vs_version}.py'), 
+                            join(build_root_dir, 'version_info.py'))
 from version_info import vs_info
 
 # add user choice (duplicate this in _msvc_project.py)
