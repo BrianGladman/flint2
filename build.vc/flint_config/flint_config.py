@@ -26,15 +26,14 @@ from _msvc_solution import msvc_solution
 # triggering an unecessary rebuild).
 
 def write_f(ipath, opath):
-  if exists(ipath) and not isdir(ipath):
-    if exists(opath) and isfile(opath) and cmp(ipath, opath):
-      return
-    dp , f = split(opath) 
-    try:
-      mkdir(dp)
-    except FileExistsError:
-      pass
-    copy(ipath, opath)
+  if not exists(ipath) or not isfile(ipath):
+    return
+  if exists(opath) and isfile(opath) and cmp(ipath, opath):
+    return
+  dp, f = split(opath)
+  if not exists(dp):
+    makedirs(dp)
+  copy(ipath, opath)
 
 vs_version = 19
 if len(argv) > 1:
