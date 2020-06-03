@@ -1,5 +1,5 @@
-
 .. _nmod-poly:
+
 **nmod_poly.h** -- univariate polynomials over integers mod n (word-size n)
 ===============================================================================
 
@@ -775,7 +775,8 @@ Powering
     ``lenf - 1`` coefficients.
 
 .. function:: void nmod_poly_powmod_mpz_binexp(nmod_poly_t res, const nmod_poly_t poly, mpz_srcptr e, const nmod_poly_t f)
-                                                                                              Sets ``res`` to ``poly`` raised to the power ``e``
+              
+    Sets ``res`` to ``poly`` raised to the power ``e``
     modulo ``f``, using binary exponentiation. We require ``e >= 0``.
 
 .. function:: void _nmod_poly_powmod_fmpz_binexp(mp_ptr res, mp_srcptr poly, fmpz_t e, mp_srcptr f, slong lenf, nmod_t mod)
@@ -785,10 +786,11 @@ Powering
 
     We require ``lenf > 1``. It is assumed that ``poly`` is already
     reduced modulo ``f`` and zero-padded as necessary to have length
-    exactly ``lenf - 1``. The output ``res`` must have room for                               ``lenf - 1`` coefficients.
+    exactly ``lenf - 1``. The output ``res`` must have room for ``lenf - 1`` coefficients.
 
 .. function:: void nmod_poly_powmod_fmpz_binexp(nmod_poly_t res, const nmod_poly_t poly, fmpz_t e, const nmod_poly_t f)
-                                                                                              Sets ``res`` to ``poly`` raised to the power ``e``
+
+    Sets ``res`` to ``poly`` raised to the power ``e``
     modulo ``f``, using binary exponentiation. We require ``e >= 0``.
 
 .. function:: void _nmod_poly_powmod_ui_binexp_preinv (mp_ptr res, mp_srcptr poly, ulong e, mp_srcptr f, slong lenf, mp_srcptr finv, slong lenfinv, nmod_t mod)
@@ -819,6 +821,7 @@ Powering
     ``lenf - 1`` coefficients.
 
 .. function:: void nmod_poly_powmod_mpz_binexp_preinv(nmod_poly_t res, const nmod_poly_t poly, mpz_srcptr e, const nmod_poly_t f, const nmod_poly_t finv)                           
+    
     Sets ``res`` to ``poly`` raised to the power ``e``
     modulo ``f``, using binary exponentiation. We require ``e >= 0``.
     We require ``finv`` to be the inverse of the reverse of ``f``.
@@ -857,7 +860,8 @@ Powering
     ``f``.
 
 .. function:: void _nmod_poly_powmod_x_fmpz_preinv (mp_ptr res, fmpz_t e, mp_srcptr f, slong lenf, mp_srcptr finv, slong lenfinv, nmod_t mod)
-                                                                                              Sets ``res`` to ``x`` raised to the power ``e`` modulo ``f``,
+
+    Sets ``res`` to ``x`` raised to the power ``e`` modulo ``f``,
     using sliding window exponentiation. We require ``e > 0``.
     We require ``finv`` to be the inverse of the reverse of ``f``.
 
@@ -926,14 +930,14 @@ Division
     Finds `Q` and `R` such that `A = B Q + R` with `\operatorname{len}(R) < \operatorname{len}(B)`.
     If `\operatorname{len}(B) = 0` an exception is raised.
 
-.. function:: void _nmod_poly_div_basecase(mp_ptr Q, mp_ptr W, mp_srcptr A, slong A_len, mp_srcptr B, slong B_len, nmod_t mod);
+.. function:: void _nmod_poly_div_basecase(mp_ptr Q, mp_ptr W, mp_srcptr A, slong A_len, mp_srcptr B, slong B_len, nmod_t mod)
 
     Notionally finds polynomials `Q` and `R` such that `A = B Q + R` with
     `\operatorname{len}(R) < \operatorname{len}(B)`, but returns only ``Q``. If `\operatorname{len}(B) = 0` an
     exception is raised. We require that ``W`` is temporary space of
     ``NMOD_DIV_BC_ITCH(A_len, B_len, mod)`` coefficients.
 
-.. function:: void nmod_poly_div_basecase(nmod_poly_t Q, const nmod_poly_t A, const nmod_poly_t B);
+.. function:: void nmod_poly_div_basecase(nmod_poly_t Q, const nmod_poly_t A, const nmod_poly_t B)
 
     Notionally finds polynomials `Q` and `R` such that `A = B Q + R` with
     `\operatorname{len}(R) < \operatorname{len}(B)`, but returns only ``Q``. If `\operatorname{len}(B) = 0` an
@@ -1025,10 +1029,8 @@ Division
     Computes the quotient `Q` on polynomial division of `A` and `B`.
 
 .. function:: void _nmod_poly_rem_basecase(mp_ptr R, mp_ptr W, mp_srcptr A, slong lenA, mp_srcptr B, slong lenB, nmod_t mod)
-
-.. function:: void nmod_poly_rem_basecase(nmod_poly_t R, const nmod_poly_t A, const nmod_poly_t B)
-
-.. function:: void _nmod_poly_rem_q1(mp_ptr R, mp_srcptr A, slong lenA, mp_srcptr B, slong lenB, nmod_t mod)
+              void nmod_poly_rem_basecase(nmod_poly_t R, const nmod_poly_t A, const nmod_poly_t B)
+              void _nmod_poly_rem_q1(mp_ptr R, mp_srcptr A, slong lenA, mp_srcptr B, slong lenB, nmod_t mod)
 
     Notationally, computes `Q` and `R` such that `A = BQ + R` with
     `\operatorname{len}(R) < \operatorname{len}(B)`, where `\operatorname{len}(A) = \operatorname{len}(B) + 1 \geq \operatorname{len}(B) > 0`,
@@ -1644,7 +1646,7 @@ Modular composition
     of the reverse of ``h``. No aliasing of ``res`` and ``polys`` is allowed.
     The algorithm used is the Brent-Kung matrix algorithm.
 
-.. function:: void _nmod_poly_compose_mod_brent_kung_vec_preinv_threaded_pool(nmod_poly_struct * res, const nmod_poly_struct * polys, slong lenpolys, slong l, const mp_srcptr g, slong glen, mp_srcptr poly, slong len, mp_srcptr polyinv, slong leninv, nmod_t mod, thread_pool_handle * threads, slong num_threads)
+.. function:: void _nmod_poly_compose_mod_brent_kung_vec_preinv_threaded_pool(nmod_poly_struct * res, const nmod_poly_struct * polys, slong lenpolys, slong l, mp_srcptr g, slong glen, mp_srcptr poly, slong len, mp_srcptr polyinv, slong leninv, nmod_t mod, thread_pool_handle * threads, slong num_threads)
 
     Multithreaded version of
     :func:`_nmod_poly_compose_mod_brent_kung_vec_preinv`. Distributing the
@@ -2540,7 +2542,7 @@ Products
     of `(x - x_0)(x - x_1) \cdots (x - x_{n-1})`, the roots `x_i` being
     given by ``xs``.
 
-.. function:: void int nmod_poly_find_distinct_nonzero_roots(mp_limb_t * roots, const nmod_poly_t A)
+.. function:: int nmod_poly_find_distinct_nonzero_roots(mp_limb_t * roots, const nmod_poly_t A)
 
     If ``A`` has `\deg(A)` distinct nonzero roots in `\mathbb{F}_p`, write these roots out to ``roots[0]`` to ``roots[deg(A) - 1]`` and return ``1``.
     Otherwise, return ``0``. It is assumed that ``A`` is nonzero and that the modulus of ``A`` is prime.
@@ -2613,16 +2615,14 @@ Chinese Remaindering
     Initialize ``CRT`` for chinese remaindering.
 
 .. function:: int nmod_poly_multi_crt_precompute(nmod_poly_multi_crt_t CRT, const nmod_poly_struct * moduli, slong len)
-
-.. function:: int nmod_poly_multi_crt_precompute_p(nmod_poly_multi_crt_t CRT, const nmod_poly_struct * const * moduli, slong len)
+              int nmod_poly_multi_crt_precompute_p(nmod_poly_multi_crt_t CRT, const nmod_poly_struct * const * moduli, slong len)
 
     Configure ``CRT`` for repeated chinese remaindering of ``moduli``. The number of moduli, ``len``, should be positive.
     A return of ``0`` indicates that the compilation failed and future calls to :func:`nmod_poly_multi_crt_precomp` will leave the output undefined.
     A return of ``1`` indicates that the compilation was successful, which occurs if and only if either (1) ``len == 1`` and ``modulus + 0`` is nonzero, or (2) all of the moduli have positive degree and are pairwise relatively prime.
 
 .. function:: void nmod_poly_multi_crt_precomp(nmod_poly_t output, const nmod_poly_multi_crt_t CRT, const nmod_poly_struct * values)
-
-.. function:: void nmod_poly_multi_crt_precomp_p(nmod_poly_t output, const nmod_poly_multi_crt_t CRT, const nmod_poly_struct * const * values)
+              void nmod_poly_multi_crt_precomp_p(nmod_poly_t output, const nmod_poly_multi_crt_t CRT, const nmod_poly_struct * const * values)
 
     Set ``output`` to the polynomial of lowest possible degree that is congruent to ``values + i`` modulo the ``moduli + i`` in :func:`nmod_poly_multi_crt_precompute`.
     The inputs ``values + 0, ..., values + len - 1`` where ``len`` was used in :func:`nmod_poly_multi_crt_precompute` are expected to be valid and have modulus matching the modulus of the moduli used in :func:`nmod_poly_multi_crt_precompute`.
@@ -2641,8 +2641,7 @@ Chinese Remaindering
     Return the required length of the output for :func:`_nmod_poly_multi_crt_run`.
 
 .. function:: void _nmod_poly_multi_crt_run(nmod_poly_struct * outputs, const nmod_poly_multi_crt_t CRT, const nmod_poly_struct * inputs)
-
-.. function:: void _nmod_poly_multi_crt_run_p(nmod_poly_struct * outputs, const nmod_poly_multi_crt_t CRT, const nmod_poly_struct * const * inputs)
+              void _nmod_poly_multi_crt_run_p(nmod_poly_struct * outputs, const nmod_poly_multi_crt_t CRT, const nmod_poly_struct * const * inputs)
 
     Perform the same operation as :func:`nmod_poly_multi_crt_precomp` using supplied temporary space.
     The actual output is placed in ``outputs + 0``, and ``outputs`` should contain space for all temporaries and should be at least as long as ``_nmod_poly_multi_crt_local_size(CRT)``.
@@ -2694,10 +2693,8 @@ Berlekamp-Massey Algorithm
     Set the characteristic of the field and empty the stream of points in ``B``.
 
 .. function:: void nmod_berlekamp_massey_add_points(nmod_berlekamp_massey_t B, const mp_limb_t * a, slong count)
-
-.. function:: void nmod_berlekamp_massey_add_zeros(nmod_berlekamp_massey_t B, slong count)
-
-.. function:: void nmod_berlekamp_massey_add_point(nmod_berlekamp_massey_t B, mp_limb_t a)
+              void nmod_berlekamp_massey_add_zeros(nmod_berlekamp_massey_t B, slong count)
+              void nmod_berlekamp_massey_add_point(nmod_berlekamp_massey_t B, mp_limb_t a)
 
     Add point(s) to the stream processed by ``B``. The addition of any number of points will not update the `V` and `R` polynomial.
 

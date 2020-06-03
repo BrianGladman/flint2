@@ -67,24 +67,24 @@ Basic assignment and manipulation
     and zeroes elsewhere. If ``mat`` is nonsquare, it is set to the
     truncation of a unit matrix.
 
-.. function:: void fmpz_mat_swap_rows(fmpz_mat_t, slong * perm, slong r, slong r)
-    
+.. function:: void fmpz_mat_swap_rows(fmpz_mat_t mat, slong * perm, slong r, slong s)
+
     Swaps rows ``r`` and ``s`` of ``mat``.  If ``perm`` is non-``NULL``, the
     permutation of the rows will also be applied to ``perm``.
 
-.. function:: void fmpz_mat_swap_cols(fmpz_mat_t, slong * perm, slong r, slong r)
-    
+.. function:: void fmpz_mat_swap_cols(fmpz_mat_t mat, slong * perm, slong r, slong s)
+
     Swaps columns ``r`` and ``s`` of ``mat``.  If ``perm`` is non-``NULL``, the
     permutation of the columns will also be applied to ``perm``.
 
-.. function:: void fmpz_mat_invert_rows(fmpz_mat_t, slong * perm)
-    
+.. function:: void fmpz_mat_invert_rows(fmpz_mat_t mat, slong * perm)
+
     Swaps rows ``i`` and ``r - i`` of ``mat`` for ``0 <= i < r/2``, where
     ``r`` is the number of rows of ``mat``. If ``perm`` is non-``NULL``, the
     permutation of the rows will also be applied to ``perm``.
 
-.. function:: void fmpz_mat_invert_cols(fmpz_mat_t, slong * perm)
-    
+.. function:: void fmpz_mat_invert_cols(fmpz_mat_t mat, slong * perm)
+
     Swaps columns ``i`` and ``c - i`` of ``mat`` for ``0 <= i < c/2``, where
     ``c`` is the number of columns of ``mat``. If ``perm`` is non-``NULL``, the
     permutation of the columns will also be applied to ``perm``.
@@ -424,10 +424,8 @@ Matrix-scalar arithmetic
 
 
 .. function:: void fmpz_mat_scalar_mul_si(fmpz_mat_t B, const fmpz_mat_t A, slong c)
-
-.. function:: void fmpz_mat_scalar_mul_ui(fmpz_mat_t B, const fmpz_mat_t A, ulong c)
-
-.. function:: void fmpz_mat_scalar_mul_fmpz(fmpz_mat_t B, const fmpz_mat_t A, const fmpz_t c)
+              void fmpz_mat_scalar_mul_ui(fmpz_mat_t B, const fmpz_mat_t A, ulong c)
+              void fmpz_mat_scalar_mul_fmpz(fmpz_mat_t B, const fmpz_mat_t A, const fmpz_t c)
 
     Set ``A = B*c`` where ``B`` is an ``fmpz_mat_t`` and ``c``
     is a scalar respectively of type ``slong``, ``ulong``,
@@ -435,10 +433,8 @@ Matrix-scalar arithmetic
     be compatible.
 
 .. function:: void fmpz_mat_scalar_addmul_si(fmpz_mat_t B, const fmpz_mat_t A, slong c)
-
-.. function:: void fmpz_mat_scalar_addmul_ui(fmpz_mat_t B, const fmpz_mat_t A, ulong c)
-
-.. function:: void fmpz_mat_scalar_addmul_fmpz(fmpz_mat_t B, const fmpz_mat_t A, const fmpz_t c)
+              void fmpz_mat_scalar_addmul_ui(fmpz_mat_t B, const fmpz_mat_t A, ulong c)
+              void fmpz_mat_scalar_addmul_fmpz(fmpz_mat_t B, const fmpz_mat_t A, const fmpz_t c)
 
     Set ``A = A + B*c`` where ``B`` is an ``fmpz_mat_t`` and ``c``
     is a scalar respectively of type ``slong``, ``ulong``,
@@ -446,27 +442,24 @@ Matrix-scalar arithmetic
     be compatible.
 
 .. function:: void fmpz_mat_scalar_submul_si(fmpz_mat_t B, const fmpz_mat_t A, slong c)
-
-.. function:: void fmpz_mat_scalar_submul_ui(fmpz_mat_t B, const fmpz_mat_t A, ulong c)
-
-.. function:: void fmpz_mat_scalar_submul_fmpz(fmpz_mat_t B, const fmpz_mat_t A, const fmpz_t c)
+              void fmpz_mat_scalar_submul_ui(fmpz_mat_t B, const fmpz_mat_t A, ulong c)
+              void fmpz_mat_scalar_submul_fmpz(fmpz_mat_t B, const fmpz_mat_t A, const fmpz_t c)
 
     Set ``A = A - B*c`` where ``B`` is an ``fmpz_mat_t`` and ``c``
     is a scalar respectively of type ``slong``, ``ulong``,
     or ``fmpz_t``. The dimensions of ``A`` and ``B`` must
     be compatible.
 
-.. function:: void fmpz_mat_scalar_addmul_nmod_mat_ui(fmpz_mat_t B, const nmod_mat_t A, ulong c) void fmpz_mat_scalar_addmul_nmod_mat_fmpz(fmpz_mat_t B, const nmod_mat_t A, const fmpz_t c)
+.. function:: void fmpz_mat_scalar_addmul_nmod_mat_ui(fmpz_mat_t B, const nmod_mat_t A, ulong c)
+              void fmpz_mat_scalar_addmul_nmod_mat_fmpz(fmpz_mat_t B, const nmod_mat_t A, const fmpz_t c)
 
     Set ``A = A + B*c`` where ``B`` is an ``nmod_mat_t`` and ``c``
     is a scalar respectively of type ``ulong`` or ``fmpz_t``.
     The dimensions of ``A`` and ``B`` must be compatible.
 
 .. function:: void fmpz_mat_scalar_divexact_si(fmpz_mat_t B, const fmpz_mat_t A, slong c)
-
-.. function:: void fmpz_mat_scalar_divexact_ui(fmpz_mat_t B, const fmpz_mat_t A, ulong c)
-
-.. function:: void fmpz_mat_scalar_divexact_fmpz(fmpz_mat_t B, const fmpz_mat_t A, const fmpz_t c)
+              void fmpz_mat_scalar_divexact_ui(fmpz_mat_t B, const fmpz_mat_t A, ulong c)
+              void fmpz_mat_scalar_divexact_fmpz(fmpz_mat_t B, const fmpz_mat_t A, const fmpz_t c)
 
     Set ``A = B / c``, where ``B`` is an ``fmpz_mat_t`` and ``c``
     is a scalar respectively of type ``slong``, ``ulong``,
@@ -519,8 +512,7 @@ Matrix multiplication
     multiplication (the Strassen-Winograd variant).
 
 .. function:: void _fmpz_mat_mul_multi_mod(fmpz_mat_t C, const fmpz_mat_t A, const fmpz_mat_t B, flint_bitcnt_t bits)
-
-.. function:: void fmpz_mat_mul_multi_mod(fmpz_mat_t C, const fmpz_mat_t A, const fmpz_mat_t B)
+              void fmpz_mat_mul_multi_mod(fmpz_mat_t C, const fmpz_mat_t A, const fmpz_mat_t B)
 
     Sets ``C`` to the matrix product `C = AB` computed using a multimodular 
     algorithm. `C` is computed modulo several small prime numbers
@@ -880,7 +872,7 @@ allowed between arguments.
     Aliasing between input and output matrices is allowed.
 
 
-.. function:: FLINT_DLL void _fmpz_mat_solve_dixon_den(fmpz_mat_t X, fmpz_t den, const fmpz_mat_t A, const fmpz_mat_t B, const nmod_mat_t Ainv, mp_limb_t p, const fmpz_t N, const fmpz_t D)
+.. function:: void _fmpz_mat_solve_dixon_den(fmpz_mat_t X, fmpz_t den, const fmpz_mat_t A, const fmpz_mat_t B, const nmod_mat_t Ainv, mp_limb_t p, const fmpz_t N, const fmpz_t D)
 
     Solves the equation `AX = B` for nonsingular `A`. More precisely, computes
     (``X``, ``den``) such that `AX = B \times \operatorname{den}` using a 

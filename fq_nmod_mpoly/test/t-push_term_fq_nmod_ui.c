@@ -23,7 +23,7 @@ main(void)
     fflush(stdout);
 
     /* Check pushback matches add */
-    for (i = 0; i < 1000 * flint_test_multiplier(); i++)
+    for (i = 0; i < 800 * flint_test_multiplier(); i++)
     {
         fq_nmod_mpoly_ctx_t ctx;
         fq_nmod_mpoly_t f1, f2, m;
@@ -44,8 +44,8 @@ main(void)
         exp = (ulong *) flint_malloc(nvars*sizeof(ulong));
         exp2 = (ulong *) flint_malloc(nvars*sizeof(ulong));
 
-        len = n_randint(state, 10);
-        exp_bits = n_randint(state, FLINT_BITS + 1);
+        len = n_randint(state, 20);
+        exp_bits = n_randint(state, FLINT_BITS) + 1;
 
         fq_nmod_mpoly_zero(f1, ctx);
         fq_nmod_mpoly_zero(f2, ctx);
@@ -55,7 +55,7 @@ main(void)
             /* get random term */
             fq_nmod_randtest(c, state, ctx->fqctx);
             for (k = 0; k < nvars; k++)
-                exp[k] = n_randint(state, exp_bits);
+                exp[k] = n_randtest_bits(state, n_randint(state, exp_bits) + 1);
 
             /* add it to f1 */
             fq_nmod_mpoly_zero(m, ctx);

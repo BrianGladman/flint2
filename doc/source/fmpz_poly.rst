@@ -1637,7 +1637,7 @@ Euclidean division
     For ordinary use set the flag ``exact`` to `0`. In this case, no checks
     or early aborts occur and the function always returns `1`.
 
-.. function:: fmpz_poly_div_divconquer(fmpz_poly_t Q, const fmpz_poly_t A, const fmpz_poly_t B)
+.. function:: void fmpz_poly_div_divconquer(fmpz_poly_t Q, const fmpz_poly_t A, const fmpz_poly_t B)
 
     Computes the quotient `Q` of `A` divided by `B`.
 
@@ -1922,15 +1922,7 @@ Power series division
 
 .. function:: void _fmpz_poly_div_series_basecase(fmpz * Q, const fmpz * A, slong Alen, const fmpz * B, slong Blen, slong n)
 
-    Divides ``(A, Alen)`` by ``(B, Blen)`` as power series over `\mathbb{Z}`,
-    assuming `B` has constant term `\pm 1` and `n \geq 1`.
-    Aliasing is not supported.
-
 .. function:: void _fmpz_poly_div_series_divconquer(fmpz * Q, const fmpz * A, slong Alen, const fmpz * B, slong Blen, slong n)
-
-    Divides ``(A, Alen)`` by ``(B, Blen)`` as power series over `\mathbb{Z}`,
-    assuming `B` has constant term `\pm 1` and `n \geq 1`.
-    Aliasing is not supported.
 
 .. function:: void _fmpz_poly_div_series(fmpz * Q, const fmpz * A, slong Alen, const fmpz * B, slong Blen, slong n)
 
@@ -1940,17 +1932,7 @@ Power series division
 
 .. function:: void fmpz_poly_div_series_basecase(fmpz_poly_t Q, const fmpz_poly_t A, const fmpz_poly_t B, slong n)
 
-    Performs power series division in `\mathbb{Z}[[x]] / (x^n)`.  The function 
-    considers the polynomials `A` and `B` as power series of length `n` 
-    starting with the constant terms.  The function assumes that `B` has 
-    constant term `\pm 1` and `n \geq 1`.
-
-.. function:: void fmpz_poly_div_series_basecase(fmpz_poly_t Q, const fmpz_poly_t A, const fmpz_poly_t B, slong n)
-
-    Performs power series division in `\mathbb{Z}[[x]] / (x^n)`.  The function
-    considers the polynomials `A` and `B` as power series of length `n`
-    starting with the constant terms.  The function assumes that `B` has
-    constant term `\pm 1` and `n \geq 1`.
+.. function:: void fmpz_poly_div_series_divconquer(fmpz_poly_t Q, const fmpz_poly_t A, const fmpz_poly_t B, slong n)
 
 .. function:: void fmpz_poly_div_series(fmpz_poly_t Q, const fmpz_poly_t A, const fmpz_poly_t B, slong n)
 
@@ -1985,7 +1967,7 @@ Pseudo division
     that `\ell^d A = Q B + R`.  This function is used for simulating division 
     over `\mathbb{Q}`.
 
-.. function:: void _fmpz_poly_pseudo_divrem_divconquer(fmpz * Q, fmpz * R, ulong * d, const fmpz * A, slong lenB, const fmpz * B, slong lenB, const fmpz_preinvn_t inv)
+.. function:: void _fmpz_poly_pseudo_divrem_divconquer(fmpz * Q, fmpz * R, ulong * d, const fmpz * A, slong lenA, const fmpz * B, slong lenB, const fmpz_preinvn_t inv)
 
     Computes ``(Q, lenA - lenB + 1)``, ``(R, lenA)`` such that 
     `\ell^d A = B Q + R`, only setting the bottom `\operatorname{len}(B) - 1` coefficients 
@@ -2359,7 +2341,7 @@ Inflation and deflation
     Sets ``result`` to the inflated polynomial `p(x^n)` where
     `p` is given by ``input`` and `n` is given by ``inflation``.
 
-.. function:: fmpz_poly_deflate(fmpz_poly_t result, const fmpz_poly_t input, ulong deflation)
+.. function:: void fmpz_poly_deflate(fmpz_poly_t result, const fmpz_poly_t input, ulong deflation)
 
     Sets ``result`` to the deflated polynomial `p(x^{1/n})` where
     `p` is given by ``input`` and `n` is given by ``deflation``.
@@ -3134,31 +3116,12 @@ Products
     `p_i/q_i` being given by ``xs``.
 
 
-
-Newton basis conversion
---------------------------------------------------------------------------------
-
-
-.. function:: void _fmpz_poly_monomial_to_newton(fmpz * poly, const fmpz * roots, slong n)
-
-    Converts the polynomial in-place from its coefficients in the
-    monomial basis to the Newton basis `1, (x-r_0), (x-r_0)(x-r_1), \ldots`.
-    Uses Horner's rule, requiring `O(n^2)` operations.
-
-.. function:: void _fmpz_poly_newton_to_monomial(fmpz * poly, const fmpz * roots, slong n)
-
-    Converts the polynomial in-place from its coefficients in the
-    Newton basis `1, (x-r_0), (x-r_0)(x-r_1), \ldots` to the monomial
-    basis. Uses repeated polynomial division, requiring `O(n^2)` operations.
-
-
 Roots
 --------------------------------------------------------------------------------
 
 
 .. function:: void _fmpz_poly_bound_roots(fmpz_t bound, const fmpz * poly, slong len)
-
-.. function:: void fmpz_poly_bound_roots(fmpz_t bound, const fmpz_poly_t poly)
+              void fmpz_poly_bound_roots(fmpz_t bound, const fmpz_poly_t poly)
 
     Computes a nonnegative integer ``bound`` that bounds the absolute
     value of all complex roots of ``poly``. Uses Fujiwara's bound
@@ -3265,16 +3228,14 @@ Minimal polynomials
     and compute `\Phi_q(x)`. Then `\Phi_n(x) = \Phi_q(x^s)`.
 
 .. function:: ulong _fmpz_poly_is_cyclotomic(const fmpz * poly, slong len)
-
-.. function:: ulong fmpz_poly_is_cyclotomic(fmpz_poly_t poly)
+              ulong fmpz_poly_is_cyclotomic(fmpz_poly_t poly)
 
     If ``poly`` is a cyclotomic polynomial, returns the index `n` of this
     cyclotomic polynomial. If ``poly`` is not a cyclotomic polynomial,
     returns 0.
 
 .. function:: void _fmpz_poly_cos_minpoly(fmpz * coeffs, ulong n)
-
-.. function:: void fmpz_poly_cos_minpoly(fmpz_poly_t poly, ulong n)
+              void fmpz_poly_cos_minpoly(fmpz_poly_t poly, ulong n)
 
     Sets ``poly`` to the minimal polynomial of `2 \cos(2 \pi / n)`.
     For suitable choice of `n`, this gives the minimal polynomial
@@ -3290,9 +3251,8 @@ Minimal polynomials
     the output to be the constant polynomial 1.
 
 .. function:: void _fmpz_poly_swinnerton_dyer(fmpz * coeffs, ulong n)
-
-.. function:: void fmpz_poly_swinnerton_dyer(fmpz_poly_t poly, ulong n)
-
+              void fmpz_poly_swinnerton_dyer(fmpz_poly_t poly, ulong n)
+             
     Sets ``poly`` to the Swinnerton-Dyer polynomial `S_n`, defined as
     the integer polynomial
     `S_n = \prod (x \pm \sqrt{2} \pm \sqrt{3} \pm \sqrt{5} \pm \ldots \pm \sqrt{p_n})`
@@ -3306,16 +3266,14 @@ Orthogonal polynomials
 --------------------------------------------------------------------------------
 
 .. function:: void _fmpz_poly_chebyshev_t(fmpz * coeffs, ulong n)
-
-.. function:: void fmpz_poly_chebyshev_t(fmpz_poly_t poly, ulong n)
+              void fmpz_poly_chebyshev_t(fmpz_poly_t poly, ulong n)
 
     Sets ``poly`` to the Chebyshev polynomial of the first kind `T_n(x)`,
     defined by `T_n(x) = \cos(n \cos^{-1}(x))`, for `n\ge0`. The coefficients are
     calculated using a hypergeometric recurrence.
 
 .. function:: void _fmpz_poly_chebyshev_u(fmpz * coeffs, ulong n)
-
-.. function:: void fmpz_poly_chebyshev_u(fmpz_poly_t poly, ulong n)
+              void fmpz_poly_chebyshev_u(fmpz_poly_t poly, ulong n)
 
     Sets ``poly`` to the Chebyshev polynomial of the first kind `U_n(x)`,
     defined by `(n+1) U_n(x) = T'_{n+1}(x)`, for `n\ge0`.
@@ -3384,8 +3342,7 @@ Modular forms and q-series
 
 
 .. function:: void _fmpz_poly_eta_qexp(fmpz * f, slong r, slong len)
-
-.. function:: void fmpz_poly_eta_qexp(fmpz_poly_t f, slong r, slong n)
+              void fmpz_poly_eta_qexp(fmpz_poly_t f, slong r, slong n)
 
     Sets `f` to the `q`-expansion to length `n` of the
     Dedekind eta function (without the leading factor
@@ -3402,8 +3359,7 @@ Modular forms and q-series
     and otherwise reduces to one of those cases using power series arithmetic.
 
 .. function:: void _fmpz_poly_theta_qexp(fmpz * f, slong r, slong len)
-
-.. function:: void fmpz_poly_theta_qexp(fmpz_poly_t f, slong r, slong n)
+              void fmpz_poly_theta_qexp(fmpz_poly_t f, slong r, slong n)
 
     Sets `f` to the `q`-expansion to length `n` of the
     Jacobi theta function raised to the power `r`, i.e. `\vartheta(q)^r`

@@ -101,7 +101,7 @@ Discrete Logarithms via Pohlig-Hellman
 
     Return the internally stored base.
 
-.. function:: fmpz_mod_discrete_log_pohlig_hellman_run(fmpz_t x, const fmpz_mod_discrete_log_pohlig_hellman_t L, const fmpz_t y)
+.. function:: void fmpz_mod_discrete_log_pohlig_hellman_run(fmpz_t x, const fmpz_mod_discrete_log_pohlig_hellman_t L, const fmpz_t y)
 
     Set ``x`` to the logarithm of ``y`` with repect to the internally stored base. ``y`` is expected to be reduced modulo the ``p``.
     The function is undefined if the logarithm does not exist.

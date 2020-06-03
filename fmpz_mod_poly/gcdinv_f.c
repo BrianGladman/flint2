@@ -28,18 +28,18 @@ slong _fmpz_mod_poly_gcdinv_f(fmpz_t f, fmpz *G, fmpz *S,
     if (fmpz_is_one(f))
     {
         if (lenB < 16)
-	    {
-		    ans = _fmpz_mod_poly_gcdinv_euclidean_f(f, G, S, 
-			                                         A, lenA, B, lenB, inv, p);
-	    } else
         {
-    		T = _fmpz_vec_init(lenA - 1);
+            ans = _fmpz_mod_poly_gcdinv_euclidean_f(f, G, S, 
+			                               A, lenA, B, lenB, inv, p);
+        } else
+        {
+            T = _fmpz_vec_init(lenA - 1);
     
-	        ans = _fmpz_mod_poly_xgcd_f(f, G, T, S, B, lenB, A, lenA, inv, p);
+            ans = _fmpz_mod_poly_xgcd_f(f, G, T, S, B, lenB, A, lenA, inv, p);
             
-			_fmpz_vec_clear(T, lenA - 1);
+            _fmpz_vec_clear(T, lenA - 1);
         }
-	}
+    }
 	
     fmpz_clear(inv);
 
@@ -102,7 +102,7 @@ void fmpz_mod_poly_gcdinv_f(fmpz_t f, fmpz_mod_poly_t G, fmpz_mod_poly_t S,
         }
 
         lenG = _fmpz_mod_poly_gcdinv_f(f, g, s, 
-            A->coeffs, lenA, B->coeffs, lenB, &A->p);
+                                      A->coeffs, lenA, B->coeffs, lenB, &A->p);
 
         if (G == A || G == B)
         {

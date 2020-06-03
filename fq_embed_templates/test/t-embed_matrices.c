@@ -30,7 +30,6 @@ main(void)
     /* Check that isomorphism to self gives identity matrices */
     for (i = 0; i < 100 * flint_test_multiplier(); i++)
     {
-
         TEMPLATE(T, ctx_t) ctx;
         TEMPLATE(T, t) gen;
         const TEMPLATE(B, poly_struct) *modulus;
@@ -81,13 +80,15 @@ main(void)
             TEMPLATE(B, mat_t) embed, project, comp, one;
             slong m, n;
 
-            TEMPLATE(T, ctx_randtest)(ctx1, state);
-            m = TEMPLATE(T, ctx_degree)(ctx1);
-            n = m*j;
-            if (m == 1) {
-                i--;
-                continue;
+            while (TEMPLATE(T, ctx_randtest)(ctx1, state),
+                   m = TEMPLATE(T, ctx_degree)(ctx1),
+                   m == 1)
+            {
+                TEMPLATE(T, ctx_clear)(ctx1);
             }
+
+            n = m*j;
+
             modulus = TEMPLATE(T, ctx_modulus)(ctx1);
 
             TEMPLATE(B, poly_init)(modulus2, TEMPLATE(B, poly_modulus)(modulus));

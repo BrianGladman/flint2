@@ -182,11 +182,11 @@ Assignment and basic manipulation
 
     Sets ``poly`` to the zero polynomial.
 
-.. function:: void void fq_nmod_poly_one(fq_nmod_poly_t poly, const fq_nmod_ctx_t ctx)
+.. function:: void fq_nmod_poly_one(fq_nmod_poly_t poly, const fq_nmod_ctx_t ctx)
 
     Sets ``poly`` to the constant polynomial `1`.
 
-.. function:: void void fq_nmod_poly_gen(fq_nmod_poly_t poly, const fq_nmod_ctx_t ctx)
+.. function:: void fq_nmod_poly_gen(fq_nmod_poly_t poly, const fq_nmod_ctx_t ctx)
 
     Sets ``poly`` to the polynomial `x`.
 
@@ -737,13 +737,15 @@ Powering
 
     Sets ``res`` to the low ``trunc`` coefficients of ``poly``
     (assumed to be zero padded if necessary to length ``trunc``) to
-    the power ``e``. This is equivalent to doing a powering followed                          by a truncation. We require that ``res`` has enough space for
+    the power ``e``. This is equivalent to doing a powering followed
+    by a truncation. We require that ``res`` has enough space for
     ``trunc`` coefficients, that ``trunc > 0`` and that
     ``e > 1``. Aliasing is not permitted. Uses the binary
     exponentiation method.
 
 .. function:: void fq_nmod_poly_pow_trunc_binexp(fq_nmod_poly_t res, const fq_nmod_poly_t poly, ulong e, slong trunc, const fq_nmod_ctx_t ctx)
-                                                                                              Sets ``res`` to the low ``trunc`` coefficients of ``poly``
+
+    Sets ``res`` to the low ``trunc`` coefficients of ``poly``
     to the power ``e``. This is equivalent to doing a powering
     followed by a truncation. Uses the binary exponentiation method.
 
@@ -1448,7 +1450,7 @@ Composition
     be the inverse of the reverse of ``g``.
 
 
-.. function:: void _fq_nmod_poly_compose_mod_brent_kung_precomp_preinv(fq_nmod_struct* res, const fq_nmod_struct* f, slong lenf, const fq_nmod_mat_t A, const fq_nmod_struct* h, slong h, const fq_nmod_struct* hinv, slong lenhinv, const fq_nmod_ctx_t ctx)
+.. function:: void _fq_nmod_poly_compose_mod_brent_kung_precomp_preinv(fq_nmod_struct* res, const fq_nmod_struct* f, slong lenf, const fq_nmod_mat_t A, const fq_nmod_struct* h, slong lenh, const fq_nmod_struct* hinv, slong lenhinv, const fq_nmod_ctx_t ctx)
 
     Sets ``res`` to the composition `f(g)` modulo `h`. We require
     that `h` is nonzero. We require that the ith row of `A` contains

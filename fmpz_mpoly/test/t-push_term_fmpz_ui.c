@@ -44,7 +44,7 @@ main(void)
         exp = (ulong *) flint_malloc(nvars*sizeof(ulong));
         exp2 = (ulong *) flint_malloc(nvars*sizeof(ulong));
 
-        len = n_randint(state, 10);
+        len = n_randint(state, 20);
         coeff_bits = n_randint(state, 100) + 1;
         exp_bits = n_randint(state, FLINT_BITS + 1);
 
@@ -56,7 +56,7 @@ main(void)
             /* get random term */
             fmpz_randtest(c, state, coeff_bits);
             for (k = 0; k < nvars; k++)
-                exp[k] = n_randint(state, exp_bits);
+                exp[k] = n_randtest_bits(state, n_randint(state, exp_bits) + 1);
 
             /* add it to f1 */
             fmpz_mpoly_zero(m, ctx);
