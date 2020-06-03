@@ -130,6 +130,12 @@ MA 02111-1307, USA. */
 
 #define HAVE_STD__LOCALE 1
 
+/* Define if the compiler supports and should use thread-local storage */
+#define HAVE_TLS 1
+
+/* Define if the library should be thread-safe, no matter whether HAVE_TLS is used */
+#define FLINT_REENTRANT 1
+
 /* Define if you have the `localeconv' function. */
 #define HAVE_LOCALECONV		1
 

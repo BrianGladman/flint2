@@ -19,65 +19,65 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <RootNamespace>lib_flint</RootNamespace>
+    <RootNamespace>dll_flint</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{50BA74B7-448C-43F8-B3D0-81405D78EB95}</ProjectGuid>
+    <ProjectGuid>{41C2286F-4C78-4BB1-B70D-BE8C3B82AE78}</ProjectGuid>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
-    <Import Project="..\..\build.vc\flint_release_lib.props" />
+    <Import Project="..\..\build.vc\flint_release_dll.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
-    <Import Project="..\..\build.vc\flint_debug_lib.props" />
+    <Import Project="..\..\build.vc\flint_debug_dll.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
-    <Import Project="..\..\build.vc\flint_release_lib.props" />
+    <Import Project="..\..\build.vc\flint_release_dll.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
-    <Import Project="..\..\build.vc\flint_debug_lib.props" />
+    <Import Project="..\..\build.vc\flint_debug_dll.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.21006.1</_ProjectFileVersion>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">lib_flint</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">dll_flint</TargetName>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Platform)\$(Configuration)\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <LinkIncremental>false</LinkIncremental>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">lib_flint</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">dll_flint</TargetName>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Platform)\$(Configuration)\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <LinkIncremental>false</LinkIncremental>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">lib_flint</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">dll_flint</TargetName>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <LinkIncremental>false</LinkIncremental>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">lib_flint</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">dll_flint</TargetName>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <LinkIncremental>false</LinkIncremental>
@@ -92,15 +92,20 @@
     <ClCompile>
     <Optimization>Full</Optimization>
     <IntrinsicFunctions>true</IntrinsicFunctions>
-    <AdditionalIncludeDirectories>..\..\;..\..\build.vc;..\..\..\mpir\lib\$(IntDir);..\..\..\mpfr\lib\$(IntDir);..\..\..\pthreads\lib\$(IntDir)</AdditionalIncludeDirectories>
-    <PreprocessorDefinitions>NDEBUG;WIN32;_LIB;HAVE_CONFIG_H;PTW32_STATIC_LIB;FLINT_REENTRANT=1;HAVE_TLS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    <AdditionalIncludeDirectories>..\..\;..\..\build.vc;..\..\..\mpir\dll\$(IntDir);..\..\..\mpfr\dll\$(IntDir);..\..\..\pthreads\dll\$(IntDir);</AdditionalIncludeDirectories>
+    <PreprocessorDefinitions>NDEBUG;WIN32;HAVE_CONFIG_H;FLINT_BUILD_DLL;PTW32_BUILD;FLINT_REENTRANT=1;HAVE_TLS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     <ProgramDataBaseFileName>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFileName>
     <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <LargeAddressAware>true</LargeAddressAware>
+      <AdditionalDependencies>..\..\..\mpir\dll\$(IntDir)mpir.lib;..\..\..\mpfr\dll\$(IntDir)mpfr.lib;..\..\..\pthreads\dll\$(IntDir)pthreads.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
 
   <PostBuildEvent>
-      <Command>..\..\build.vc\postbuild $(IntDir) LIB 19
+      <Command>..\..\build.vc\postbuild $(IntDir) DLL 19
       </Command>
   </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -114,15 +119,20 @@
     <ClCompile>
     <Optimization>Disabled</Optimization>
     <IntrinsicFunctions>true</IntrinsicFunctions>
-    <AdditionalIncludeDirectories>..\..\;..\..\build.vc;..\..\..\mpir\lib\$(IntDir);..\..\..\mpfr\lib\$(IntDir);..\..\..\pthreads\lib\$(IntDir)</AdditionalIncludeDirectories>
-    <PreprocessorDefinitions>_DEBUG;WIN32;_LIB;HAVE_CONFIG_H;PTW32_STATIC_LIB;FLINT_REENTRANT=1;HAVE_TLS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    <AdditionalIncludeDirectories>..\..\;..\..\build.vc;..\..\..\mpir\dll\$(IntDir);..\..\..\mpfr\dll\$(IntDir);..\..\..\pthreads\dll\$(IntDir);</AdditionalIncludeDirectories>
+    <PreprocessorDefinitions>_DEBUG;WIN32;HAVE_CONFIG_H;FLINT_BUILD_DLL;PTW32_BUILD;FLINT_REENTRANT=1;HAVE_TLS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     <ProgramDataBaseFileName>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFileName>
     <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <LargeAddressAware>true</LargeAddressAware>
+      <AdditionalDependencies>..\..\..\mpir\dll\$(IntDir)mpir.lib;..\..\..\mpfr\dll\$(IntDir)mpfr.lib;..\..\..\pthreads\dll\$(IntDir)pthreads.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
 
   <PostBuildEvent>
-      <Command>..\..\build.vc\postbuild $(IntDir) LIB 19
+      <Command>..\..\build.vc\postbuild $(IntDir) DLL 19
       </Command>
   </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -136,15 +146,20 @@
     <ClCompile>
     <Optimization>Full</Optimization>
     <IntrinsicFunctions>true</IntrinsicFunctions>
-    <AdditionalIncludeDirectories>..\..\;..\..\build.vc;..\..\..\mpir\lib\$(IntDir);..\..\..\mpfr\lib\$(IntDir);..\..\..\pthreads\lib\$(IntDir)</AdditionalIncludeDirectories>
-    <PreprocessorDefinitions>NDEBUG;WIN32;_LIB;HAVE_CONFIG_H;PTW32_STATIC_LIB;FLINT_REENTRANT=1;HAVE_TLS=1;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    <AdditionalIncludeDirectories>..\..\;..\..\build.vc;..\..\..\mpir\dll\$(IntDir);..\..\..\mpfr\dll\$(IntDir);..\..\..\pthreads\dll\$(IntDir);</AdditionalIncludeDirectories>
+    <PreprocessorDefinitions>NDEBUG;WIN32;HAVE_CONFIG_H;FLINT_BUILD_DLL;PTW32_BUILD;FLINT_REENTRANT=1;HAVE_TLS=1;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     <ProgramDataBaseFileName>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFileName>
     <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <LargeAddressAware>true</LargeAddressAware>
+      <AdditionalDependencies>..\..\..\mpir\dll\$(IntDir)mpir.lib;..\..\..\mpfr\dll\$(IntDir)mpfr.lib;..\..\..\pthreads\dll\$(IntDir)pthreads.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
 
   <PostBuildEvent>
-      <Command>..\..\build.vc\postbuild $(IntDir) LIB 19
+      <Command>..\..\build.vc\postbuild $(IntDir) DLL 19
       </Command>
   </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -158,15 +173,20 @@
     <ClCompile>
     <Optimization>Disabled</Optimization>
     <IntrinsicFunctions>true</IntrinsicFunctions>
-    <AdditionalIncludeDirectories>..\..\;..\..\build.vc;..\..\..\mpir\lib\$(IntDir);..\..\..\mpfr\lib\$(IntDir);..\..\..\pthreads\lib\$(IntDir)</AdditionalIncludeDirectories>
-    <PreprocessorDefinitions>_DEBUG;WIN32;_LIB;HAVE_CONFIG_H;PTW32_STATIC_LIB;FLINT_REENTRANT=1;HAVE_TLS=1;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    <AdditionalIncludeDirectories>..\..\;..\..\build.vc;..\..\..\mpir\dll\$(IntDir);..\..\..\mpfr\dll\$(IntDir);..\..\..\pthreads\dll\$(IntDir);</AdditionalIncludeDirectories>
+    <PreprocessorDefinitions>_DEBUG;WIN32;HAVE_CONFIG_H;FLINT_BUILD_DLL;PTW32_BUILD;FLINT_REENTRANT=1;HAVE_TLS=1;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     <ProgramDataBaseFileName>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFileName>
     <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <LargeAddressAware>true</LargeAddressAware>
+      <AdditionalDependencies>..\..\..\mpir\dll\$(IntDir)mpir.lib;..\..\..\mpfr\dll\$(IntDir)mpfr.lib;..\..\..\pthreads\dll\$(IntDir)pthreads.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
 
   <PostBuildEvent>
-      <Command>..\..\build.vc\postbuild $(IntDir) LIB 19
+      <Command>..\..\build.vc\postbuild $(IntDir) DLL 19
       </Command>
   </PostBuildEvent>
   </ItemDefinitionGroup>
