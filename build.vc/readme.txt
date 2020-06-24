@@ -1,4 +1,4 @@
-Building FLINT2 with Microsoft Visual Studio 2015
+Building FLINT2 with Microsoft Visual Studio
 -------------------------------------------------
 
 Building FLINT2 with Microsoft Visual Studio requires Visual
@@ -11,7 +11,7 @@ Visual Studio 2015 Community (or higher version) and:
 Obtain FLINT2 either as a released distribution or clone it using
 GIT from:
 
-    git@github.com:BrianGladman/flint2.git
+    git@github.com:BrianGladman/flint.git
 
 FLINT2 depends on the MPIR, MPFR and PTHREADS libraries that have
 to be installed and built using Visual Studio before FLINT2 can
@@ -19,97 +19,81 @@ be built.  The application directories are assumed to be in the
 same root directory with the names and layouts:
    
     mpir
-       build.vc14
        lib
        dll
     mpfr  
-       build.vc14
        lib
        dll
     pthreads  
-       build.vc14
        lib
        dll
-    flint2
-       build.vc14
+    flint
+       build.vc
        lib
        dll
-   
-where the build.vc14 directories hold the Visual Studio build
-files and the lib and dll directories hold the static and dynamic
-library outputs for each package.  To libraries on which FLINT2
-depends have to be built for the same configuration that will be 
-used to build FLINT2 before FLINT2 itself can be built:
-   
-    <Static Library|Dynamic Link Library> 
-    <Win32|x64>
-    <Release|Debug>
-   
-where <a|b> shows the choices (a or b) that have to be made.   
+ 
+Here the lib and dll sub-directories for each application hold the 
+static and dynamic link library outputs which will be used when 
+Flint is built. They each contain up to four sub-directories for 
+the normal configurations for building on Windows:
 
-Opening the solution file flint.sln in Visual Studio 2015 provides
-the following build projects:
+    Win32\Release
 
-    dll_flint     - a Visual Studio build project for
-                    FLINT2 as a Dynamic Link Library
-    lib_flint     - a Visual Studio build project for
-                    FLINT2 as a Static Library
-    flint_config  - a Python program for creating the Visual 
-                    Studio build files
-    build_tests   - a Python program for building the FLINT2
-                    tests (after they have been created)
-     run_tests     - a Python program for running the FLINT2
-                     tests (after they have been built)
+    Win32\Debug
 
-The projects lib_flint and dll_flint can be used immediately to
-build FLINT2 as a Static and Dynamic Link Library respectively.
-Before building one or both of these, you need to select the
-architecture (Win32 or x64) and the build type (Release or Debug).
+    x64\Release
 
-To run the FLINT2 tests, the necessary Visual Studiop build files
-have to be created.  If you have Python and Python Tools for
-Visual Studio (PTVS) installed, this is done by setting the 
-project flint_config (loaded into Visual Studio by the solution
-file flint.sln) as the start-up project and then running it.
-If you don't have PTVS installed but you do have Python, you
-can run flint_config.py directly without Visual Studio. 
-   
-By default flint_config creates only the FLINT2 tests and profiling.
-But it can also recreate the Visual Studio 2015 build files for the
-FLINT2 DLL and Static Libraries by changing the defines at the
-start of flint_config.py: 
+    x64\Debug
 
-    build_lib = False
-    build_dll = False
-    build_tests = True
-    build_profiles = True
+To build FLINT2 for a particular configuration requires that each
+of the three libraries on which FLINT2 depends must have been 
+previously built for the same configuration.
 
-Rebuilding the library build files in this way may be necessary
-if FLINT2 has been updated since it was first downloaded. 
-      
-After the FLINT2 tests have been created using flint_config.py,
-they can then be built by setting build_tests.py as the start up
-project and then running it.
+Opening the solution file flint\build.vc\flint.sln provides the 
+following build projects:
 
-There are also a number of Visual Studio solution files that
-provide an *alternative* way of building the FLINT2 tests and
-profiling.  However, their use is not recommended because each
-of the multiple solution files flint-tests<NN>.sln (where NN
-is a number) has to be loaded and built by Visual Studio (this
-approach is used because it takes Visual Studio too long to
-load the tests from a single solution file).
+flint_config - a Python program for creating the Visual Studio 
+               build files
 
-Once the tests have been built, the Python project run_tests can
-be set as the start-up project and started to run all the tests 
-(or the file run_tests.py can be run outside Visual Studio).
-   
-After building FLINT2, the libraries and the header files that 
-you need to use FLINT2 are placed in the directories:
-   
-    lib\<Win32|x64>\<Debug|Release>
-    dll\<Win32|x64>\<Debug|Release>
+build_tests -  a Python program for building the FLINT2 tests 
+               (after they have been created)
+
+run_tests -   a Python program for running the FLINT2 tests 
+              (after they have been built)
+
+The first step in building FLINT2 is to generate the Visual 
+Studio build files for the version of Visual Studio being used. 
+This is done by running the Python application flint_config.py, 
+either from within Visual Studio or on the command line. It is 
+run with a single input parameter which is the last two digits 
+of the Visual Studio version selected for building FLINT2 (the 
+default is 19 if no input is given).
+
+Ths creates a build directory in the Flint root directory, for 
+example:
+
+    flint\build.vs19
+
+that contains the file flint.sln which can now be loaded into 
+Visual Studio and used to build the FLINT2 library.
+  
+Once the FLINT2 library has been built, the FLINT2 tests can now 
+be built and run by returning to the Visual Studio solution:
+
+    flint\build.vc\flint.sln
+
+and running the build_tests and run_tests Python applications.
+
+After building FLINT2, the libraries and the header files that
+you need to use FLINT2 are placed in the directories in the
+FLINT root directory:
+
+lib\<Win32|x64>\<Debug|Release>
+
+dll\<Win32|x64>\<Debug|Release>
 
 depending on the version(s) that have been built.
    
       Brian Gladman
-      7th August 2015
+      24th June 2020
+
