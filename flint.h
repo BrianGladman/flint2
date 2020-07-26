@@ -56,8 +56,8 @@
 
 #define __FLINT_VERSION 2
 #define __FLINT_VERSION_MINOR 6
-#define __FLINT_VERSION_PATCHLEVEL 0
-#define FLINT_VERSION "2.6.0"
+#define __FLINT_VERSION_PATCHLEVEL 1
+#define FLINT_VERSION "2.6.1"
 #define __FLINT_RELEASE (__FLINT_VERSION * 10000 + \
                          __FLINT_VERSION_MINOR * 100 + \
                          __FLINT_VERSION_PATCHLEVEL)
@@ -178,7 +178,7 @@ FLINT_DLL void flint_reset_num_workers(int max_workers);
 FLINT_DLL int flint_set_thread_affinity(int * cpus, slong length);
 FLINT_DLL int flint_restore_thread_affinity();
 
-FLINT_DLL int flint_test_multiplier(void);
+int flint_test_multiplier(void);
 
 typedef struct
 {
@@ -311,10 +311,11 @@ typedef __mpfr_struct flint_mpfr;
 FLINT_DLL extern const unsigned char __flint_clz_tab[128];
 #endif
 
+/* Beware when using the unsigned return value in signed arithmetic */
 static __inline__
-unsigned int FLINT_BIT_COUNT(mp_limb_t x)
+mp_limb_t FLINT_BIT_COUNT(mp_limb_t x)
 {
-   unsigned int zeros = FLINT_BITS;
+   mp_limb_t zeros = FLINT_BITS;
    if (x) count_leading_zeros(zeros, x);
    return FLINT_BITS - zeros;
 }

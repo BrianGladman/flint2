@@ -199,17 +199,14 @@
     <ClInclude Include="..\..\arith.h" />
     <ClInclude Include="..\..\build.vc\config.h" />
     <ClInclude Include="..\..\build.vc\cpimport.h" />
-    <ClInclude Include="..\..\build.vc\flint_config\tmp.h" />
     <ClInclude Include="..\..\build.vc\getopt.h" />
     <ClInclude Include="..\..\build.vc\unistd.h" />
-    <ClInclude Include="..\..\config.h" />
     <ClInclude Include="..\..\d_mat.h" />
     <ClInclude Include="..\..\d_vec.h" />
     <ClInclude Include="..\..\double_extras.h" />
     <ClInclude Include="..\..\exception.h" />
     <ClInclude Include="..\..\fft.h" />
     <ClInclude Include="..\..\fft_tuning.h" />
-    <ClInclude Include="..\..\flint-config.h" />
     <ClInclude Include="..\..\flint.h" />
     <ClInclude Include="..\..\fmpq.h" />
     <ClInclude Include="..\..\fmpq_mat.h" />
@@ -274,7 +271,6 @@
     <ClInclude Include="..\..\perm.h" />
     <ClInclude Include="..\..\profiler.h" />
     <ClInclude Include="..\..\qadic.h" />
-    <ClInclude Include="..\..\qadic\cpimport.h" />
     <ClInclude Include="..\..\qsieve.h" />
     <ClInclude Include="..\..\thread_pool.h" />
     <ClInclude Include="..\..\thread_support.h" />
@@ -1833,6 +1829,8 @@
     <ClCompile Include="..\..\fq\div.c" />
     <ClCompile Include="..\..\fq\frobenius.c" />
     <ClCompile Include="..\..\fq\gcdinv.c" />
+    <ClCompile Include="..\..\fq\get_fmpz_mod_poly.c" />
+    <ClCompile Include="..\..\fq\get_fmpz_poly.c" />
     <ClCompile Include="..\..\fq\get_set_fmpz_mod_mat.c" />
     <ClCompile Include="..\..\fq\get_str.c" />
     <ClCompile Include="..\..\fq\get_str_pretty.c" />
@@ -1852,6 +1850,8 @@
     <ClCompile Include="..\..\fq\pth_root.c" />
     <ClCompile Include="..\..\fq\rand.c" />
     <ClCompile Include="..\..\fq\randtest.c" />
+    <ClCompile Include="..\..\fq\set_fmpz_mod_poly.c" />
+    <ClCompile Include="..\..\fq\set_fmpz_poly.c" />
     <ClCompile Include="..\..\fq\sqr.c" />
     <ClCompile Include="..\..\fq\sub.c" />
     <ClCompile Include="..\..\fq\sub_one.c" />
@@ -1908,6 +1908,7 @@
     <ClCompile Include="..\..\fq_nmod\add.c" />
     <ClCompile Include="..\..\fq_nmod\bit_pack.c" />
     <ClCompile Include="..\..\fq_nmod\bit_unpack.c" />
+    <ClCompile Include="..\..\fq_nmod\cmp.c" />
     <ClCompile Include="..\..\fq_nmod\ctx_clear.c" />
     <ClCompile Include="..\..\fq_nmod\ctx_init.c" />
     <ClCompile Include="..\..\fq_nmod\ctx_init_conway.c" />
@@ -1917,6 +1918,7 @@
     <ClCompile Include="..\..\fq_nmod\div.c" />
     <ClCompile Include="..\..\fq_nmod\frobenius.c" />
     <ClCompile Include="..\..\fq_nmod\gcdinv.c" />
+    <ClCompile Include="..\..\fq_nmod\get_nmod_poly.c" />
     <ClCompile Include="..\..\fq_nmod\get_set_fmpz_mod_mat.c" />
     <ClCompile Include="..\..\fq_nmod\get_str.c" />
     <ClCompile Include="..\..\fq_nmod\get_str_pretty.c" />
@@ -1935,6 +1937,7 @@
     <ClCompile Include="..\..\fq_nmod\pth_root.c" />
     <ClCompile Include="..\..\fq_nmod\rand.c" />
     <ClCompile Include="..\..\fq_nmod\randtest.c" />
+    <ClCompile Include="..\..\fq_nmod\set_nmod_poly.c" />
     <ClCompile Include="..\..\fq_nmod\sqr.c" />
     <ClCompile Include="..\..\fq_nmod\sub.c" />
     <ClCompile Include="..\..\fq_nmod\sub_one.c" />
@@ -2395,6 +2398,7 @@
     <ClCompile Include="..\..\fq_zech\frobenius.c" />
     <ClCompile Include="..\..\fq_zech\gcdinv.c" />
     <ClCompile Include="..\..\fq_zech\get_fq_nmod.c" />
+    <ClCompile Include="..\..\fq_zech\get_nmod_poly.c" />
     <ClCompile Include="..\..\fq_zech\get_set_fmpz_mod_mat.c" />
     <ClCompile Include="..\..\fq_zech\get_str.c" />
     <ClCompile Include="..\..\fq_zech\get_str_pretty.c" />
@@ -2415,6 +2419,7 @@
     <ClCompile Include="..\..\fq_zech\randtest.c" />
     <ClCompile Include="..\..\fq_zech\set_fmpz.c" />
     <ClCompile Include="..\..\fq_zech\set_fq_nmod.c" />
+    <ClCompile Include="..\..\fq_zech\set_nmod_poly.c" />
     <ClCompile Include="..\..\fq_zech\sqr.c" />
     <ClCompile Include="..\..\fq_zech\sub.c" />
     <ClCompile Include="..\..\fq_zech\sub_one.c" />
@@ -2705,6 +2710,7 @@
     <ClCompile Include="..\..\mpoly\monomial_exists.c" />
     <ClCompile Include="..\..\mpoly\monomial_index.c" />
     <ClCompile Include="..\..\mpoly\monomial_mul_fmpz.c" />
+    <ClCompile Include="..\..\mpoly\monomials_cmp.c" />
     <ClCompile Include="..\..\mpoly\monomials_deflate.c" />
     <ClCompile Include="..\..\mpoly\monomials_deflation.c" />
     <ClCompile Include="..\..\mpoly\monomials_inflate.c" />

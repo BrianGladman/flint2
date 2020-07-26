@@ -88,16 +88,10 @@
     <ClInclude Include="..\..\build.vc\cpimport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\build.vc\flint_config\tmp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\build.vc\getopt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\build.vc\unistd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\d_mat.h">
@@ -116,9 +110,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\fft_tuning.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\flint-config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\flint.h">
@@ -311,9 +302,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\qadic.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\qadic\cpimport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\qsieve.h">
@@ -4986,6 +4974,12 @@
     <ClCompile Include="..\..\fq\gcdinv.c">
       <Filter>Source Files\fq</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq\get_fmpz_mod_poly.c">
+      <Filter>Source Files\fq</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq\get_fmpz_poly.c">
+      <Filter>Source Files\fq</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq\get_set_fmpz_mod_mat.c">
       <Filter>Source Files\fq</Filter>
     </ClCompile>
@@ -5041,6 +5035,12 @@
       <Filter>Source Files\fq</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq\randtest.c">
+      <Filter>Source Files\fq</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq\set_fmpz_mod_poly.c">
+      <Filter>Source Files\fq</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq\set_fmpz_poly.c">
       <Filter>Source Files\fq</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq\sqr.c">
@@ -5211,6 +5211,9 @@
     <ClCompile Include="..\..\fq_nmod\bit_unpack.c">
       <Filter>Source Files\fq_nmod</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_nmod\cmp.c">
+      <Filter>Source Files\fq_nmod</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_nmod\ctx_clear.c">
       <Filter>Source Files\fq_nmod</Filter>
     </ClCompile>
@@ -5236,6 +5239,9 @@
       <Filter>Source Files\fq_nmod</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_nmod\gcdinv.c">
+      <Filter>Source Files\fq_nmod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod\get_nmod_poly.c">
       <Filter>Source Files\fq_nmod</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_nmod\get_set_fmpz_mod_mat.c">
@@ -5290,6 +5296,9 @@
       <Filter>Source Files\fq_nmod</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_nmod\randtest.c">
+      <Filter>Source Files\fq_nmod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod\set_nmod_poly.c">
       <Filter>Source Files\fq_nmod</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_nmod\sqr.c">
@@ -6672,6 +6681,9 @@
     <ClCompile Include="..\..\fq_zech\get_fq_nmod.c">
       <Filter>Source Files\fq_zech</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_zech\get_nmod_poly.c">
+      <Filter>Source Files\fq_zech</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_zech\get_set_fmpz_mod_mat.c">
       <Filter>Source Files\fq_zech</Filter>
     </ClCompile>
@@ -6730,6 +6742,9 @@
       <Filter>Source Files\fq_zech</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_zech\set_fq_nmod.c">
+      <Filter>Source Files\fq_zech</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech\set_nmod_poly.c">
       <Filter>Source Files\fq_zech</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_zech\sqr.c">
@@ -7600,6 +7615,9 @@
       <Filter>Source Files\mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\mpoly\monomial_mul_fmpz.c">
+      <Filter>Source Files\mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\mpoly\monomials_cmp.c">
       <Filter>Source Files\mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\mpoly\monomials_deflate.c">
