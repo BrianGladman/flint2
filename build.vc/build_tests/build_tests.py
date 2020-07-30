@@ -118,6 +118,13 @@ c, h, cx, hx, t, tx, p = find_src(flint_dir)
 lib_dir = 'lib\\'
 int_dir = 'x64\\Release\\'
 
+# delete old test executables
+for root, dirs, files in walk('..\\tests\\'):
+  for f in files:
+    n, x = splitext(f)
+    if x == '.exe':
+      unlink(join(root, f))
+
 cc = MSVCCompiler()
 error_list = []
 for l2, fp in t:
