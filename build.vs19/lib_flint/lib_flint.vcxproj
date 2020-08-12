@@ -1655,6 +1655,8 @@
     <ClCompile Include="..\..\fmpz_poly_factor\realloc.c" />
     <ClCompile Include="..\..\fmpz_poly_factor\set.c" />
     <ClCompile Include="..\..\fmpz_poly_factor\van_hoeij_check_if_solved.c" />
+    <ClCompile Include="..\..\fmpz_poly_factor\zassenhaus_prune.c" />
+    <ClCompile Include="..\..\fmpz_poly_factor\zassenhaus_subset.c" />
     <ClCompile Include="..\..\fmpz_poly_mat\add.c" />
     <ClCompile Include="..\..\fmpz_poly_mat\clear.c" />
     <ClCompile Include="..\..\fmpz_poly_mat\concat_horizontal.c" />
@@ -1820,6 +1822,7 @@
     <ClCompile Include="..\..\fq\inv.c" />
     <ClCompile Include="..\..\fq\is_invertible.c" />
     <ClCompile Include="..\..\fq\is_invertible_f.c" />
+    <ClCompile Include="..\..\fq\is_square.c" />
     <ClCompile Include="..\..\fq\mul.c" />
     <ClCompile Include="..\..\fq\mul_fmpz.c" />
     <ClCompile Include="..\..\fq\mul_si.c" />
@@ -1835,6 +1838,7 @@
     <ClCompile Include="..\..\fq\set_fmpz_mod_poly.c" />
     <ClCompile Include="..\..\fq\set_fmpz_poly.c" />
     <ClCompile Include="..\..\fq\sqr.c" />
+    <ClCompile Include="..\..\fq\sqrt.c" />
     <ClCompile Include="..\..\fq\sub.c" />
     <ClCompile Include="..\..\fq\sub_one.c" />
     <ClCompile Include="..\..\fq\trace.c" />
@@ -1908,6 +1912,7 @@
     <ClCompile Include="..\..\fq_nmod\inv.c" />
     <ClCompile Include="..\..\fq_nmod\is_invertible.c" />
     <ClCompile Include="..\..\fq_nmod\is_invertible_f.c" />
+    <ClCompile Include="..\..\fq_nmod\is_square.c" />
     <ClCompile Include="..\..\fq_nmod\mul.c" />
     <ClCompile Include="..\..\fq_nmod\mul_fmpz.c" />
     <ClCompile Include="..\..\fq_nmod\mul_si.c" />
@@ -1921,6 +1926,7 @@
     <ClCompile Include="..\..\fq_nmod\randtest.c" />
     <ClCompile Include="..\..\fq_nmod\set_nmod_poly.c" />
     <ClCompile Include="..\..\fq_nmod\sqr.c" />
+    <ClCompile Include="..\..\fq_nmod\sqrt.c" />
     <ClCompile Include="..\..\fq_nmod\sub.c" />
     <ClCompile Include="..\..\fq_nmod\sub_one.c" />
     <ClCompile Include="..\..\fq_nmod\trace.c" />
@@ -2388,6 +2394,7 @@
     <ClCompile Include="..\..\fq_zech\inv.c" />
     <ClCompile Include="..\..\fq_zech\is_invertible.c" />
     <ClCompile Include="..\..\fq_zech\is_invertible_f.c" />
+    <ClCompile Include="..\..\fq_zech\is_square.c" />
     <ClCompile Include="..\..\fq_zech\mul.c" />
     <ClCompile Include="..\..\fq_zech\mul_fmpz.c" />
     <ClCompile Include="..\..\fq_zech\mul_si.c" />
@@ -2403,6 +2410,7 @@
     <ClCompile Include="..\..\fq_zech\set_fq_nmod.c" />
     <ClCompile Include="..\..\fq_zech\set_nmod_poly.c" />
     <ClCompile Include="..\..\fq_zech\sqr.c" />
+    <ClCompile Include="..\..\fq_zech\sqrt.c" />
     <ClCompile Include="..\..\fq_zech\sub.c" />
     <ClCompile Include="..\..\fq_zech\sub_one.c" />
     <ClCompile Include="..\..\fq_zech\trace.c" />

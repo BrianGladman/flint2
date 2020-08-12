@@ -1,5 +1,5 @@
 ﻿'''
-Set up Visual Sudio to build a specified MPIR configuration
+Set up Visual Sudio to build a specified configuration
 
 Copyright (C) 2011, 2012, 2013, 2014, 2015 Brian Gladman
 '''

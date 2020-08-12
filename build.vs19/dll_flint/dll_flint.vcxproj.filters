@@ -4512,6 +4512,12 @@
     <ClCompile Include="..\..\fmpz_poly_factor\van_hoeij_check_if_solved.c">
       <Filter>Source Files\fmpz_poly_factor</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_poly_factor\zassenhaus_prune.c">
+      <Filter>Source Files\fmpz_poly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_poly_factor\zassenhaus_subset.c">
+      <Filter>Source Files\fmpz_poly_factor</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_poly_mat\add.c">
       <Filter>Source Files\fmpz_poly_mat</Filter>
     </ClCompile>
@@ -5007,6 +5013,9 @@
     <ClCompile Include="..\..\fq\is_invertible_f.c">
       <Filter>Source Files\fq</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq\is_square.c">
+      <Filter>Source Files\fq</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq\mul.c">
       <Filter>Source Files\fq</Filter>
     </ClCompile>
@@ -5050,6 +5059,9 @@
       <Filter>Source Files\fq</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq\sqr.c">
+      <Filter>Source Files\fq</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq\sqrt.c">
       <Filter>Source Files\fq</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq\sub.c">
@@ -5271,6 +5283,9 @@
     <ClCompile Include="..\..\fq_nmod\is_invertible_f.c">
       <Filter>Source Files\fq_nmod</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_nmod\is_square.c">
+      <Filter>Source Files\fq_nmod</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_nmod\mul.c">
       <Filter>Source Files\fq_nmod</Filter>
     </ClCompile>
@@ -5308,6 +5323,9 @@
       <Filter>Source Files\fq_nmod</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_nmod\sqr.c">
+      <Filter>Source Files\fq_nmod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod\sqrt.c">
       <Filter>Source Files\fq_nmod</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_nmod\sub.c">
@@ -6711,6 +6729,9 @@
     <ClCompile Include="..\..\fq_zech\is_invertible_f.c">
       <Filter>Source Files\fq_zech</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_zech\is_square.c">
+      <Filter>Source Files\fq_zech</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_zech\mul.c">
       <Filter>Source Files\fq_zech</Filter>
     </ClCompile>
@@ -6754,6 +6775,9 @@
       <Filter>Source Files\fq_zech</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_zech\sqr.c">
+      <Filter>Source Files\fq_zech</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech\sqrt.c">
       <Filter>Source Files\fq_zech</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_zech\sub.c">
