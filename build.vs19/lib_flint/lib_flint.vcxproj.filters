@@ -14,6 +14,7 @@
     <Filter Include="Source Files\fmpq" />
     <Filter Include="Source Files\fmpq_mat" />
     <Filter Include="Source Files\fmpq_mpoly" />
+    <Filter Include="Source Files\fmpq_mpoly_factor" />
     <Filter Include="Source Files\fmpq_poly" />
     <Filter Include="Source Files\fmpq_vec" />
     <Filter Include="Source Files\fmpz" />
@@ -26,6 +27,7 @@
     <Filter Include="Source Files\fmpz_mod_poly" />
     <Filter Include="Source Files\fmpz_mod_poly_factor" />
     <Filter Include="Source Files\fmpz_mpoly" />
+    <Filter Include="Source Files\fmpz_mpoly_factor" />
     <Filter Include="Source Files\fmpz_poly" />
     <Filter Include="Source Files\fmpz_poly_factor" />
     <Filter Include="Source Files\fmpz_poly_mat" />
@@ -38,6 +40,7 @@
     <Filter Include="Source Files\fq_nmod_embed" />
     <Filter Include="Source Files\fq_nmod_mat" />
     <Filter Include="Source Files\fq_nmod_mpoly" />
+    <Filter Include="Source Files\fq_nmod_mpoly_factor" />
     <Filter Include="Source Files\fq_nmod_poly" />
     <Filter Include="Source Files\fq_nmod_poly_factor" />
     <Filter Include="Source Files\fq_nmod_vec" />
@@ -47,6 +50,8 @@
     <Filter Include="Source Files\fq_zech" />
     <Filter Include="Source Files\fq_zech_embed" />
     <Filter Include="Source Files\fq_zech_mat" />
+    <Filter Include="Source Files\fq_zech_mpoly" />
+    <Filter Include="Source Files\fq_zech_mpoly_factor" />
     <Filter Include="Source Files\fq_zech_poly" />
     <Filter Include="Source Files\fq_zech_poly_factor" />
     <Filter Include="Source Files\fq_zech_vec" />
@@ -57,8 +62,10 @@
     <Filter Include="Source Files\mpfr_vec" />
     <Filter Include="Source Files\mpn_extras" />
     <Filter Include="Source Files\mpoly" />
+    <Filter Include="Source Files\n_poly" />
     <Filter Include="Source Files\nmod_mat" />
     <Filter Include="Source Files\nmod_mpoly" />
+    <Filter Include="Source Files\nmod_mpoly_factor" />
     <Filter Include="Source Files\nmod_poly" />
     <Filter Include="Source Files\nmod_poly_factor" />
     <Filter Include="Source Files\nmod_poly_mat" />
@@ -130,6 +137,9 @@
     <ClInclude Include="..\..\fmpq_mpoly.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\fmpq_mpoly_factor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\fmpq_poly.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -169,6 +179,9 @@
     <ClInclude Include="..\..\fmpz_mpoly.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\fmpz_mpoly_factor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\fmpz_poly.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -205,6 +218,9 @@
     <ClInclude Include="..\..\fq_nmod_mpoly.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\fq_nmod_mpoly_factor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\fq_nmod_poly.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -230,6 +246,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\fq_zech_mat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fq_zech_mpoly.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fq_zech_mpoly\fq_zech_mpoly.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fq_zech_mpoly_factor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\fq_zech_poly.h">
@@ -274,10 +299,16 @@
     <ClInclude Include="..\..\mpoly.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\n_poly.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\nmod_mat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\nmod_mpoly.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\nmod_mpoly_factor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\nmod_poly.h">
@@ -945,6 +976,9 @@
     <ClCompile Include="..\..\fmpq\fprint.c">
       <Filter>Source Files\fmpq</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpq\gcd_cofactors.c">
+      <Filter>Source Files\fmpq</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpq\get_cfrac.c">
       <Filter>Source Files\fmpq</Filter>
     </ClCompile>
@@ -1272,6 +1306,9 @@
     <ClCompile Include="..\..\fmpq_mpoly\compose_fmpq_poly.c">
       <Filter>Source Files\fmpq_mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpq_mpoly\content_vars.c">
+      <Filter>Source Files\fmpq_mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpq_mpoly\derivative.c">
       <Filter>Source Files\fmpq_mpoly</Filter>
     </ClCompile>
@@ -1386,6 +1423,9 @@
     <ClCompile Include="..\..\fmpq_mpoly\reduce.c">
       <Filter>Source Files\fmpq_mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpq_mpoly\reduce_easy.c">
+      <Filter>Source Files\fmpq_mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpq_mpoly\repack_bits.c">
       <Filter>Source Files\fmpq_mpoly</Filter>
     </ClCompile>
@@ -1425,6 +1465,9 @@
     <ClCompile Include="..\..\fmpq_mpoly\set_term_coeff_fmpq.c">
       <Filter>Source Files\fmpq_mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpq_mpoly\sqrt.c">
+      <Filter>Source Files\fmpq_mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpq_mpoly\sub.c">
       <Filter>Source Files\fmpq_mpoly</Filter>
     </ClCompile>
@@ -1436,6 +1479,42 @@
     </ClCompile>
     <ClCompile Include="..\..\fmpq_mpoly\univar.c">
       <Filter>Source Files\fmpq_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpq_mpoly_factor\clear.c">
+      <Filter>Source Files\fmpq_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpq_mpoly_factor\expand.c">
+      <Filter>Source Files\fmpq_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpq_mpoly_factor\factor.c">
+      <Filter>Source Files\fmpq_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpq_mpoly_factor\factor_make_integral.c">
+      <Filter>Source Files\fmpq_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpq_mpoly_factor\factor_make_monic.c">
+      <Filter>Source Files\fmpq_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpq_mpoly_factor\factor_squarefree.c">
+      <Filter>Source Files\fmpq_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpq_mpoly_factor\fit_length.c">
+      <Filter>Source Files\fmpq_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpq_mpoly_factor\init.c">
+      <Filter>Source Files\fmpq_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpq_mpoly_factor\inlines.c">
+      <Filter>Source Files\fmpq_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpq_mpoly_factor\realloc.c">
+      <Filter>Source Files\fmpq_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpq_mpoly_factor\sort.c">
+      <Filter>Source Files\fmpq_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpq_mpoly_factor\swap_fmpz_mpoly_factor.c">
+      <Filter>Source Files\fmpq_mpoly_factor</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpq_poly\add.c">
       <Filter>Source Files\fmpq_poly</Filter>
@@ -2943,6 +3022,9 @@
     <ClCompile Include="..\..\fmpz_mod\ctx_init.c">
       <Filter>Source Files\fmpz_mod</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod\ctx_init_ui.c">
+      <Filter>Source Files\fmpz_mod</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mod\discrete_log_pohlig_hellman.c">
       <Filter>Source Files\fmpz_mod</Filter>
     </ClCompile>
@@ -2974,6 +3056,9 @@
       <Filter>Source Files\fmpz_mod</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_mod\set_modulus.c">
+      <Filter>Source Files\fmpz_mod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod\set_modulus_ui.c">
       <Filter>Source Files\fmpz_mod</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_mod\sub.c">
@@ -3234,9 +3319,6 @@
     <ClCompile Include="..\..\fmpz_mod_poly\neg.c">
       <Filter>Source Files\fmpz_mod_poly</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\fmpz_mod_poly\normalise.c">
-      <Filter>Source Files\fmpz_mod_poly</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\fmpz_mod_poly\pow.c">
       <Filter>Source Files\fmpz_mod_poly</Filter>
     </ClCompile>
@@ -3340,9 +3422,6 @@
       <Filter>Source Files\fmpz_mod_poly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_mod_poly\sub_series.c">
-      <Filter>Source Files\fmpz_mod_poly</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\fmpz_mod_poly\swap.c">
       <Filter>Source Files\fmpz_mod_poly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_mod_poly\tree.c">
@@ -3474,6 +3553,9 @@
     <ClCompile Include="..\..\fmpz_mpoly\compose_mat.c">
       <Filter>Source Files\fmpz_mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly\content_vars.c">
+      <Filter>Source Files\fmpz_mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mpoly\ctx_clear.c">
       <Filter>Source Files\fmpz_mpoly</Filter>
     </ClCompile>
@@ -3546,6 +3628,9 @@
     <ClCompile Include="..\..\fmpz_mpoly\fit_length.c">
       <Filter>Source Files\fmpz_mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly\fit_length_reset_bits.c">
+      <Filter>Source Files\fmpz_mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mpoly\fprint_pretty.c">
       <Filter>Source Files\fmpz_mpoly</Filter>
     </ClCompile>
@@ -3603,6 +3688,9 @@
     <ClCompile Include="..\..\fmpz_mpoly\get_fmpz.c">
       <Filter>Source Files\fmpz_mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly\get_mpz_signed_uiuiui.c">
+      <Filter>Source Files\fmpz_mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mpoly\get_str_pretty.c">
       <Filter>Source Files\fmpz_mpoly</Filter>
     </ClCompile>
@@ -3652,6 +3740,9 @@
       <Filter>Source Files\fmpz_mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_mpoly\is_gen.c">
+      <Filter>Source Files\fmpz_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly\lead_coeff_vars.c">
       <Filter>Source Files\fmpz_mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_mpoly\mpolyd.c">
@@ -3750,6 +3841,9 @@
     <ClCompile Include="..\..\fmpz_mpoly\scalar_divides_fmpz.c">
       <Filter>Source Files\fmpz_mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly\scalar_fmma.c">
+      <Filter>Source Files\fmpz_mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mpoly\scalar_mul_fmpz.c">
       <Filter>Source Files\fmpz_mpoly</Filter>
     </ClCompile>
@@ -3801,6 +3895,9 @@
     <ClCompile Include="..\..\fmpz_mpoly\sort_terms.c">
       <Filter>Source Files\fmpz_mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly\sqrt_heap.c">
+      <Filter>Source Files\fmpz_mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mpoly\sub.c">
       <Filter>Source Files\fmpz_mpoly</Filter>
     </ClCompile>
@@ -3815,6 +3912,99 @@
     </ClCompile>
     <ClCompile Include="..\..\fmpz_mpoly\univar.c">
       <Filter>Source Files\fmpz_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\add.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\bpoly.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\bpoly_factor.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\clear.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\cmp.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\compression.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\eval.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\expand.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\factor.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\factor_bound_si.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\factor_content.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\factor_squarefree.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\fit_length.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\get_set_is_fmpz_poly.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\get_set_lead0.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\init.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\inlines.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\irred_wang.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\irred_zassenhaus.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\irred_zippel.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\lcc_kaltofen.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\lcc_wang.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\mpoly_hlift.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\mpoly_pfrac.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\mpolyv.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\print_pretty.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\realloc.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\set.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\sort.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\tpoly.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\tuple.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_poly\2norm.c">
       <Filter>Source Files\fmpz_poly</Filter>
@@ -4473,6 +4663,9 @@
     <ClCompile Include="..\..\fmpz_poly_factor\factor.c">
       <Filter>Source Files\fmpz_poly_factor</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_poly_factor\factor_cubic.c">
+      <Filter>Source Files\fmpz_poly_factor</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_poly_factor\factor_quadratic.c">
       <Filter>Source Files\fmpz_poly_factor</Filter>
     </ClCompile>
@@ -4777,6 +4970,9 @@
       <Filter>Source Files\fmpz_vec</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_vec\content.c">
+      <Filter>Source Files\fmpz_vec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_vec\content_chained.c">
       <Filter>Source Files\fmpz_vec</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_vec\dot.c">
@@ -5088,6 +5284,9 @@
     <ClCompile Include="..\..\fq_mat\add.c">
       <Filter>Source Files\fq_mat</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_mat\can_solve.c">
+      <Filter>Source Files\fq_mat</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_mat\charpoly_danilevsky.c">
       <Filter>Source Files\fq_mat</Filter>
     </ClCompile>
@@ -5352,6 +5551,9 @@
     <ClCompile Include="..\..\fq_nmod_mat\add.c">
       <Filter>Source Files\fq_nmod_mat</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mat\can_solve.c">
+      <Filter>Source Files\fq_nmod_mat</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_nmod_mat\charpoly_danilevsky.c">
       <Filter>Source Files\fq_nmod_mat</Filter>
     </ClCompile>
@@ -5490,9 +5692,6 @@
     <ClCompile Include="..\..\fq_nmod_mpoly\add_fq_nmod.c">
       <Filter>Source Files\fq_nmod_mpoly</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\fq_nmod_mpoly\clear.c">
-      <Filter>Source Files\fq_nmod_mpoly</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\fq_nmod_mpoly\cmp.c">
       <Filter>Source Files\fq_nmod_mpoly</Filter>
     </ClCompile>
@@ -5515,6 +5714,9 @@
       <Filter>Source Files\fq_nmod_mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_nmod_mpoly\compose_mat.c">
+      <Filter>Source Files\fq_nmod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly\content_vars.c">
       <Filter>Source Files\fq_nmod_mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_nmod_mpoly\ctx_change_modulus.c">
@@ -5577,6 +5779,12 @@
     <ClCompile Include="..\..\fq_nmod_mpoly\fit_length.c">
       <Filter>Source Files\fq_nmod_mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly\fit_length_fit_bits.c">
+      <Filter>Source Files\fq_nmod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly\fit_length_reset_bits.c">
+      <Filter>Source Files\fq_nmod_mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_nmod_mpoly\fprint_pretty.c">
       <Filter>Source Files\fq_nmod_mpoly</Filter>
     </ClCompile>
@@ -5592,7 +5800,13 @@
     <ClCompile Include="..\..\fq_nmod_mpoly\gcd_cofactors.c">
       <Filter>Source Files\fq_nmod_mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly\gcd_hensel.c">
+      <Filter>Source Files\fq_nmod_mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_nmod_mpoly\gcd_zippel.c">
+      <Filter>Source Files\fq_nmod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly\gcd_zippel2.c">
       <Filter>Source Files\fq_nmod_mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_nmod_mpoly\gen.c">
@@ -5667,10 +5881,10 @@
     <ClCompile Include="..\..\fq_nmod_mpoly\is_one.c">
       <Filter>Source Files\fq_nmod_mpoly</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\fq_nmod_mpoly\make_monic.c">
+    <ClCompile Include="..\..\fq_nmod_mpoly\lead_coeff_vars.c">
       <Filter>Source Files\fq_nmod_mpoly</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\fq_nmod_mpoly\mpolyd.c">
+    <ClCompile Include="..\..\fq_nmod_mpoly\make_monic.c">
       <Filter>Source Files\fq_nmod_mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_nmod_mpoly\mpolyn.c">
@@ -5718,6 +5932,9 @@
     <ClCompile Include="..\..\fq_nmod_mpoly\push_term_fq_nmod_ui.c">
       <Filter>Source Files\fq_nmod_mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly\quadratic_root.c">
+      <Filter>Source Files\fq_nmod_mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_nmod_mpoly\randtest_bits.c">
       <Filter>Source Files\fq_nmod_mpoly</Filter>
     </ClCompile>
@@ -5737,6 +5954,9 @@
       <Filter>Source Files\fq_nmod_mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_nmod_mpoly\reverse.c">
+      <Filter>Source Files\fq_nmod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly\scalar_addmul_fq_nmod.c">
       <Filter>Source Files\fq_nmod_mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_nmod_mpoly\scalar_mul_fq_nmod.c">
@@ -5781,10 +6001,16 @@
     <ClCompile Include="..\..\fq_nmod_mpoly\sort_terms.c">
       <Filter>Source Files\fq_nmod_mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly\sqrt_heap.c">
+      <Filter>Source Files\fq_nmod_mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_nmod_mpoly\sub.c">
       <Filter>Source Files\fq_nmod_mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_nmod_mpoly\sub_fq_nmod.c">
+      <Filter>Source Files\fq_nmod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly\term_content.c">
       <Filter>Source Files\fq_nmod_mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_nmod_mpoly\to_from_fq_nmod_poly.c">
@@ -5792,6 +6018,105 @@
     </ClCompile>
     <ClCompile Include="..\..\fq_nmod_mpoly\univar.c">
       <Filter>Source Files\fq_nmod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\append.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\clear.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\cmp.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\compression.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\eval.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\expand.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\factor.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\factor_content.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\factor_squarefree.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\fit_length.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\get_set_is_fq_nmod_poly.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\get_set_lead0.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\init.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\inlines.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\irred_lgprime.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\irred_smprime_wang.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\irred_smprime_zassenhaus.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\irred_smprime_zippel.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\lcc_wang.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\mpoly_hlift.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\mpoly_pfrac.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\mpolyv.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\n_bpoly_fq.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\n_bpoly_fq_factor_lgprime.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\n_bpoly_fq_factor_smprime.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\n_bpoly_hlift.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\polyu.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\polyu3_hlift.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\polyun.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\print_pretty.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\realloc.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\set.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly_factor\sort.c">
+      <Filter>Source Files\fq_nmod_mpoly_factor</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_nmod_poly\add.c">
       <Filter>Source Files\fq_nmod_poly</Filter>
@@ -6804,6 +7129,9 @@
     <ClCompile Include="..\..\fq_zech_mat\add.c">
       <Filter>Source Files\fq_zech_mat</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mat\can_solve.c">
+      <Filter>Source Files\fq_zech_mat</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_zech_mat\charpoly_danilevsky.c">
       <Filter>Source Files\fq_zech_mat</Filter>
     </ClCompile>
@@ -6894,6 +7222,9 @@
     <ClCompile Include="..\..\fq_zech_mat\similarity.c">
       <Filter>Source Files\fq_zech_mat</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mat\solve.c">
+      <Filter>Source Files\fq_zech_mat</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_zech_mat\solve_tril.c">
       <Filter>Source Files\fq_zech_mat</Filter>
     </ClCompile>
@@ -6929,6 +7260,213 @@
     </ClCompile>
     <ClCompile Include="..\..\fq_zech_mat\zero.c">
       <Filter>Source Files\fq_zech_mat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\add.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\clear.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\combine_like_terms.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\ctx_change_modulus.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\ctx_clear.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\ctx_init.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\derivative.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\divides.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\divides_monagan_pearce.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\divrem.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\divrem_monagan_pearce.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\equal.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\evaluate_all.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\evaluate_one.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\fit_length.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\fit_length_reset_bits.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\fprint_pretty.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\gcd.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\gcd_cofactors.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\gen.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\get_coeff_vars_ui.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\get_set_fq_nmod_mpoly.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\get_set_nmod_mpoly.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\init.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\is_canonical.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\is_fq_zech.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\is_one.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\lead_coeff_vars.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\make_monic.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\mpolyu.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\mul.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\mul_johnson.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\neg.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\pow_rmul.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\pow_ui.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\repack_bits.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\scalar_addmul_fq_zech.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\scalar_mul_fq_zech.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\set.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\set_fq_zech.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\set_ui.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\sort_terms.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\sub.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\sub_fq_zech.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly\univar.c">
+      <Filter>Source Files\fq_zech_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly_factor\bpoly.c">
+      <Filter>Source Files\fq_zech_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly_factor\bpoly_factor_smprime.c">
+      <Filter>Source Files\fq_zech_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly_factor\bpoly_hlift.c">
+      <Filter>Source Files\fq_zech_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly_factor\clear.c">
+      <Filter>Source Files\fq_zech_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly_factor\eval.c">
+      <Filter>Source Files\fq_zech_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly_factor\factor.c">
+      <Filter>Source Files\fq_zech_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly_factor\fit_length.c">
+      <Filter>Source Files\fq_zech_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly_factor\get_set_is_fq_nmod_poly.c">
+      <Filter>Source Files\fq_zech_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly_factor\get_set_lead0.c">
+      <Filter>Source Files\fq_zech_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly_factor\init.c">
+      <Filter>Source Files\fq_zech_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly_factor\irred_smprime_wang.c">
+      <Filter>Source Files\fq_zech_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly_factor\irred_smprime_zassenhaus.c">
+      <Filter>Source Files\fq_zech_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly_factor\irred_smprime_zippel.c">
+      <Filter>Source Files\fq_zech_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly_factor\lcc_wang.c">
+      <Filter>Source Files\fq_zech_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly_factor\mpoly_hlift.c">
+      <Filter>Source Files\fq_zech_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly_factor\mpoly_pfrac.c">
+      <Filter>Source Files\fq_zech_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly_factor\mpoly_univar.c">
+      <Filter>Source Files\fq_zech_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly_factor\mpolyv.c">
+      <Filter>Source Files\fq_zech_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly_factor\polyu.c">
+      <Filter>Source Files\fq_zech_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly_factor\polyu3_hlift.c">
+      <Filter>Source Files\fq_zech_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly_factor\polyun.c">
+      <Filter>Source Files\fq_zech_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly_factor\print_pretty.c">
+      <Filter>Source Files\fq_zech_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly_factor\realloc.c">
+      <Filter>Source Files\fq_zech_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mpoly_factor\tpoly.c">
+      <Filter>Source Files\fq_zech_mpoly_factor</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_zech_poly\add.c">
       <Filter>Source Files\fq_zech_poly</Filter>
@@ -7566,13 +8104,19 @@
     <ClCompile Include="..\..\mpn_extras\remove_power.c">
       <Filter>Source Files\mpn_extras</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\mpoly\bidegree.c">
+      <Filter>Source Files\mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\mpoly\bivar_cld_bounds.c">
+      <Filter>Source Files\mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\mpoly\cmp_general.c">
       <Filter>Source Files\mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\mpoly\compose_mat.c">
       <Filter>Source Files\mpoly</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\mpoly\content_chained.c">
+    <ClCompile Include="..\..\mpoly\compression.c">
       <Filter>Source Files\mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\mpoly\ctx_clear.c">
@@ -7624,6 +8168,9 @@
       <Filter>Source Files\mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\mpoly\is_gen.c">
+      <Filter>Source Files\mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\mpoly\is_proved_not_square.c">
       <Filter>Source Files\mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\mpoly\main_variable_split.c">
@@ -7683,6 +8230,9 @@
     <ClCompile Include="..\..\mpoly\rbtree.c">
       <Filter>Source Files\mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\mpoly\remove_var_powers.c">
+      <Filter>Source Files\mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\mpoly\repack_monomials.c">
       <Filter>Source Files\mpoly</Filter>
     </ClCompile>
@@ -7698,6 +8248,9 @@
     <ClCompile Include="..\..\mpoly\term_exp_fits.c">
       <Filter>Source Files\mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\mpoly\test_irreducible.c">
+      <Filter>Source Files\mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\mpoly\total_degree.c">
       <Filter>Source Files\mpoly</Filter>
     </ClCompile>
@@ -7710,10 +8263,115 @@
     <ClCompile Include="..\..\mpoly\zipinfo.c">
       <Filter>Source Files\mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_bpoly.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_bpoly_mod.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_bpoly_mod_gcd.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_bpoly_stack.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_fq.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_fq_bpoly.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_fq_bpoly_gcd.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_fq_bpoly_taylor_shift.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_fq_poly.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_fq_poly_add.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_fq_poly_add_si.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_fq_poly_divrem.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_fq_poly_gcd.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_fq_poly_inv_series.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_fq_poly_mul.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_fq_poly_mullow.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_fq_poly_mulmod.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_fq_poly_neg.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_fq_poly_pow.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_fq_poly_rem.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_fq_poly_sub.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_fq_poly_xgcd.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_fq_polyun.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_fq_pow_cache.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_poly.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_poly_mod.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_poly_stack.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_polyu.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_polyun.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_tpoly.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\nmod_n_fq_interp.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\nmod_pow_cache.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\rbtree.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\zippel_helpers.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\nmod_mat\add.c">
       <Filter>Source Files\nmod_mat</Filter>
     </ClCompile>
     <ClCompile Include="..\..\nmod_mat\addmul.c">
+      <Filter>Source Files\nmod_mat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mat\can_solve.c">
       <Filter>Source Files\nmod_mat</Filter>
     </ClCompile>
     <ClCompile Include="..\..\nmod_mat\charpoly_danilevsky.c">
@@ -7765,6 +8423,9 @@
       <Filter>Source Files\nmod_mat</Filter>
     </ClCompile>
     <ClCompile Include="..\..\nmod_mat\mul.c">
+      <Filter>Source Files\nmod_mat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mat\mul_blas.c">
       <Filter>Source Files\nmod_mat</Filter>
     </ClCompile>
     <ClCompile Include="..\..\nmod_mat\mul_classical.c">
@@ -7890,9 +8551,6 @@
     <ClCompile Include="..\..\nmod_mpoly\add_ui.c">
       <Filter>Source Files\nmod_mpoly</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\nmod_mpoly\clear.c">
-      <Filter>Source Files\nmod_mpoly</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\nmod_mpoly\cmp.c">
       <Filter>Source Files\nmod_mpoly</Filter>
     </ClCompile>
@@ -7915,6 +8573,9 @@
       <Filter>Source Files\nmod_mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\nmod_mpoly\compose_nmod_poly.c">
+      <Filter>Source Files\nmod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly\content_vars.c">
       <Filter>Source Files\nmod_mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\nmod_mpoly\ctx_clear.c">
@@ -7980,6 +8641,12 @@
     <ClCompile Include="..\..\nmod_mpoly\fit_length.c">
       <Filter>Source Files\nmod_mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly\fit_length_fit_bits.c">
+      <Filter>Source Files\nmod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly\fit_length_reset_bits.c">
+      <Filter>Source Files\nmod_mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\nmod_mpoly\fprint_pretty.c">
       <Filter>Source Files\nmod_mpoly</Filter>
     </ClCompile>
@@ -7989,13 +8656,16 @@
     <ClCompile Include="..\..\nmod_mpoly\gcd_brown.c">
       <Filter>Source Files\nmod_mpoly</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\nmod_mpoly\gcd_brown_threaded.c">
-      <Filter>Source Files\nmod_mpoly</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\nmod_mpoly\gcd_cofactors.c">
       <Filter>Source Files\nmod_mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly\gcd_hensel.c">
+      <Filter>Source Files\nmod_mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\nmod_mpoly\gcd_zippel.c">
+      <Filter>Source Files\nmod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly\gcd_zippel2.c">
       <Filter>Source Files\nmod_mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\nmod_mpoly\gen.c">
@@ -8073,6 +8743,9 @@
     <ClCompile Include="..\..\nmod_mpoly\is_ui.c">
       <Filter>Source Files\nmod_mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly\lead_coeff_vars.c">
+      <Filter>Source Files\nmod_mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\nmod_mpoly\make_monic.c">
       <Filter>Source Files\nmod_mpoly</Filter>
     </ClCompile>
@@ -8139,6 +8812,9 @@
     <ClCompile Include="..\..\nmod_mpoly\push_term_ui_ui.c">
       <Filter>Source Files\nmod_mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly\quadratic_root.c">
+      <Filter>Source Files\nmod_mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\nmod_mpoly\randtest_bits.c">
       <Filter>Source Files\nmod_mpoly</Filter>
     </ClCompile>
@@ -8158,6 +8834,9 @@
       <Filter>Source Files\nmod_mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\nmod_mpoly\reverse.c">
+      <Filter>Source Files\nmod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly\scalar_addmul_ui.c">
       <Filter>Source Files\nmod_mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\nmod_mpoly\scalar_mul_ui.c">
@@ -8187,9 +8866,6 @@
     <ClCompile Include="..\..\nmod_mpoly\set_term_exp_ui.c">
       <Filter>Source Files\nmod_mpoly</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\nmod_mpoly\set_term_ui.c">
-      <Filter>Source Files\nmod_mpoly</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\nmod_mpoly\set_term_ui_fmpz.c">
       <Filter>Source Files\nmod_mpoly</Filter>
     </ClCompile>
@@ -8203,6 +8879,9 @@
       <Filter>Source Files\nmod_mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\nmod_mpoly\sort_terms.c">
+      <Filter>Source Files\nmod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly\sqrt_heap.c">
       <Filter>Source Files\nmod_mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\nmod_mpoly\stack.c">
@@ -8222,6 +8901,114 @@
     </ClCompile>
     <ClCompile Include="..\..\nmod_mpoly\univar.c">
       <Filter>Source Files\nmod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\append.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\clear.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\cmp.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\compression.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\eval.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\expand.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\factor.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\factor_content.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\factor_squarefree.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\fit_length.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\get_set_is_nmod_poly.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\get_set_lead0.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\init.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\inlines.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\irred_lgprime.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\irred_medprime.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\irred_smprime_wang.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\irred_smprime_zassenhaus.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\irred_smprime_zippel.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\lcc_wang.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\mpoly_hlift.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\mpoly_hlift_zippel.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\mpoly_pfrac.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\mpolyu.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\mpolyv.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\n_bpoly_mod.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\n_bpoly_mod_factor_lgprime.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\n_bpoly_mod_factor_smprime.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\n_bpoly_mod_hlift.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\n_bpoly_mod_pfrac.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\nmod_mat_extras.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\polyu3_mod_hlift.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\print_pretty.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\realloc.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\set.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly_factor\sort.c">
+      <Filter>Source Files\nmod_mpoly_factor</Filter>
     </ClCompile>
     <ClCompile Include="..\..\nmod_poly\KS2_pack.c">
       <Filter>Source Files\nmod_poly</Filter>

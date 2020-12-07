@@ -310,9 +310,6 @@ MA 02111-1307, USA. */
 /* Define if you have the ANSI C header files. */
 #define STDC_HEADERS		1
 
-/* ./configure --enable-assert option, to enable some ASSERT()s */
-#undef WANT_ASSERT
-
 /* Define if your processor stores words with the most significant byte first
    (like Motorola and SPARC, unlike Intel and VAX). */
 #undef WORDS_BIGENDIAN
@@ -334,6 +331,20 @@ MA 02111-1307, USA. */
 #endif
 #define NPRINTF_J            1
 #define NPRINTF_T            1
+
+/* Define if the compiler supports and should use thread-local storage */
+#define FLINT_USES_TLS 1
+
+/* Define if the library should be thread-safe, no matter whether FLINT_USES_TLS is used */
+#define FLINT_REENTRANT 1
+
+/* ./configure --enable-assert option, to enable some ASSERT()s */
+#undef FLINT_WANT_ASSERT
+
+/* Define if you cpu_set_t in sched.h */
+#define FLINT_USES_CPUSET 1
+
+#define FLINT_USES_PTHREAD 1
 
 #ifdef _MSC_VER
 #define access _access
