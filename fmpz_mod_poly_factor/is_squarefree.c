@@ -7,7 +7,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "fmpz_mod_poly.h"
@@ -48,7 +48,9 @@ _fmpz_mod_poly_is_squarefree(const fmpz * f, slong len, const fmpz_t p)
     return res;
 }
 
-int fmpz_mod_poly_is_squarefree(const fmpz_mod_poly_t f)
+int fmpz_mod_poly_is_squarefree(const fmpz_mod_poly_t f,
+                                                      const fmpz_mod_ctx_t ctx)
 {
-    return _fmpz_mod_poly_is_squarefree(f->coeffs, f->length, &f->p);
+    return _fmpz_mod_poly_is_squarefree(f->coeffs, f->length,
+                                                    fmpz_mod_ctx_modulus(ctx));
 }

@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "fmpz_mpoly.h"
@@ -158,7 +158,7 @@ int _fmpz_mpoly_compose_fmpz_poly_sp(fmpz_poly_t A, const fmpz_mpoly_t B,
         entries += FLINT_BIT_COUNT(degrees[i]);
     }
     offs = (slong *) TMP_ALLOC(entries*sizeof(slong));
-    masks = (ulong *) TMP_ALLOC(entries*sizeof(slong));
+    masks = (ulong *) TMP_ALLOC(entries*sizeof(ulong));
     powers = (fmpz_poly_struct *) TMP_ALLOC(entries*sizeof(fmpz_poly_struct));
 
     N = mpoly_words_per_exp(bits, ctx->minfo);
@@ -365,7 +365,7 @@ int _fmpz_mpoly_compose_fmpz_poly_mp(fmpz_poly_t A, const fmpz_mpoly_t B,
         entries += bitcounts[i];
     }
     offs = (slong *) TMP_ALLOC(entries*sizeof(slong));
-    masks = (ulong *) TMP_ALLOC(entries*sizeof(slong));
+    masks = (ulong *) TMP_ALLOC(entries*sizeof(ulong));
     powers = (fmpz_poly_struct *) TMP_ALLOC(entries*sizeof(fmpz_poly_struct));
 
     N = mpoly_words_per_exp(bits, ctx->minfo);

@@ -7,7 +7,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "fmpz_mpoly.h"
@@ -795,18 +795,14 @@ int _fmpz_mpoly_mul_array_LEX(
     if (A == B || A == C)
     {
         fmpz_mpoly_t T;
-        fmpz_mpoly_init2(T, B->length + C->length - 1, ctx);
-        fmpz_mpoly_fit_bits(T, exp_bits, ctx);
-        T->bits = exp_bits;
+        fmpz_mpoly_init3(T, B->length + C->length, exp_bits, ctx);
         _fmpz_mpoly_mul_array_chunked_LEX(T, C, B, mults, ctx);
         fmpz_mpoly_swap(T, A, ctx);
         fmpz_mpoly_clear(T, ctx);
     }
     else
     {
-        fmpz_mpoly_fit_length(A, B->length + C->length - 1, ctx);
-        fmpz_mpoly_fit_bits(A, exp_bits, ctx);
-        A->bits = exp_bits;
+        fmpz_mpoly_fit_length_reset_bits(A, B->length + C->length, exp_bits, ctx);
         _fmpz_mpoly_mul_array_chunked_LEX(A, C, B, mults, ctx);
     }
     success = 1;
@@ -1306,18 +1302,14 @@ int _fmpz_mpoly_mul_array_DEG(
     if (A == B || A == C)
     {
         fmpz_mpoly_t T;
-        fmpz_mpoly_init2(T, B->length + C->length - 1, ctx);
-        fmpz_mpoly_fit_bits(T, exp_bits, ctx);
-        T->bits = exp_bits;
+        fmpz_mpoly_init3(T, B->length + C->length, exp_bits, ctx);
         _fmpz_mpoly_mul_array_chunked_DEG(T, C, B, deg, ctx);
         fmpz_mpoly_swap(T, A, ctx);
         fmpz_mpoly_clear(T, ctx);
     }
     else
     {
-        fmpz_mpoly_fit_length(A, B->length + C->length - 1, ctx);
-        fmpz_mpoly_fit_bits(A, exp_bits, ctx);
-        A->bits = exp_bits;
+        fmpz_mpoly_fit_length_reset_bits(A, B->length + C->length, exp_bits, ctx);
         _fmpz_mpoly_mul_array_chunked_DEG(A, C, B, deg, ctx);
     }
     success = 1;

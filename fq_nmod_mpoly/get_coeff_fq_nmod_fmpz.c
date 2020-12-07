@@ -6,13 +6,16 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "fq_nmod_mpoly.h"
 
-void fq_nmod_mpoly_get_coeff_fq_nmod_fmpz(fq_nmod_t c, const fq_nmod_mpoly_t A,
-                             fmpz * const * exp, const fq_nmod_mpoly_ctx_t ctx)
+void fq_nmod_mpoly_get_coeff_fq_nmod_fmpz(
+    fq_nmod_t c,
+    const fq_nmod_mpoly_t A,
+    fmpz * const * exp,
+    const fq_nmod_mpoly_ctx_t ctx)
 {
     slong index;
     index = mpoly_monomial_index_pfmpz(A->exps, A->bits, A->length,
@@ -23,7 +26,8 @@ void fq_nmod_mpoly_get_coeff_fq_nmod_fmpz(fq_nmod_t c, const fq_nmod_mpoly_t A,
     }
     else
     {
+        slong d = fq_nmod_ctx_degree(ctx->fqctx);
         FLINT_ASSERT(index < A->length);
-        fq_nmod_set(c, A->coeffs + index, ctx->fqctx);
+        n_fq_get_fq_nmod(c, A->coeffs + d*index, ctx->fqctx);
     }
 }

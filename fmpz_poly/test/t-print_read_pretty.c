@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include <sys/types.h>
@@ -23,13 +23,6 @@
 #include "fmpz_poly.h"
 
 #if (!defined (__WIN32) || defined(__CYGWIN__)) && !defined(_MSC_VER)
-
-/*
-    The function fdopen is declared in stdio.h.  It is POSIX.1 compliant, 
-    but not ANSI compliant.  The following line enables compilation with 
-    the "-ansi" flag.
- */
-extern FILE * fdopen(int fildes, const char *mode);
 
 int main(void)
 {

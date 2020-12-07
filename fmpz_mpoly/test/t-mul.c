@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "fmpz_mpoly.h"
@@ -104,17 +104,16 @@ main(void)
         len1 = n_randint(state, 100);
         len2 = n_randint(state, 100);
 
-        exp_bits = n_randint(state, 100) + 2;
-        exp_bits1 = n_randint(state, 100) + 2;
-        exp_bits2 = n_randint(state, 100) + 2;
-
         coeff_bits = n_randint(state, 200);
-
-        fmpz_mpoly_randtest_bits(k1, state, len, coeff_bits, exp_bits, ctx);
-        fmpz_mpoly_randtest_bits(k2, state, len, coeff_bits, exp_bits, ctx);
 
         for (j = 0; j < 2; j++)
         {
+            exp_bits = n_randint(state, 100) + 2;
+            exp_bits1 = n_randint(state, 100) + 2;
+            exp_bits2 = n_randint(state, 100) + 2;
+
+            fmpz_mpoly_randtest_bits(k1, state, len, coeff_bits, exp_bits, ctx);
+            fmpz_mpoly_randtest_bits(k2, state, len, coeff_bits, exp_bits, ctx);
             fmpz_mpoly_randtest_bits(f, state, len1, coeff_bits, exp_bits1, ctx);
             fmpz_mpoly_randtest_bits(g, state, len2, coeff_bits, exp_bits2, ctx);
             fmpz_mpoly_randtest_bits(h, state, len2, coeff_bits, exp_bits2, ctx);

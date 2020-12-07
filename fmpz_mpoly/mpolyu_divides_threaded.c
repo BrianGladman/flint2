@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "fmpz_mpoly.h"
@@ -276,7 +276,7 @@ typedef divides_heap_chunk_struct divides_heap_chunk_t[1];
 typedef struct
 {
     volatile int failed;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_t mutex;
 #endif
     divides_heap_chunk_struct * head;
@@ -1269,28 +1269,28 @@ static void worker_loop(void * varg)
         }
         while (L != NULL)
         {
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
             pthread_mutex_lock(&H->mutex);
 #endif
             if (L->lock != -1)
             {
                 L->lock = -1;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
                 pthread_mutex_unlock(&H->mutex);
 #endif
                 trychunk(W, L);
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
                 pthread_mutex_lock(&H->mutex);
 #endif
                 L->lock = 0;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
                 pthread_mutex_unlock(&H->mutex);
 #endif
                 break;
             }
             else
             {
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
                 pthread_mutex_unlock(&H->mutex);
 #endif
             }
@@ -1478,7 +1478,7 @@ int fmpz_mpolyuu_divides_threaded_pool(
 
     /* start the workers */
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_init(&H->mutex, NULL);
 #endif
 
@@ -1499,7 +1499,7 @@ int fmpz_mpolyuu_divides_threaded_pool(
 
     flint_free(worker_args);
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_destroy(&H->mutex);
 #endif
 

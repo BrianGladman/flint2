@@ -7,22 +7,20 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include <stdlib.h>
 #include "fmpz_mod_poly.h"
 
 void
-fmpz_mod_poly_factor_realloc(fmpz_mod_poly_factor_t fac, slong alloc)
+fmpz_mod_poly_factor_realloc(fmpz_mod_poly_factor_t fac, slong alloc,
+                                                      const fmpz_mod_ctx_t ctx)
 {
-    fmpz_t p;
-    fmpz_init_set_ui(p, 5);
-
     if (alloc == 0)             /* Clear up, reinitialise */
     {
-        fmpz_mod_poly_factor_clear(fac);
-        fmpz_mod_poly_factor_init(fac);
+        fmpz_mod_poly_factor_clear(fac, ctx);
+        fmpz_mod_poly_factor_init(fac, ctx);
     }
     else if (fac->alloc)        /* Realloc */
     {
@@ -31,7 +29,7 @@ fmpz_mod_poly_factor_realloc(fmpz_mod_poly_factor_t fac, slong alloc)
             slong i;
 
             for (i = alloc; i < fac->num; i++)
-                fmpz_mod_poly_clear(fac->poly + i);
+                fmpz_mod_poly_clear(fac->poly + i, ctx);
 
             fac->poly =
                 flint_realloc(fac->poly, alloc * sizeof(fmpz_mod_poly_struct));
@@ -48,7 +46,7 @@ fmpz_mod_poly_factor_realloc(fmpz_mod_poly_factor_t fac, slong alloc)
 
             for (i = fac->alloc; i < alloc; i++)
             {
-                fmpz_mod_poly_init(fac->poly + i, p);
+                fmpz_mod_poly_init(fac->poly + i, ctx);
                 fac->exp[i] = WORD(0);
             }
             fac->alloc = alloc;
@@ -62,9 +60,8 @@ fmpz_mod_poly_factor_realloc(fmpz_mod_poly_factor_t fac, slong alloc)
         fac->exp = flint_calloc(alloc, sizeof(slong));
 
         for (i = 0; i < alloc; i++)
-            fmpz_mod_poly_init(fac->poly + i, p);
+            fmpz_mod_poly_init(fac->poly + i, ctx);
         fac->num = 0;
         fac->alloc = alloc;
     }
-    fmpz_clear(p);
 }

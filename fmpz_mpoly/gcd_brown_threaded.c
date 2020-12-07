@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "fmpz_mpoly.h"
@@ -18,7 +18,7 @@ typedef struct
 {
     volatile int gcd_is_one;
     volatile mp_limb_t p;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_t mutex;
 #endif
     fmpz_t gamma;
@@ -116,20 +116,20 @@ static void _splitworker(void * varg)
     while (arg->image_count < arg->required_images)
     {
         /* get prime */
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
         pthread_mutex_lock(&base->mutex);
 #endif
 	p = base->p;
         if (p >= UWORD_MAX_PRIME)
         {
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
             pthread_mutex_unlock(&base->mutex);
 #endif
             break;
         }
         p = n_nextprime(base->p, 1);
         base->p = p;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
         pthread_mutex_unlock(&base->mutex);
 #endif
 
@@ -144,11 +144,11 @@ static void _splitworker(void * varg)
 
         /* the unfortunate nmod poly's store their own context :( */
         nmod_poly_stack_set_ctx(Sp, arg->pctx);
-        nmod_mpolyn_set_mod(arg->Ap, arg->pctx->ffinfo->mod);
-        nmod_mpolyn_set_mod(arg->Bp, arg->pctx->ffinfo->mod);
-        nmod_mpolyn_set_mod(arg->Gp, arg->pctx->ffinfo->mod);
-        nmod_mpolyn_set_mod(arg->Abarp, arg->pctx->ffinfo->mod);
-        nmod_mpolyn_set_mod(arg->Bbarp, arg->pctx->ffinfo->mod);
+        nmod_mpolyn_set_mod(arg->Ap, arg->pctx->mod);
+        nmod_mpolyn_set_mod(arg->Bp, arg->pctx->mod);
+        nmod_mpolyn_set_mod(arg->Gp, arg->pctx->mod);
+        nmod_mpolyn_set_mod(arg->Abarp, arg->pctx->mod);
+        nmod_mpolyn_set_mod(arg->Bbarp, arg->pctx->mod);
 
         /* reduce to Fp and calculate an image gcd */
         if (arg->num_handles > 0)
@@ -378,7 +378,7 @@ static slong _fmpz_mpoly_crt(
     if (exp_right)
         _find_edge(stop, count, exp_right, B, N);
 
-#if WANT_ASSERT
+#if FLINT_WANT_ASSERT
     for (k = 0; k < count; k++)
     {
         FLINT_ASSERT(0 <= start[k]);
@@ -505,7 +505,7 @@ static slong _fmpz_mpoly_crt(
 typedef struct
 {
     volatile int idx;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_t mutex;
 #endif
     const fmpz_mpoly_ctx_struct * ctx;
@@ -546,12 +546,12 @@ static void _joinworker(void * varg)
     while (1)
     {
         /* get exponent of either G, Abar, or Bbar to start working on */
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
         pthread_mutex_lock(&base->mutex);
 #endif
 	i = base->idx;
         base->idx = i + 1;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
         pthread_mutex_unlock(&base->mutex);
 #endif
 
@@ -809,7 +809,7 @@ int fmpz_mpolyl_gcd_brown_threaded_pool(
     splitbase->p = UWORD(1) << (FLINT_BITS - 2);
     splitbase->I = I;
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_init(&splitbase->mutex, NULL);
 #endif
 
@@ -970,7 +970,7 @@ compute_split:
     joinbase->Abar = Abar;
     joinbase->Bbar = Bbar;
     joinbase->ctx = ctx;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_init(&joinbase->mutex, NULL);
 #endif
 
@@ -1095,7 +1095,7 @@ compute_split:
     FLINT_ASSERT(fmpz_mpoly_is_canonical(Abar, ctx));
     FLINT_ASSERT(fmpz_mpoly_is_canonical(Bbar, ctx));
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_destroy(&joinbase->mutex);
 #endif
     
@@ -1152,7 +1152,7 @@ successful_put_content:
 
 cleanup_split:
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_destroy(&splitbase->mutex);
 #endif
     fmpz_clear(splitbase->gamma);

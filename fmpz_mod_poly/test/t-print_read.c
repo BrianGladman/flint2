@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include <sys/types.h>
@@ -23,13 +23,6 @@
 
 #if (!defined (__WIN32) || defined(__CYGWIN__)) && !defined(_MSC_VER)
 
-/*
-    The function fdopen is declared in stdio.h.  It is POSIX.1 compliant, 
-    but not ANSI compliant.  The following line enables compilation with 
-    the "-ansi" flag.
- */
-extern FILE * fdopen(int fildes, const char *mode);
-
 int main(void)
 {
     int i, j, n, result;
@@ -37,14 +30,13 @@ int main(void)
     FILE *in, *out;
     int fd[2];
     pid_t childpid;
-    fmpz_t two;
+    fmpz_mod_ctx_t ctx;
 
     FLINT_TEST_INIT(state);
 
     n = 100 * flint_test_multiplier();
 
-    fmpz_init(two);
-    fmpz_set_ui(two,2);
+    fmpz_mod_ctx_init_ui(ctx, 2);
 
     flint_printf("print/ read....");
     fflush(stdout);
@@ -56,8 +48,8 @@ int main(void)
         a = flint_malloc(n * sizeof(fmpz_mod_poly_t));
         for (i = 0; i < n; i++)
         {
-            fmpz_mod_poly_init(a[i], two);
-            fmpz_mod_poly_randtest(a[i], state, n_randint(state, 100));
+            fmpz_mod_poly_init(a[i], ctx);
+            fmpz_mod_poly_randtest(a[i], state, n_randint(state, 100), ctx);
         }
 
         if (pipe(fd))
@@ -89,7 +81,7 @@ int main(void)
 
             for (j = 0; j < n; j++)
             {
-                r = fmpz_mod_poly_fprint(out, a[j]);
+                r = fmpz_mod_poly_fprint(out, a[j], ctx);
                 if ((j < n - 1) && (r > 0))
                     r = flint_fprintf(out, "\n");
 
@@ -102,7 +94,7 @@ int main(void)
             }
 
             for (j = 0; j < n; j++)
-                fmpz_mod_poly_clear(a[j]);
+                fmpz_mod_poly_clear(a[j], ctx);
             flint_free(a);
             fclose(out);
             exit(0);
@@ -111,6 +103,7 @@ int main(void)
         {
             int r;
             fmpz_mod_poly_t t;
+            fmpz_mod_ctx_t newctx;
 
             close(fd[1]);
             in = fdopen(fd[0], "r");
@@ -121,12 +114,13 @@ int main(void)
                 abort();
             }
 
-            fmpz_mod_poly_init(t,two);
+            fmpz_mod_ctx_init_ui(newctx, 3);
+            fmpz_mod_poly_init(t, newctx);
 
             i = 0;
             while (!feof(in))
             {
-                r = fmpz_mod_poly_fread(in, t);
+                r = fmpz_mod_poly_fread(in, t, newctx);
                 if (r <= 0)
                 {
                     flint_printf("FAIL:\n");
@@ -134,19 +128,22 @@ int main(void)
                     abort();
                 }
 
-                result = fmpz_mod_poly_equal(t, a[i]);
+                result = fmpz_equal(fmpz_mod_ctx_modulus(ctx),
+                                    fmpz_mod_ctx_modulus(newctx));
+                result = result && fmpz_mod_poly_equal(t, a[i], newctx);
                 if (!result)
                 {
                     flint_printf("FAIL:\n");
-                    flint_printf("a[i] = "), fmpz_mod_poly_print(a[i]), flint_printf("\n");
-                    flint_printf("t    = "), fmpz_mod_poly_print(t), flint_printf("\n");
+                    flint_printf("a[i] = "), fmpz_mod_poly_print(a[i], ctx), flint_printf("\n");
+                    flint_printf("t    = "), fmpz_mod_poly_print(t, newctx), flint_printf("\n");
                     abort();
                 }
 
                 ++i;
             }
 
-            fmpz_mod_poly_clear(t);
+            fmpz_mod_poly_clear(t, newctx);
+            fmpz_mod_ctx_clear(newctx);
             fclose(in);
         }
 
@@ -158,7 +155,7 @@ int main(void)
         }
 
         for (i = 0; i < n; i++)
-            fmpz_mod_poly_clear(a[i]);
+            fmpz_mod_poly_clear(a[i], ctx);
         flint_free(a);
     }
 
@@ -206,6 +203,7 @@ int main(void)
         {
             int r;
             fmpz_mod_poly_t t;
+            fmpz_mod_ctx_t newctx;
 
             close(fd[1]);
             in = fdopen(fd[0], "r");
@@ -216,14 +214,14 @@ int main(void)
                 abort();
             }
 
-            fmpz_mod_poly_init(t,two);
+            fmpz_mod_poly_init(t, ctx);
 
             i = 0;
             /* Only four junk bytes are sent and our read
                doesn't consume invalid bytes, so eof is never reached */
             for(i = 0; i < 500; i++)
             {
-                r = fmpz_mod_poly_fread(in, t);
+                r = fmpz_mod_poly_fread(in, t, newctx);
                 if (r > 0)
                 {
                     flint_printf("FAIL:\n");
@@ -232,12 +230,13 @@ int main(void)
                 }
             }
 
-            fmpz_mod_poly_clear(t);
+            fmpz_mod_poly_clear(t, newctx);
+            fmpz_mod_ctx_clear(newctx);
             fclose(in);
         }
     }
 
-    fmpz_clear(two);
+    fmpz_mod_ctx_clear(ctx);
     FLINT_TEST_CLEANUP(state);
     
     flint_printf("PASS\n");

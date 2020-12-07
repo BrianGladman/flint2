@@ -7,7 +7,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #ifndef QSIEVE_H
@@ -91,7 +91,7 @@ typedef qs_poly_s qs_poly_t[1];
 typedef struct qs_s
 {
    volatile slong index_j;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
    pthread_mutex_t mutex;
 #endif
    thread_pool_handle * handles;

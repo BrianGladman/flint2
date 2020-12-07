@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include <stdlib.h>
@@ -67,9 +67,9 @@ _fmpz_mod_poly_inv_series_newton(fmpz * Qinv, const fmpz * Q, slong n,
 }
 
 void fmpz_mod_poly_inv_series_newton(fmpz_mod_poly_t Qinv, 
-    const fmpz_mod_poly_t Q, slong n)
+                    const fmpz_mod_poly_t Q, slong n, const fmpz_mod_ctx_t ctx)
 {
-    const fmpz *p = &(Q->p);
+    const fmpz *p = fmpz_mod_ctx_modulus(ctx);
     fmpz_t cinv;
     fmpz *Qcopy;
     int Qalloc;
@@ -94,7 +94,7 @@ void fmpz_mod_poly_inv_series_newton(fmpz_mod_poly_t Qinv,
 
     if (Qinv != Q)
     {
-        fmpz_mod_poly_fit_length(Qinv, n);
+        fmpz_mod_poly_fit_length(Qinv, n, ctx);
         _fmpz_mod_poly_inv_series_newton(Qinv->coeffs, Qcopy, n, cinv, p);
     }
     else

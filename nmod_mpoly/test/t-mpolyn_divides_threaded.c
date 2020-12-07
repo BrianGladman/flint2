@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "nmod_mpoly.h"
@@ -47,7 +47,7 @@ void _divides_check(
     nmod_mpoly_init(Q, ctx);
     nmod_mpoly_init(Qcheck, ctx);
 
-    nmod_mpoly_ctx_init(nctx, ctx->minfo->nvars, ORD_LEX, ctx->ffinfo->mod.n);
+    nmod_mpoly_ctx_init(nctx, ctx->minfo->nvars, ORD_LEX, ctx->mod.n);
 
     ABbits = FLINT_MAX(A->bits, B->bits);
 

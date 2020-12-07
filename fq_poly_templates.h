@@ -8,7 +8,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #ifdef T
@@ -302,11 +302,6 @@ FLINT_DLL void TEMPLATE3(T, poly_scalar_mul, T)(TEMPLATE(T, poly_t) rop,
                                  const TEMPLATE(T, poly_t) op,
                                  const TEMPLATE(T, t) x,
                                  const TEMPLATE(T, ctx_t) ctx);
-
-FLINT_DLL void _TEMPLATE3(T, poly_scalar_addmul, T)(TEMPLATE(T, struct) *rop,
-                                     const TEMPLATE(T, struct) *op, slong len,
-                                     const TEMPLATE(T, t) x,
-                                     const TEMPLATE(T, ctx_t) ctx);
 
 FLINT_DLL void _TEMPLATE3(T, poly_scalar_div, T)(TEMPLATE(T, struct) *rop,
                                   const TEMPLATE(T, struct) *op, slong len,

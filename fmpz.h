@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #ifndef FMPZ_H
@@ -31,7 +31,7 @@
 #include "nmod_vec.h"
 #include "fmpz-conversions.h"
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
 #include <pthread.h>
 #endif
 
@@ -59,7 +59,7 @@ typedef fmpz_preinvn_struct fmpz_preinvn_t[1];
 typedef struct
 {
    int count;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
    pthread_t thread;
 #endif
    void * address;

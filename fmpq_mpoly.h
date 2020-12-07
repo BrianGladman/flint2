@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #ifndef FMPQ_MPOLY_H
@@ -526,6 +526,9 @@ FLINT_DLL void fmpq_mpoly_push_term_si_ui(fmpq_mpoly_t A,
 
 FLINT_DLL void fmpq_mpoly_reduce(fmpq_mpoly_t A, const fmpq_mpoly_ctx_t ctx);
 
+FLINT_DLL void fmpq_mpoly_reduce_easy(fmpq_mpoly_t A, slong easy_length,
+                                                       const fmpq_mpoly_ctx_t);
+
 FMPQ_MPOLY_INLINE
 void fmpq_mpoly_sort_terms(fmpq_mpoly_t A, const fmpq_mpoly_ctx_t ctx)
 {
@@ -724,6 +727,19 @@ FLINT_DLL void fmpq_mpoly_divrem_ideal(fmpq_mpoly_struct ** q, fmpq_mpoly_t r,
     const fmpq_mpoly_t poly2, fmpq_mpoly_struct * const * poly3, slong len,
                                                    const fmpq_mpoly_ctx_t ctx);
 
+/* Square root ***************************************************************/
+
+FLINT_DLL int fmpq_mpoly_sqrt(fmpq_mpoly_t Q, const fmpq_mpoly_t A,
+                                                   const fmpq_mpoly_ctx_t ctx);
+
+FMPQ_MPOLY_INLINE
+int fmpq_mpoly_is_square(const fmpq_mpoly_t A, const fmpq_mpoly_ctx_t ctx)
+{
+    return fmpz_is_square(fmpq_numref(A->content)) &&
+           fmpz_is_square(fmpq_denref(A->content)) &&
+           fmpz_mpoly_is_square(A->zpoly, ctx->zctx);
+}
+
 /* GCD ***********************************************************************/
 
 FMPQ_MPOLY_INLINE
@@ -736,9 +752,11 @@ void fmpq_mpoly_content(fmpq_t g, const fmpq_mpoly_t A,
 FLINT_DLL void fmpq_mpoly_term_content(fmpq_mpoly_t M, const fmpq_mpoly_t A,
                                                    const fmpq_mpoly_ctx_t ctx);
 
+FLINT_DLL int fmpq_mpoly_content_vars(fmpq_mpoly_t g, const fmpq_mpoly_t A,
+                  slong * vars, slong vars_length, const fmpq_mpoly_ctx_t ctx);
+
 FLINT_DLL int fmpq_mpoly_gcd(fmpq_mpoly_t G, const fmpq_mpoly_t A,
                              const fmpq_mpoly_t B, const fmpq_mpoly_ctx_t ctx);
-
 
 FLINT_DLL void fmpq_mpoly_inflate(fmpq_mpoly_t A, const fmpq_mpoly_t B,
           const fmpz * shift, const fmpz * stride, const fmpq_mpoly_ctx_t ctx);

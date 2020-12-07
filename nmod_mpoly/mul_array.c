@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "nmod_mpoly.h"
@@ -111,10 +111,6 @@ void _nmod_mpoly_addmul_array1_ulong3(ulong * poly1,
 ****************************************************/
 
 
-void mpoly_main_variable_split_LEX(slong * ind, ulong * pexp, const ulong * Aexp,
-             slong l1, slong Alen, const ulong * mults, slong num, slong Abits);
-
-
 #define LEX_UNPACK_MACRO(fxn_name, coeff_decl, nonzero_test, reduce_coeff)     \
 slong fxn_name(nmod_mpoly_t P, slong Plen, coeff_decl,                         \
              const ulong * mults, slong num, slong array_size, slong top,      \
@@ -140,8 +136,8 @@ slong fxn_name(nmod_mpoly_t P, slong Plen, coeff_decl,                         \
                     exp += (d % mults[j]) << (P->bits*j);                      \
                     d = d / mults[j];                                          \
                 }                                                              \
-                _nmod_mpoly_fit_length(&P->coeffs, &P->exps, &P->alloc,        \
-                                                                 Plen + 1, 1); \
+                _nmod_mpoly_fit_length(&P->coeffs, &P->coeffs_alloc,           \
+                                       &P->exps, &P->exps_alloc, 1, Plen + 1); \
                 P->exps[Plen] = exp;                                           \
                 P->coeffs[Plen] = coeff;                                       \
                 Plen++;                                                        \
@@ -168,7 +164,7 @@ LEX_UNPACK_MACRO(
 ,
     coeff_array[off] != UWORD(0)
 ,
-    NMOD_RED(coeff, coeff_array[off], ctx->ffinfo->mod);
+    NMOD_RED(coeff, coeff_array[off], ctx->mod);
     coeff_array[off] = 0;
 )
 
@@ -177,7 +173,7 @@ LEX_UNPACK_MACRO(
 ,
     (coeff_array[2*off + 0] || coeff_array[2*off + 1]) != UWORD(0)
 ,
-    NMOD2_RED2(coeff, coeff_array[2*off + 1], coeff_array[2*off + 0], ctx->ffinfo->mod);
+    NMOD2_RED2(coeff, coeff_array[2*off + 1], coeff_array[2*off + 0], ctx->mod);
     coeff_array[2*off + 0] = coeff_array[2*off + 1] = 0;
 )
 
@@ -186,7 +182,7 @@ LEX_UNPACK_MACRO(
 ,
     (coeff_array[3*off + 0] || coeff_array[3*off + 1] || coeff_array[3*off + 2]) != UWORD(0)
 ,
-    NMOD_RED3(coeff, coeff_array[3*off + 2], coeff_array[3*off + 1], coeff_array[3*off + 0], ctx->ffinfo->mod);
+    NMOD_RED3(coeff, coeff_array[3*off + 2], coeff_array[3*off + 1], coeff_array[3*off + 0], ctx->mod);
     coeff_array[3*off + 0] = coeff_array[3*off + 1] = coeff_array[3*off + 2] = UWORD(0);
 )
 
@@ -248,7 +244,7 @@ void _nmod_mpoly_mul_array_chunked_LEX(
                 }
             }
 
-            umul_ppmm(t1, t0, ctx->ffinfo->mod.n - 1, ctx->ffinfo->mod.n - 1);
+            umul_ppmm(t1, t0, ctx->mod.n - 1, ctx->mod.n - 1);
             umul_ppmm(t2, t1, t1, len);
             umul_ppmm(u1, u0, t0, len);
             add_sssaaaaaa(t2, t1, t0,  t2, t1, UWORD(0),  UWORD(0), u1, u0);
@@ -395,9 +391,7 @@ int _nmod_mpoly_mul_array_LEX(
     }
     else
     {
-        nmod_mpoly_fit_length(A, B->length + C->length - 1, ctx);
-        nmod_mpoly_fit_bits(A, exp_bits, ctx);
-        A->bits = exp_bits;
+        nmod_mpoly_fit_length_reset_bits(A, B->length + C->length - 1, exp_bits, ctx);
         _nmod_mpoly_mul_array_chunked_LEX(A, C, B, mults, ctx);
     }
     success = 1;
@@ -415,10 +409,6 @@ cleanup:
 /****************************************************
     DEGLEX and DEGREVLEX
 ****************************************************/
-
-void mpoly_main_variable_split_DEG(slong * ind, ulong * pexp, const ulong * Aexp,
-             slong l1, slong Alen, ulong deg, slong num, slong Abits);
-
 
 
 #define DEGLEX_UNPACK_MACRO(fxn_name, coeff_decl, nonzero_test, reduce_coeff)  \
@@ -465,8 +455,8 @@ slong fxn_name(nmod_mpoly_t P, slong Plen, coeff_decl,                         \
             reduce_coeff                                                       \
             if (coeff != UWORD(0))                                             \
             {                                                                  \
-                _nmod_mpoly_fit_length(&P->coeffs, &P->exps, &P->alloc,        \
-                                                                 Plen + 1, 1); \
+                _nmod_mpoly_fit_length(&P->coeffs, &P->coeffs_alloc,           \
+                                       &P->exps, &P->exps_alloc, 1, Plen + 1); \
                 P->exps[Plen] = exp;                                           \
                 P->coeffs[Plen] = coeff;                                       \
                 Plen++;                                                        \
@@ -520,7 +510,7 @@ DEGLEX_UNPACK_MACRO(
 ,
     coeff_array[off] != UWORD(0)
 ,
-    NMOD_RED(coeff, coeff_array[off], ctx->ffinfo->mod);
+    NMOD_RED(coeff, coeff_array[off], ctx->mod);
     coeff_array[off] = 0;
 )
 
@@ -529,7 +519,7 @@ DEGLEX_UNPACK_MACRO(
 ,
     (coeff_array[2*off + 0] || coeff_array[2*off + 1]) != UWORD(0)
 ,
-    NMOD2_RED2(coeff, coeff_array[2*off + 1], coeff_array[2*off + 0], ctx->ffinfo->mod);
+    NMOD2_RED2(coeff, coeff_array[2*off + 1], coeff_array[2*off + 0], ctx->mod);
     coeff_array[2*off + 0] = coeff_array[2*off + 1] = 0;
 )
 
@@ -538,7 +528,7 @@ DEGLEX_UNPACK_MACRO(
 ,
     (coeff_array[3*off + 0] || coeff_array[3*off + 1] || coeff_array[3*off + 2]) != UWORD(0)
 ,
-    NMOD_RED3(coeff, coeff_array[3*off + 2], coeff_array[3*off + 1], coeff_array[3*off + 0], ctx->ffinfo->mod);
+    NMOD_RED3(coeff, coeff_array[3*off + 2], coeff_array[3*off + 1], coeff_array[3*off + 0], ctx->mod);
     coeff_array[3*off + 0] = coeff_array[3*off + 1] = coeff_array[3*off + 2] = 0;
 )
 
@@ -582,8 +572,8 @@ slong fxn_name(nmod_mpoly_t P, slong Plen, coeff_decl,                         \
             reduce_coeff                                                       \
             if (coeff != UWORD(0))                                             \
             {                                                                  \
-                _nmod_mpoly_fit_length(&P->coeffs, &P->exps, &P->alloc,        \
-                                                                 Plen + 1, 1); \
+                _nmod_mpoly_fit_length(&P->coeffs, &P->coeffs_alloc,           \
+                                       &P->exps, &P->exps_alloc, 1, Plen + 1); \
                 P->exps[Plen] = exp;                                           \
                 P->coeffs[Plen] = coeff;                                       \
                 Plen++;                                                        \
@@ -631,7 +621,7 @@ DEGREVLEX_UNPACK_MACRO(
 ,
     coeff_array[off] != WORD(0)
 ,
-    NMOD_RED(coeff, coeff_array[off], ctx->ffinfo->mod);
+    NMOD_RED(coeff, coeff_array[off], ctx->mod);
     coeff_array[off] = 0;
 )
 
@@ -640,7 +630,7 @@ DEGREVLEX_UNPACK_MACRO(
 ,
     (coeff_array[2*off + 0] || coeff_array[2*off + 1]) != WORD(0)
 ,
-    NMOD2_RED2(coeff, coeff_array[2*off + 1], coeff_array[2*off + 0], ctx->ffinfo->mod);
+    NMOD2_RED2(coeff, coeff_array[2*off + 1], coeff_array[2*off + 0], ctx->mod);
     coeff_array[2*off + 0] = coeff_array[2*off + 1] = 0;
 )
 
@@ -649,7 +639,7 @@ DEGREVLEX_UNPACK_MACRO(
 ,
     (coeff_array[3*off + 0] || coeff_array[3*off + 1] || coeff_array[3*off + 2]) != WORD(0)
 ,
-    NMOD_RED3(coeff, coeff_array[3*off + 2], coeff_array[3*off + 1], coeff_array[3*off + 0], ctx->ffinfo->mod);
+    NMOD_RED3(coeff, coeff_array[3*off + 2], coeff_array[3*off + 1], coeff_array[3*off + 0], ctx->mod);
     coeff_array[3*off + 0] = coeff_array[3*off + 1] = coeff_array[3*off + 2] = 0;
 )
 
@@ -725,7 +715,7 @@ void _nmod_mpoly_mul_array_chunked_DEG(
                 }
             }
 
-            umul_ppmm(t1, t0, ctx->ffinfo->mod.n - 1, ctx->ffinfo->mod.n - 1);
+            umul_ppmm(t1, t0, ctx->mod.n - 1, ctx->mod.n - 1);
             umul_ppmm(t2, t1, t1, len);
             umul_ppmm(u1, u0, t0, len);
             add_sssaaaaaa(t2, t1, t0,  t2, t1, UWORD(0),  UWORD(0), u1, u0);
@@ -858,9 +848,7 @@ int _nmod_mpoly_mul_array_DEG(
     }
     else
     {
-        nmod_mpoly_fit_length(A, B->length + C->length - 1, ctx);
-        nmod_mpoly_fit_bits(A, exp_bits, ctx);
-        A->bits = exp_bits;
+        nmod_mpoly_fit_length_reset_bits(A, B->length + C->length - 1, exp_bits, ctx);
         _nmod_mpoly_mul_array_chunked_DEG(A, C, B, deg, ctx);
     }
     success = 1;

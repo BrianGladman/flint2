@@ -8,7 +8,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include <stdlib.h>
@@ -112,8 +112,8 @@ _fmpz_mod_poly_resultant_euclidean(fmpz_t res, const fmpz *poly1, slong len1,
     }
 }
 
-void 
-fmpz_mod_poly_resultant_euclidean(fmpz_t r, const fmpz_mod_poly_t f, const fmpz_mod_poly_t g)
+void fmpz_mod_poly_resultant_euclidean(fmpz_t r, const fmpz_mod_poly_t f,
+                             const fmpz_mod_poly_t g, const fmpz_mod_ctx_t ctx)
 {
     const slong len1 = f->length;
     const slong len2 = g->length;
@@ -127,15 +127,15 @@ fmpz_mod_poly_resultant_euclidean(fmpz_t r, const fmpz_mod_poly_t f, const fmpz_
         if (len1 >= len2)
         {
             _fmpz_mod_poly_resultant_euclidean(r, f->coeffs, len1, 
-                                               g->coeffs, len2, &f->p);
+                                   g->coeffs, len2, fmpz_mod_ctx_modulus(ctx));
         }
         else
         {
             _fmpz_mod_poly_resultant_euclidean(r, g->coeffs, len2, 
-                                               f->coeffs, len1, &f->p);
+                                   f->coeffs, len1, fmpz_mod_ctx_modulus(ctx));
 
             if (((len1 | len2) & WORD(1)) == WORD(0))
-                fmpz_negmod(r, r, &f->p);
+                fmpz_mod_neg(r, r, ctx);
         }
     }
 }

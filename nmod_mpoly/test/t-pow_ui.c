@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include <stdio.h>
@@ -74,7 +74,7 @@ main(void)
         exp_bits1 = n_randint(state, 7) + 2;
         exp_bits2 = n_randint(state, 7) + 2;
 
-        if (n_is_prime(ctx->ffinfo->mod.n)) {
+        if (n_is_prime(nmod_mpoly_ctx_modulus(ctx))) {
             pow_bound = 60000/(len1+1)/(FLINT_BIT_COUNT(modulus)+10);
         } else {
             pow_bound = 400/(len1+1);

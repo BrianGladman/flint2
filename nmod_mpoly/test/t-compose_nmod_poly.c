@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include <stdio.h>
@@ -32,11 +32,11 @@ main(void)
         nmod_mpoly_ctx_init(ctxB, 3, ORD_LEX, 13);
 
         nmod_mpoly_init(B, ctxB);
-        nmod_poly_init_mod(A, ctxB->ffinfo->mod);
+        nmod_poly_init_mod(A, ctxB->mod);
         for (i = 0; i < 3; i++)
         {
             Cp[i] = C + i;
-            nmod_poly_init_mod(C + i, ctxB->ffinfo->mod);
+            nmod_poly_init_mod(C + i, ctxB->mod);
         }
 
         nmod_mpoly_set_str_pretty(B,

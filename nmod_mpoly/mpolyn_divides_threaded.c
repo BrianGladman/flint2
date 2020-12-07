@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "thread_pool.h"
@@ -95,7 +95,7 @@ typedef struct _nmod_mpolyn_ts_struct
 typedef nmod_mpolyn_ts_struct nmod_mpolyn_ts_t[1];
 
 /* Bcoeff is changed */
-void nmod_mpolyn_ts_init(nmod_mpolyn_ts_t A,
+static void nmod_mpolyn_ts_init(nmod_mpolyn_ts_t A,
                         nmod_poly_struct * Bcoeff, ulong * Bexp, slong Blen,
                       flint_bitcnt_t bits, slong N, const nmod_mpoly_ctx_t ctx)
 {
@@ -117,7 +117,7 @@ void nmod_mpolyn_ts_init(nmod_mpolyn_ts_t A,
 
     for (i = 0; i < A->alloc; i++)
     {
-        nmod_poly_init_mod(A->coeffs + i, ctx->ffinfo->mod);
+        nmod_poly_init_mod(A->coeffs + i, ctx->mod);
     }
 
     A->length = Blen;
@@ -128,21 +128,7 @@ void nmod_mpolyn_ts_init(nmod_mpolyn_ts_t A,
     }
 }
 
-void nmod_mpolyn_ts_print(const nmod_mpolyn_ts_t B, const char ** x,
-                                                    const nmod_mpoly_ctx_t ctx)
-{
-    nmod_mpolyn_t A;
-    A->length = B->length;
-    A->alloc = B->alloc;
-    A->coeffs = B->coeffs;
-    A->exps = B->exps;
-    A->bits = B->bits;
-    nmod_mpolyn_print_pretty(A, x, ctx);
-
-    FLINT_ASSERT(nmod_mpolyn_is_canonical(A, ctx));
-}
-
-void nmod_mpolyn_ts_clear(nmod_mpolyn_ts_t A)
+static void nmod_mpolyn_ts_clear(nmod_mpolyn_ts_t A)
 {
     slong i;
 
@@ -162,7 +148,7 @@ void nmod_mpolyn_ts_clear(nmod_mpolyn_ts_t A)
     }
 }
 
-void nmod_mpolyn_ts_clear_poly(nmod_mpolyn_t Q, nmod_mpolyn_ts_t A)
+static void nmod_mpolyn_ts_clear_poly(nmod_mpolyn_t Q, nmod_mpolyn_ts_t A)
 {
     if (Q->alloc != 0)
     {
@@ -194,7 +180,7 @@ void nmod_mpolyn_ts_clear_poly(nmod_mpolyn_t Q, nmod_mpolyn_ts_t A)
 
 
 /* put B on the end of A - Bcoeff is changed*/
-void nmod_mpolyn_ts_append(nmod_mpolyn_ts_t A,
+static void nmod_mpolyn_ts_append(nmod_mpolyn_ts_t A,
                        nmod_poly_struct * Bcoeff, ulong * Bexps, slong Blen,
                                            slong N, const nmod_mpoly_ctx_t ctx)
 {
@@ -234,7 +220,7 @@ void nmod_mpolyn_ts_append(nmod_mpolyn_ts_t A,
 
         for (i = 0; i < newalloc; i++)
         {
-            nmod_poly_init_mod(newcoeffs + i, ctx->ffinfo->mod);
+            nmod_poly_init_mod(newcoeffs + i, ctx->mod);
         }
 
         for (i = 0; i < oldlength; i++)
@@ -287,7 +273,7 @@ typedef divides_heap_chunk_struct divides_heap_chunk_t[1];
 */
 typedef struct
 {
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_t mutex;
 #endif
     divides_heap_chunk_struct * head;
@@ -415,20 +401,19 @@ static void _nmod_mpolyn_fit_length(nmod_poly_struct ** coeffs,
 
         for (i = old_alloc; i < new_alloc; i++)
         {
-            nmod_poly_init_mod(*coeffs + i, ctx->ffinfo->mod);
+            nmod_poly_init_mod(*coeffs + i, ctx->mod);
         }
         *alloc = new_alloc;
     }
 }
 
 
-
-
-slong _nmod_mpolyn_mulsub_stripe1(nmod_poly_struct ** A_coeff, ulong ** A_exp, slong * A_alloc,
-                         const nmod_poly_struct * Dcoeff, const ulong * Dexp, slong Dlen, int saveD,
-                         const nmod_poly_struct * Bcoeff, const ulong * Bexp, slong Blen,
-                         const nmod_poly_struct * Ccoeff, const ulong * Cexp, slong Clen,
-                                                   const nmod_mpolyn_stripe_t S)
+static slong _nmod_mpolyn_mulsub_stripe1(
+    nmod_poly_struct ** A_coeff, ulong ** A_exp, slong * A_alloc,
+    const nmod_poly_struct * Dcoeff, const ulong * Dexp, slong Dlen, int saveD,
+    const nmod_poly_struct * Bcoeff, const ulong * Bexp, slong Blen,
+    const nmod_poly_struct * Ccoeff, const ulong * Cexp, slong Clen,
+    const nmod_mpolyn_stripe_t S)
 {
     int upperclosed;
     slong startidx, endidx;
@@ -457,7 +442,7 @@ slong _nmod_mpolyn_mulsub_stripe1(nmod_poly_struct ** A_coeff, ulong ** A_exp, s
     FLINT_ASSERT(S->N == 1);
     FLINT_ASSERT(S->bits <= FLINT_BITS);
 
-    nmod_poly_init_mod(pp, S->ctx->ffinfo->mod);
+    nmod_poly_init_mod(pp, S->ctx->mod);
 
     i = 0;
     hind = (slong *)(S->big_mem + i);
@@ -653,11 +638,12 @@ slong _nmod_mpolyn_mulsub_stripe1(nmod_poly_struct ** A_coeff, ulong ** A_exp, s
 }
 
 
-slong _nmod_mpolyn_mulsub_stripe(nmod_poly_struct ** A_coeff, ulong ** A_exp, slong * A_alloc,
-                         const nmod_poly_struct * Dcoeff, const ulong * Dexp, slong Dlen, int saveD,
-                         const nmod_poly_struct * Bcoeff, const ulong * Bexp, slong Blen,
-                         const nmod_poly_struct * Ccoeff, const ulong * Cexp, slong Clen,
-                                                   const nmod_mpolyn_stripe_t S)
+static slong _nmod_mpolyn_mulsub_stripe(
+    nmod_poly_struct ** A_coeff, ulong ** A_exp, slong * A_alloc,
+    const nmod_poly_struct * Dcoeff, const ulong * Dexp, slong Dlen, int saveD,
+    const nmod_poly_struct * Bcoeff, const ulong * Bexp, slong Blen,
+    const nmod_poly_struct * Ccoeff, const ulong * Cexp, slong Clen,
+    const nmod_mpolyn_stripe_t S)
 {
     int upperclosed;
     slong startidx, endidx;
@@ -687,7 +673,7 @@ slong _nmod_mpolyn_mulsub_stripe(nmod_poly_struct ** A_coeff, ulong ** A_exp, sl
 
     FLINT_ASSERT(S->bits <= FLINT_BITS);
 
-    nmod_poly_init_mod(pp, S->ctx->ffinfo->mod);
+    nmod_poly_init_mod(pp, S->ctx->mod);
 
     i = 0;
     hind = (slong *)(S->big_mem + i);
@@ -911,7 +897,7 @@ slong _nmod_mpolyn_mulsub_stripe(nmod_poly_struct ** A_coeff, ulong ** A_exp, sl
     Q = stripe of A/B (assume A != 0)
     return Qlen = 0 if exact division is impossible
 */
-slong _nmod_mpolyn_divides_stripe1(
+static slong _nmod_mpolyn_divides_stripe1(
             nmod_poly_struct ** Q_coeff,     ulong ** Q_exp, slong * Q_alloc,
         const nmod_poly_struct * Acoeff, const ulong * Aexp, slong Alen,
         const nmod_poly_struct * Bcoeff, const ulong * Bexp, slong Blen,
@@ -957,8 +943,8 @@ slong _nmod_mpolyn_divides_stripe1(
     i += Blen*sizeof(mpoly_heap_t);
     FLINT_ASSERT(i <= S->big_mem_alloc);
 
-    nmod_poly_init_mod(acc_lg, S->ctx->ffinfo->mod);
-    nmod_poly_init_mod(pp, S->ctx->ffinfo->mod);
+    nmod_poly_init_mod(acc_lg, S->ctx->mod);
+    nmod_poly_init_mod(pp, S->ctx->mod);
 
     for (i = 0; i < Blen; i++)
         hind[i] = 1;
@@ -1199,8 +1185,8 @@ static slong _nmod_mpolyn_divides_stripe(
     i +=  Blen*sizeof(ulong *);
     FLINT_ASSERT(i <= S->big_mem_alloc);
 
-    nmod_poly_init_mod(acc_lg, S->ctx->ffinfo->mod);
-    nmod_poly_init_mod(pp, S->ctx->ffinfo->mod);
+    nmod_poly_init_mod(acc_lg, S->ctx->mod);
+    nmod_poly_init_mod(pp, S->ctx->mod);
 
     exp_next = 0;
     for (i = 0; i < Blen; i++)
@@ -1697,28 +1683,28 @@ static void worker_loop(void * varg)
         }
         while (L != NULL)
         {
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
             pthread_mutex_lock(&H->mutex);
 #endif
             if (L->lock != -1)
             {
                 L->lock = -1;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
                 pthread_mutex_unlock(&H->mutex);
 #endif
                 trychunk(W, L);
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
                 pthread_mutex_lock(&H->mutex);
 #endif
                 L->lock = 0;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
                 pthread_mutex_unlock(&H->mutex);
 #endif
                 break;
             }
             else
             {
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
                 pthread_mutex_unlock(&H->mutex);
 #endif
             }
@@ -1772,8 +1758,8 @@ int nmod_mpolyn_divides_threaded_pool(
 
     TMP_START;
 
-    nmod_poly_init_mod(qcoeff, ctx->ffinfo->mod);
-    nmod_poly_init_mod(r, ctx->ffinfo->mod);
+    nmod_poly_init_mod(qcoeff, ctx->mod);
+    nmod_poly_init_mod(r, ctx->mod);
 
     N = mpoly_words_per_exp_sp(bits, ctx->minfo);
     cmpmask = (ulong*) TMP_ALLOC(N*sizeof(ulong));
@@ -1874,7 +1860,7 @@ int nmod_mpolyn_divides_threaded_pool(
 
     /* start the workers */
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_init(&H->mutex, NULL);
 #endif
 
@@ -1896,7 +1882,7 @@ int nmod_mpolyn_divides_threaded_pool(
 
     flint_free(worker_args);
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_destroy(&H->mutex);
 #endif
 

@@ -421,26 +421,29 @@ Scalar operations
 
 .. function:: void fmpz_mpoly_neg(fmpz_mpoly_t A, const fmpz_mpoly_t B, const fmpz_mpoly_ctx_t ctx)
     
-    Set ``A`` to ``-B``.
+    Set `A` to `-B`.
 
 .. function:: void fmpz_mpoly_scalar_mul_fmpz(fmpz_mpoly_t A, const fmpz_mpoly_t B, const fmpz_t c, const fmpz_mpoly_ctx_t ctx)
               void fmpz_mpoly_scalar_mul_ui(fmpz_mpoly_t A, const fmpz_mpoly_t B, ulong c, const fmpz_mpoly_ctx_t ctx)
               void fmpz_mpoly_scalar_mul_si(fmpz_mpoly_t A, const fmpz_mpoly_t B, slong c, const fmpz_mpoly_ctx_t ctx)
 
-    Set ``A`` to ``B`` times ``c``.
+    Set `A` to `B \times c`.
+
+.. function:: void fmpz_mpoly_scalar_fmma(fmpz_mpoly_t A, const fmpz_mpoly_t B, const fmpz_t c, const fmpz_mpoly_t D, const fmpz_t e, const fmpz_mpoly_ctx_t ctx)
+
+    Sets `A` to `B \times c + D \times e`.
 
 .. function:: void fmpz_mpoly_scalar_divexact_fmpz(fmpz_mpoly_t A, const fmpz_mpoly_t B, const fmpz_t c, const fmpz_mpoly_ctx_t ctx)
               void fmpz_mpoly_scalar_divexact_ui(fmpz_mpoly_t A, const fmpz_mpoly_t B, ulong c, const fmpz_mpoly_ctx_t ctx)
               void fmpz_mpoly_scalar_divexact_si(fmpz_mpoly_t A, const fmpz_mpoly_t B, slong c, const fmpz_mpoly_ctx_t ctx)
 
-    Set ``A`` to ``B`` divided by ``c``. The division is assumed to be exact.
+    Set `A` to `B` divided by `c`. The division is assumed to be exact.
 
 .. function:: int fmpz_mpoly_scalar_divides_fmpz(fmpz_mpoly_t A, const fmpz_mpoly_t B, const fmpz_t c, const fmpz_mpoly_ctx_t ctx)
               int fmpz_mpoly_scalar_divides_ui(fmpz_mpoly_t A, const fmpz_mpoly_t B, ulong c, const fmpz_mpoly_ctx_t ctx)
               int fmpz_mpoly_scalar_divides_si(fmpz_mpoly_t A, const fmpz_mpoly_t B, slong c, const fmpz_mpoly_ctx_t ctx)
 
-    If ``B`` is divisible by ``c``, set ``A`` to the exact quotient and return ``1``, otherwise set ``A`` to zero and return ``0``.
-
+    If `B` is divisible by `c`, set `A` to the exact quotient and return `1`, otherwise set `A` to zero and return `0`.
 
 Differentiation/Integration
 --------------------------------------------------------------------------------
@@ -485,7 +488,7 @@ Evaluation
     The length of the array ``C`` is the number of variables in ``ctxB``.
     Neither ``A`` nor ``B`` is allowed to alias any other polynomial.
     Return `1` for success and `0` for failure.
-    The main method attemps to perform the calculation using matrices and chooses heuristically between the ``geobucket`` and ``horner`` methods if needed.
+    The main method attempts to perform the calculation using matrices and chooses heuristically between the ``geobucket`` and ``horner`` methods if needed.
 
 .. function:: void fmpz_mpoly_compose_fmpz_mpoly_gen(fmpz_mpoly_t A, const fmpz_mpoly_t B, const slong * c, const fmpz_mpoly_ctx_t ctxB, const fmpz_mpoly_ctx_t ctxAC)
 
@@ -583,6 +586,11 @@ Greatest Common Divisor
     Set ``M`` to the GCD of the terms of ``A``.
     If ``A`` is zero, ``M`` will be zero. Otherwise, ``M`` will be a monomial with positive coefficient.
 
+.. function:: int fmpz_mpoly_content_vars(fmpz_mpoly_t g, const fmpz_mpoly_t A, slong * vars, slong vars_length, const fmpz_mpoly_ctx_t ctx)
+
+    Set ``g`` to the GCD of the cofficients of ``A`` when viewed as a polynomial in the variables ``vars``.
+    Return ``1`` for success and ``0`` for failure. Upon succcess, ``g`` will be independent of the variables ``vars``.
+
 .. function:: int fmpz_mpoly_gcd(fmpz_mpoly_t G, const fmpz_mpoly_t A, const fmpz_mpoly_t B, const fmpz_mpoly_ctx_t ctx)
 
     Try to set ``G`` to the GCD of ``A`` and ``B`` with positive leading coefficient. The GCD of zero and zero is defined to be zero.
@@ -602,6 +610,27 @@ Greatest Common Divisor
 
     Try to set ``G`` to the GCD of ``A`` and ``B`` using Zippel's interpolation algorithm to interpolate coefficients from univariate images in the most significant variable.
 
+
+Square Root
+--------------------------------------------------------------------------------
+
+.. function:: int fmpz_mpoly_sqrt_heap(fmpz_mpoly_t q, const fmpz_mpoly_t poly2, const fmpz_mpoly_ctx_t ctx, int check)
+
+    If `poly2` is a perfect square return `1` and set `q` to the square root
+    with positive leading coefficient. Otherwise return `0` and set `q` to the
+    zero polynomial. If `check = 0` the polynomial is assumed to be a perfect
+    square. This can be significantly faster, but it will not detect
+    non-squares with any reliability, and in the event of being passed a
+    non-square the result is meaningless.
+
+.. function:: int fmpz_mpoly_sqrt(fmpz_mpoly_t q, const fmpz_mpoly_t poly2, const fmpz_mpoly_ctx_t ctx)
+
+    If `poly2` is a perfect square return `1` and set `q` to the square root
+    with positive leading coefficient. Otherwise return `0` and set `q` to zero.
+
+.. function:: int fmpz_mpoly_is_square(const fmpz_mpoly_t poly2, const fmpz_mpoly_ctx_t ctx)
+
+    Return `1` if `poly2` is a perfect square, otherwise return `0`. 
 
 Univariate Functions
 --------------------------------------------------------------------------------
@@ -794,7 +823,7 @@ Internal Functions
     Set ``scale``, ``q`` and ``r`` so that
     ``scale*poly2 = q*poly3 + r`` and no monomial in ``r`` is divisible
     by the leading monomial of ``poly3``, where ``scale`` is positive
-    and as small as possible. This function throws an execption if
+    and as small as possible. This function throws an exception if
     ``poly3`` is zero or if an exponent overflow occurs.
 
 

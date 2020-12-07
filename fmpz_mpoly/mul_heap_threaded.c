@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include <string.h>
@@ -388,7 +388,7 @@ slong _fmpz_mpoly_mul_heap_part(fmpz ** A_coeff, ulong ** A_exp, slong * A_alloc
 typedef struct
 {
     volatile int idx;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_t mutex;
 #endif
     slong nthreads;
@@ -430,7 +430,7 @@ typedef struct
     slong time;
     _base_struct * base;
     _div_struct * divs;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_t mutex;
     pthread_cond_t cond;
 #endif
@@ -496,12 +496,12 @@ static void _fmpz_mpoly_mul_heap_threaded_worker(void * varg)
     /* get index to start working on */
     if (arg->idx + 1 < base->nthreads)
     {
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
         pthread_mutex_lock(&base->mutex);
 #endif
         i = base->idx - 1;
         base->idx = i;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
         pthread_mutex_unlock(&base->mutex);
 #endif
     }
@@ -586,12 +586,12 @@ static void _fmpz_mpoly_mul_heap_threaded_worker(void * varg)
         }
 
         /* get next index to work on */
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
         pthread_mutex_lock(&base->mutex);
 #endif
 	i = base->idx - 1;
         base->idx = i;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
 	pthread_mutex_unlock(&base->mutex);
 #endif
     }
@@ -719,7 +719,7 @@ void _fmpz_mpoly_mul_heap_threaded(
     }
 
     /* compute each chunk in parallel */
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_init(&base->mutex, NULL);
 #endif
     for (i = 0; i < num_handles; i++)
@@ -771,7 +771,7 @@ void _fmpz_mpoly_mul_heap_threaded(
         thread_pool_wait(global_thread_pool, handles[i]);
     }
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_destroy(&base->mutex);
 #endif
 
@@ -780,7 +780,7 @@ void _fmpz_mpoly_mul_heap_threaded(
 
     /* we should have managed to keep coefficients past length demoted */
     FLINT_ASSERT(Alen <= Aalloc);
-#if WANT_ASSERT
+#if FLINT_WANT_ASSERT
     for (i = Alen; i < Aalloc; i++)
     {
         FLINT_ASSERT(!COEFF_IS_MPZ(*(Acoeff + i)));
@@ -850,9 +850,7 @@ void _fmpz_mpoly_mul_heap_threaded_pool_maxfields(
     if (A == B || A == C)
     {
         fmpz_mpoly_t T;
-        fmpz_mpoly_init(T, ctx);
-        fmpz_mpoly_fit_bits(T, exp_bits, ctx);
-        T->bits = exp_bits;
+        fmpz_mpoly_init3(T, 0, exp_bits, ctx);
 
         /* algorithm more efficient if smaller poly first */
         if (B->length >= C->length)
@@ -873,8 +871,7 @@ void _fmpz_mpoly_mul_heap_threaded_pool_maxfields(
     }
     else
     {
-        fmpz_mpoly_fit_bits(A, exp_bits, ctx);
-        A->bits = exp_bits;
+        fmpz_mpoly_fit_length_reset_bits(A, A->length, exp_bits, ctx);
 
         /* algorithm more efficient if smaller poly first */
         if (B->length > C->length)

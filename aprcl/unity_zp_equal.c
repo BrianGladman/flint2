@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "aprcl.h"
@@ -21,9 +21,6 @@ unity_zp_equal(unity_zp f, unity_zp g)
     _unity_zp_reduce_cyclotomic(f);
     _unity_zp_reduce_cyclotomic(g);
 
-    if (fmpz_mod_poly_equal(f->poly, g->poly) == 0)
-        return 0;
-
-    return 1;
+    return fmpz_mod_poly_equal(f->poly, g->poly, f->ctx);
 }
 

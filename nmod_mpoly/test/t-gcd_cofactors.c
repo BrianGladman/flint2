@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include <stdio.h>
@@ -244,9 +244,6 @@ main(void)
     const slong max_threads = 5;
     slong i, j, k, tmul = 3;
     FLINT_TEST_INIT(state);
-#ifdef _WIN32
-    tmul = 1;
-#endif
 
     flint_printf("gcd_cofactors....");
     fflush(stdout);
@@ -459,11 +456,6 @@ main(void)
             nmod_mpoly_randtest_bits(t2, state, 1, exp_bits2, ctx);
             if (t1->length != 1 || t2->length != 1)
             {
-flint_printf("exp_bits1: %wu\n", exp_bits1);
-flint_printf("exp_bits2: %wu\n", exp_bits2);
-flint_printf("t1: "); nmod_mpoly_print_pretty(t1, NULL, ctx); flint_printf("\n");
-flint_printf("t2: "); nmod_mpoly_print_pretty(t2, NULL, ctx); flint_printf("\n");
-
                 flint_printf("FAIL:\ncheck random monomial generation\n");
                 flint_abort();
             }
@@ -524,9 +516,9 @@ flint_printf("t2: "); nmod_mpoly_print_pretty(t2, NULL, ctx); flint_printf("\n")
             nmod_mpoly_randtest_bound(t1, state, len1, exp_bound1, ctx);
             nmod_mpoly_randtest_bound(t2, state, len2, exp_bound2, ctx);
             nmod_mpoly_mul(b, t1, t2, ctx);
-            c = n_randint(state, ctx->ffinfo->mod.n);
+            c = n_randint(state, ctx->mod.n);
             nmod_mpoly_scalar_mul_ui(a, t2, c, ctx);
-            c = n_randint(state, ctx->ffinfo->mod.n);
+            c = n_randint(state, ctx->mod.n);
             nmod_mpoly_scalar_mul_ui(b, b, c, ctx);
 
             nmod_mpoly_randtest_bound(g, state, len, exp_bound, ctx);

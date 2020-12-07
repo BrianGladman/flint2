@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "nmod_poly.h"
@@ -57,10 +57,8 @@ int nmod_mpoly_convert_from_nmod_mpolyd_degbound(
     N = mpoly_words_per_exp(bits, ctx->minfo);
 
     /* we are going to push back terms manually */
+    nmod_mpoly_fit_length_reset_bits(A, 0, bits, ctx);
     Alen = 0;
-    nmod_mpoly_zero(A, ctx);
-    nmod_mpoly_fit_bits(A, bits, ctx);
-    A->bits = bits;
 
     /* find exponent vector for all variables */
     pexps = (ulong *) TMP_ALLOC(N*nvars*sizeof(ulong));
@@ -97,7 +95,8 @@ int nmod_mpoly_convert_from_nmod_mpolyd_degbound(
             if (outrange)
                 goto failed_out_range;
 
-            _nmod_mpoly_fit_length(&A->coeffs, &A->exps, &A->alloc, Alen + 1, N);
+            _nmod_mpoly_fit_length(&A->coeffs, &A->coeffs_alloc,
+                                   &A->exps, &A->exps_alloc, N, Alen + 1);
             A->coeffs[Alen] = B->coeffs[off];
             mpoly_monomial_set(A->exps + N*Alen, pcurexp, N);
             topmask |= (A->exps + N*Alen)[N - 1];
@@ -187,8 +186,11 @@ int nmod_mpoly_divides_dense(nmod_mpoly_t Q,
         {
             nmod_mpoly_set(Q, A, ctx);
             return 1;
-        } else
-            flint_throw(FLINT_DIVZERO, "Divide by zero in nmod_mpoly_divides_dense");
+        }
+        else
+        {
+            flint_throw(FLINT_DIVZERO, "nmod_mpoly_divides_dense: divide by zero");
+        }
     }
 
     if (A->length == 0)
@@ -272,26 +274,20 @@ int nmod_mpoly_divides_dense(nmod_mpoly_t Q,
     Au->alloc  = Ad->coeff_alloc;
     Au->coeffs = Ad->coeffs;
     Au->length = nmod_mpolyd_length(Ad);
-    Au->mod.n    = ctx->ffinfo->mod.n;
-    Au->mod.ninv = ctx->ffinfo->mod.ninv;
-    Au->mod.norm = ctx->ffinfo->mod.norm;
+    Au->mod    = ctx->mod;
 
     Bu->alloc  = Bd->coeff_alloc;
     Bu->coeffs = Bd->coeffs;
     Bu->length = nmod_mpolyd_length(Bd);
-    Bu->mod.n    = ctx->ffinfo->mod.n;
-    Bu->mod.ninv = ctx->ffinfo->mod.ninv;
-    Bu->mod.norm = ctx->ffinfo->mod.norm;
+    Bu->mod    = ctx->mod;
 
     /* manually move Qd to Qu */
     Qu->alloc  = Qd->coeff_alloc;
     Qu->coeffs = Qd->coeffs;
     Qu->length = 0;
-    Qu->mod.n    = ctx->ffinfo->mod.n;
-    Qu->mod.ninv = ctx->ffinfo->mod.ninv;
-    Qu->mod.norm = ctx->ffinfo->mod.norm;
+    Qu->mod    = ctx->mod;
 
-    nmod_poly_init(Ru, ctx->ffinfo->mod.n);
+    nmod_poly_init_mod(Ru, ctx->mod);
     nmod_poly_divrem(Qu, Ru, Au, Bu);
     if (!nmod_poly_is_zero(Ru))
     {

@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "nmod_mpoly.h"
@@ -254,7 +254,7 @@ void nmod_mpolyn_one(nmod_mpolyn_t A, const nmod_mpoly_ctx_t ctx)
 
 void nmod_mpolyun_one(nmod_mpolyun_t A, const nmod_mpoly_ctx_t ctx)
 {
-    FLINT_ASSERT(ctx->ffinfo->mod.n > 1);
+    FLINT_ASSERT(ctx->mod.n > 1);
     nmod_mpolyun_fit_length(A, 1, ctx);
     nmod_mpolyn_one(A->coeffs + 0, ctx);
     A->exps[0] = 0;
@@ -326,7 +326,7 @@ void nmod_mpolyn_mul_last(
     if (nmod_poly_is_one(b))
         return;
 
-    nmod_poly_init_mod(t, ctx->ffinfo->mod);
+    nmod_poly_init_mod(t, ctx->mod);
 
     for (i = 0; i < A->length; i++)
     {
@@ -356,7 +356,7 @@ void nmod_mpolyun_mul_last(
     if (nmod_poly_is_one(b))
         return;
 
-    nmod_poly_init_mod(t, ctx->ffinfo->mod);
+    nmod_poly_init_mod(t, ctx->mod);
 
     for (i = 0; i < A->length; i++)
     {
@@ -691,8 +691,8 @@ void nmod_mpoly_to_mpolyun_perm_deflate(
     Bexps = (ulong *) TMP_ALLOC(n*sizeof(ulong));
     texp = (ulong *) TMP_ALLOC(NA*sizeof(ulong));
 
-    offs   = (slong *) TMP_ALLOC(m*sizeof(ulong));
-    shifts = (slong *) TMP_ALLOC(m*sizeof(ulong));
+    offs   = (slong *) TMP_ALLOC(m*sizeof(slong));
+    shifts = (slong *) TMP_ALLOC(m*sizeof(slong));
     for (k = 0; k < m; k++)
     {
         mpoly_gen_offset_shift_sp(offs + k, shifts + k, k, A->bits, uctx->minfo);
@@ -720,8 +720,6 @@ void nmod_mpoly_to_mpolyun_perm_deflate(
     TMP_END;
 }
 
-void nmod_mpoly_cvtto_mpolyn(nmod_mpolyn_t A, nmod_mpoly_t B,
-                                         slong var, const nmod_mpoly_ctx_t ctx);
 
 void nmod_mpoly_to_mpolyn_perm_deflate_threaded_pool(
     nmod_mpolyn_t A,
@@ -749,8 +747,8 @@ void nmod_mpoly_to_mpolyn_perm_deflate_threaded_pool(
     TMP_START;
     Bexps = (ulong *) TMP_ALLOC(n*sizeof(ulong));
 
-    offs   = (slong *) TMP_ALLOC(m*sizeof(ulong));
-    shifts = (slong *) TMP_ALLOC(m*sizeof(ulong));
+    offs   = (slong *) TMP_ALLOC(m*sizeof(slong));
+    shifts = (slong *) TMP_ALLOC(m*sizeof(slong));
     for (k = 0; k < m; k++)
     {
         mpoly_gen_offset_shift_sp(offs + k, shifts + k, k, A->bits, nctx->minfo);
@@ -811,7 +809,6 @@ void nmod_mpoly_from_mpolyun_perm_inflate(
     slong Alen;
     mp_limb_t * Acoeff;
     ulong * Aexp;
-    slong Aalloc;
     ulong * uexps;
     ulong * Aexps, * tAexp, * tAgexp;
     TMP_INIT;
@@ -836,12 +833,10 @@ void nmod_mpoly_from_mpolyun_perm_inflate(
         tAgexp[i] *= stride[perm[m]];
     }
 
-    nmod_mpoly_fit_bits(A, Abits, ctx);
-    A->bits = Abits;
+    nmod_mpoly_fit_length_reset_bits(A, 0, Abits, ctx);
 
     Acoeff = A->coeffs;
     Aexp = A->exps;
-    Aalloc = A->alloc;
     Alen = 0;
     for (i = 0; i < B->length; i++)
     {
@@ -867,14 +862,13 @@ void nmod_mpoly_from_mpolyun_perm_inflate(
 
             l = perm[m];
             h = (Bc->coeffs + j)->length;
-            _nmod_mpoly_fit_length(&Acoeff, &Aexp, &Aalloc, Alen + h, NA);
+            _nmod_mpoly_fit_length(&Acoeff, &A->coeffs_alloc,
+                                   &Aexp, &A->exps_alloc, NA, Alen + h);
             for (h--; h >= 0; h--)
             {
                 mp_limb_t c = (Bc->coeffs + j)->coeffs[h];
                 if (c == 0)
-                {
                     continue;
-                }
                 mpoly_monomial_madd(Aexp + NA*Alen, tAexp, h, tAgexp, NA);
                 Acoeff[Alen] = c;
                 Alen++;
@@ -883,7 +877,6 @@ void nmod_mpoly_from_mpolyun_perm_inflate(
     }
     A->coeffs = Acoeff;
     A->exps = Aexp;
-    A->alloc = Aalloc;
     _nmod_mpoly_set_length(A, Alen, ctx);
 
     nmod_mpoly_sort_terms(A, ctx);
@@ -907,7 +900,6 @@ void nmod_mpoly_from_mpolyn_perm_inflate(
     slong Alen;
     mp_limb_t * Acoeff;
     ulong * Aexp;
-    slong Aalloc;
     ulong * Bexps;
     ulong * Aexps, * tAexp, * tAgexp;
     TMP_INIT;
@@ -930,12 +922,10 @@ void nmod_mpoly_from_mpolyn_perm_inflate(
     for (i = 0; i < NA; i++)
         tAgexp[i] *= stride[perm[m - 1]];
 
-    nmod_mpoly_fit_bits(A, Abits, ctx);
-    A->bits = Abits;
+    nmod_mpoly_fit_length_reset_bits(A, 0, Abits, ctx);
 
     Acoeff = A->coeffs;
     Aexp = A->exps;
-    Aalloc = A->alloc;
     Alen = 0;
     for (i = 0; i < B->length; i++)
     {
@@ -954,7 +944,8 @@ void nmod_mpoly_from_mpolyn_perm_inflate(
         mpoly_set_monomial_ui(tAexp, Aexps, Abits, ctx->minfo);
 
         h = (B->coeffs + i)->length;
-        _nmod_mpoly_fit_length(&Acoeff, &Aexp, &Aalloc, Alen + h, NA);
+        _nmod_mpoly_fit_length(&Acoeff, &A->coeffs_alloc,
+                               &Aexp, &A->exps_alloc, NA, Alen + h);
         for (h--; h >= 0; h--)
         {
             mp_limb_t c = (B->coeffs + i)->coeffs[h];
@@ -967,8 +958,7 @@ void nmod_mpoly_from_mpolyn_perm_inflate(
     }
     A->coeffs = Acoeff;
     A->exps = Aexp;
-    A->alloc = Aalloc;
-    A->length = Alen;
+    _nmod_mpoly_set_length(A, Alen, ctx);
 
     nmod_mpoly_sort_terms(A, ctx);
     TMP_END;
@@ -976,7 +966,7 @@ void nmod_mpoly_from_mpolyn_perm_inflate(
 
 
 /* take the last variable of B out */
-void nmod_mpoly_cvtto_mpolyn(nmod_mpolyn_t A, nmod_mpoly_t B,
+void nmod_mpoly_cvtto_mpolyn(nmod_mpolyn_t A, const nmod_mpoly_t B,
                                          slong var, const nmod_mpoly_ctx_t ctx)
 {
     slong i;
@@ -994,7 +984,7 @@ void nmod_mpoly_cvtto_mpolyn(nmod_mpolyn_t A, nmod_mpoly_t B,
     TMP_START;
 
     N = mpoly_words_per_exp_sp(B->bits, ctx->minfo);
-    oneexp = TMP_ALLOC(N*sizeof(ulong));
+    oneexp = (ulong *) TMP_ALLOC(N*sizeof(ulong));
     mask = (-UWORD(1)) >> (FLINT_BITS - B->bits);
     mpoly_gen_monomial_offset_shift_sp(oneexp, &offset, &shift, var,
                                                           B->bits, ctx->minfo);
@@ -1025,7 +1015,7 @@ void nmod_mpoly_cvtto_mpolyn(nmod_mpolyn_t A, nmod_mpoly_t B,
     TMP_END;
 }
 
-void nmod_mpolyu_cvtto_mpolyun(nmod_mpolyun_t A, nmod_mpolyu_t B,
+void nmod_mpolyu_cvtto_mpolyun(nmod_mpolyun_t A, const nmod_mpolyu_t B,
                                            slong k, const nmod_mpoly_ctx_t ctx)
 {
     slong i, Blen;
@@ -1046,12 +1036,6 @@ void nmod_mpolyu_cvtto_mpolyun(nmod_mpolyun_t A, nmod_mpolyu_t B,
         Aexp[i] = Bexp[i];
     }
 
-    /* demote remaining coefficients */
-    for (i = Blen; i < A->length; i++)
-    {
-        nmod_mpolyn_clear(Acoeff + i, ctx);
-        nmod_mpolyn_init(Acoeff + i, A->bits, ctx);
-    }
     A->length = Blen;  
 }
 
@@ -1059,40 +1043,41 @@ void nmod_mpolyu_cvtto_mpolyun(nmod_mpolyun_t A, nmod_mpolyu_t B,
 
 
 /* put the last variable of B back into A */
-void nmod_mpoly_cvtfrom_mpolyn(nmod_mpoly_t A, nmod_mpolyn_t B,
-                                         slong var, const nmod_mpoly_ctx_t ctx)
+void nmod_mpoly_cvtfrom_mpolyn(
+    nmod_mpoly_t A,
+    const nmod_mpolyn_t B,
+    slong var,
+    const nmod_mpoly_ctx_t ctx)
 {
-    slong i, j;
-    slong k;
-    slong N;
-    ulong * oneexp;
+    slong i, j, k;
+    slong N = mpoly_words_per_exp_sp(B->bits, ctx->minfo);
+    ulong * genexp;
     TMP_INIT;
 
-    FLINT_ASSERT(B->bits == A->bits);
     FLINT_ASSERT(B->bits <= FLINT_BITS);
     FLINT_ASSERT(ctx->minfo->ord == ORD_LEX);
 
     TMP_START;
 
-    N = mpoly_words_per_exp_sp(B->bits, ctx->minfo);
-    oneexp = TMP_ALLOC(N*sizeof(ulong));
-    mpoly_gen_monomial_sp(oneexp, var, B->bits, ctx->minfo);
+    genexp = (ulong *) TMP_ALLOC(N*sizeof(ulong));
+    mpoly_gen_monomial_sp(genexp, var, B->bits, ctx->minfo);
 
-    nmod_mpoly_fit_length(A, B->length, ctx);
+    nmod_mpoly_fit_length_reset_bits(A, B->length, B->bits, ctx);
 
     k = 0;
     for (i = 0; i < B->length; i++)
     {
-        for (j = (B->coeffs + i)->length - 1; j >= 0; j--)
+        for (j = B->coeffs[i].length - 1; j >= 0; j--)
         {
-            mp_limb_t c = (B->coeffs + i)->coeffs[j];
-            if (c != UWORD(0))
-            {
-                nmod_mpoly_fit_length(A, k + 1, ctx);
-                A->coeffs[k] = c;
-                mpoly_monomial_madd(A->exps + N*k, B->exps + N*i, j, oneexp, N);                
-                k++;
-            }
+            mp_limb_t c = B->coeffs[i].coeffs[j];
+            if (c == 0)
+                continue;
+
+            _nmod_mpoly_fit_length(&A->coeffs, &A->coeffs_alloc,
+                                   &A->exps, &A->exps_alloc, N, k + 1);
+            A->coeffs[k] = c;
+            mpoly_monomial_madd(A->exps + N*k, B->exps + N*i, j, genexp, N);                
+            k++;
         }
     }
 
@@ -1100,7 +1085,7 @@ void nmod_mpoly_cvtfrom_mpolyn(nmod_mpoly_t A, nmod_mpolyn_t B,
     TMP_END;
 }
 
-void nmod_mpolyu_cvtfrom_mpolyun(nmod_mpolyu_t A, nmod_mpolyun_t B,
+void nmod_mpolyu_cvtfrom_mpolyun(nmod_mpolyu_t A, const nmod_mpolyun_t B,
                                          slong var, const nmod_mpoly_ctx_t ctx)
 {
     slong i;
@@ -1186,7 +1171,7 @@ void nmod_mpolyun_divexact_last(nmod_mpolyun_t A, nmod_poly_t b,
     if (nmod_poly_is_one(b))
         return;
 
-    nmod_poly_init_mod(r, ctx->ffinfo->mod);
+    nmod_poly_init_mod(r, ctx->mod);
 
     for (i = 0; i < A->length; i++)
     {
@@ -1210,7 +1195,7 @@ void nmod_mpolyn_divexact_last(nmod_mpolyn_t A, nmod_poly_t b,
     if (nmod_poly_is_one(b))
         return;
 
-    nmod_poly_init_mod(r, ctx->ffinfo->mod);
+    nmod_poly_init_mod(r, ctx->mod);
 
     for (i = 0; i < A->length; i++)
     {

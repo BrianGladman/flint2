@@ -16,40 +16,46 @@
 #include "fmpz_mod_poly.h"
 #include "fmpz.h"
 
-int fmpz_mod_poly_fread(FILE * f, fmpz_mod_poly_t poly)
+int fmpz_mod_poly_fread(FILE * f, fmpz_mod_poly_t poly, fmpz_mod_ctx_t ctx)
 {
+    int success = 0;
     slong i, length;
     fmpz_t coeff;
-    ulong res;
 
     fmpz_init(coeff);
-    if (flint_fscanf(f, "%wd", &length) != 1) {
-        fmpz_clear(coeff);
-        return 0;
-    }
 
-    fmpz_fread(f,coeff);
-    fmpz_mod_poly_clear(poly);
-    fmpz_mod_poly_init(poly, coeff);
-    fmpz_mod_poly_fit_length(poly, length);
-    poly->length = length;
+    poly->length = 0;
+
+    if (flint_fscanf(f, "%wd", &length) != 1)
+        goto cleanup;
+
+    if (!fmpz_fread(f, coeff))
+        goto cleanup;
+
+    if (fmpz_cmp_ui(coeff, 2) < 0)
+        goto cleanup;
+
+    fmpz_mod_ctx_set_modulus(ctx, coeff);
+
+    fmpz_mod_poly_fit_length(poly, length, ctx);
 
     for (i = 0; i < length; i++)
     {
-        res = fmpz_fread(f, coeff);
-        fmpz_mod_poly_set_coeff_fmpz(poly,i,coeff);
+        if (!fmpz_fread(f, coeff))
+            goto cleanup;
 
-        if (!res)
-        {
-            poly->length = i;
-            fmpz_clear(coeff);
-            return 0;
-        }
+        fmpz_mod_poly_set_coeff_fmpz(poly, i, coeff, ctx);
     }
 
-    fmpz_clear(coeff);
+    poly->length = length;
     _fmpz_mod_poly_normalise(poly);
 
-    return 1;
+    success = 1;
+
+cleanup:
+
+    fmpz_clear(coeff);
+
+    return success;
 }
 

@@ -7,7 +7,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "fmpq.h"
@@ -21,7 +21,7 @@ slong fmpq_get_cfrac(fmpz * c, fmpq_t rem, const fmpq_t f, slong limit)
     _fmpq_cfrac_list_t s;
     _fmpz_mat22_t M;
 
-#if WANT_ASSERT
+#if FLINT_WANT_ASSERT
     int input_is_canonical;
 #endif
 
@@ -44,7 +44,7 @@ slong fmpq_get_cfrac(fmpz * c, fmpq_t rem, const fmpq_t f, slong limit)
         return 0;
     }
 
-#if WANT_ASSERT
+#if FLINT_WANT_ASSERT
     input_is_canonical = fmpq_is_canonical(f);
 #endif
 

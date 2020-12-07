@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include <gmp.h>
@@ -15,16 +15,9 @@
 #include "fmpz.h"
 #include "fmpz_mod_poly.h"
 
-void fmpz_mod_poly_init(fmpz_mod_poly_t poly, const fmpz_t p)
-{
-    poly->coeffs = NULL;
-    poly->alloc  = 0;
-    poly->length = 0;
-    fmpz_init(&(poly->p));
-    fmpz_set(&(poly->p), p);
-}
 
-void fmpz_mod_poly_init2(fmpz_mod_poly_t poly, const fmpz_t p, slong alloc)
+void fmpz_mod_poly_init2(fmpz_mod_poly_t poly, slong alloc,
+                                                      const fmpz_mod_ctx_t ctx)
 {
     if (alloc)                  /* allocate space for alloc small coeffs */
         poly->coeffs = (fmpz *) flint_calloc(alloc, sizeof(fmpz));
@@ -33,7 +26,5 @@ void fmpz_mod_poly_init2(fmpz_mod_poly_t poly, const fmpz_t p, slong alloc)
 
     poly->alloc = alloc;
     poly->length = 0;
-    fmpz_init(&(poly->p));
-    fmpz_set(&(poly->p), p);
 }
 

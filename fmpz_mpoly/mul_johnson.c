@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include <gmp.h>
@@ -513,9 +513,7 @@ void _fmpz_mpoly_mul_johnson_maxfields(
     if (A == B || A == C)
     {
         fmpz_mpoly_t T;
-        fmpz_mpoly_init2(T, B->length + C->length - 1, ctx);
-        fmpz_mpoly_fit_bits(T, Abits, ctx);
-        T->bits = Abits;
+        fmpz_mpoly_init3(T, B->length + C->length, Abits, ctx);
 
         /* algorithm more efficient if smaller poly first */
         if (B->length > C->length)
@@ -538,9 +536,7 @@ void _fmpz_mpoly_mul_johnson_maxfields(
     }
     else
     {
-        fmpz_mpoly_fit_length(A, B->length + C->length - 1, ctx);
-        fmpz_mpoly_fit_bits(A, Abits, ctx);
-        A->bits = Abits;
+        fmpz_mpoly_fit_length_reset_bits(A, B->length + C->length, Abits, ctx);
 
         /* algorithm more efficient if smaller poly first */
         if (B->length > C->length)

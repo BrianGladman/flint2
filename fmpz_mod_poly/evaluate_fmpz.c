@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include <gmp.h>
@@ -44,8 +44,8 @@ void _fmpz_mod_poly_evaluate_fmpz(fmpz_t res, const fmpz *poly, slong len,
     }
 }
 
-void fmpz_mod_poly_evaluate_fmpz(fmpz_t res, 
-                                 const fmpz_mod_poly_t poly, const fmpz_t a)
+void fmpz_mod_poly_evaluate_fmpz(fmpz_t res, const fmpz_mod_poly_t poly,
+                                      const fmpz_t a, const fmpz_mod_ctx_t ctx)
 {
     if (res == a)
     {
@@ -53,14 +53,14 @@ void fmpz_mod_poly_evaluate_fmpz(fmpz_t res,
 
         fmpz_init(t);
         _fmpz_mod_poly_evaluate_fmpz(t, poly->coeffs, poly->length, 
-                                     a, &(poly->p));
+                                     a, fmpz_mod_ctx_modulus(ctx));
         fmpz_swap(res, t);
         fmpz_clear(t);
     }
     else
     {
         _fmpz_mod_poly_evaluate_fmpz(res, poly->coeffs, poly->length, 
-                                     a, &(poly->p));
+                                     a, fmpz_mod_ctx_modulus(ctx));
     }
 }
 

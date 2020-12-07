@@ -8,7 +8,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #ifndef NMOD_MAT_H
@@ -66,7 +66,6 @@ mp_limb_t * nmod_mat_entry_ptr(const nmod_mat_t mat, slong i, slong j)
 }
 
 /* See inlines.c */
-FLINT_DLL void nmod_mat_set_entry(nmod_mat_t mat, slong i, slong j, mp_limb_t x);
 
 NMOD_MAT_INLINE
 slong nmod_mat_nrows(const nmod_mat_t mat)
@@ -171,7 +170,11 @@ void nmod_mat_scalar_mul_fmpz(nmod_mat_t res, const nmod_mat_t M, const fmpz_t c
 /* Matrix multiplication */
 
 FLINT_DLL void nmod_mat_mul(nmod_mat_t C, const nmod_mat_t A, const nmod_mat_t B);
+
+FLINT_DLL int nmod_mat_mul_blas(nmod_mat_t C, const nmod_mat_t A, const nmod_mat_t B);
+
 FLINT_DLL void nmod_mat_mul_classical(nmod_mat_t C, const nmod_mat_t A, const nmod_mat_t B);
+
 FLINT_DLL void
 _nmod_mat_mul_classical_threaded_pool_op(nmod_mat_t D, const nmod_mat_t C,
 		            const nmod_mat_t A, const nmod_mat_t B, int op,
@@ -322,6 +325,11 @@ FLINT_DLL slong nmod_mat_lu_recursive(slong * P, nmod_mat_t A, int rank_check);
 
 FLINT_DLL int nmod_mat_solve(nmod_mat_t X, const nmod_mat_t A, const nmod_mat_t B);
 FLINT_DLL int nmod_mat_solve_vec(mp_ptr x, const nmod_mat_t A, mp_srcptr b);
+
+/* Solving */
+
+FLINT_DLL int nmod_mat_can_solve(nmod_mat_t X, const nmod_mat_t A,
+                                                            const nmod_mat_t B);
 
 /* Reduced row echelon form */
 

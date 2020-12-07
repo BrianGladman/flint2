@@ -10,7 +10,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include <gmp.h>
@@ -19,10 +19,10 @@
 
 void
 fmpz_mod_poly_factor_concat(fmpz_mod_poly_factor_t res,
-                            const fmpz_mod_poly_factor_t fac)
+                    const fmpz_mod_poly_factor_t fac, const fmpz_mod_ctx_t ctx)
 {
     slong i;
 
     for (i = 0; i < fac->num; i++)
-        fmpz_mod_poly_factor_insert(res, fac->poly + i, fac->exp[i]);
+        fmpz_mod_poly_factor_insert(res, fac->poly + i, fac->exp[i], ctx);
 }

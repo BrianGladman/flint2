@@ -7,7 +7,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "fmpz_mpoly.h"
@@ -60,7 +60,7 @@ slong _fmpz_mpoly_divides_monagan_pearce1(fmpz ** poly1, ulong ** exp1,
     next_loc = len3 + 4;   /* something bigger than heap can ever be */
     heap = (mpoly_heap1_s *) TMP_ALLOC((len3 + 1)*sizeof(mpoly_heap1_s));
     chain = (mpoly_heap_t *) TMP_ALLOC(len3*sizeof(mpoly_heap_t));
-    store = store_base = (slong *) TMP_ALLOC(2*len3*sizeof(mpoly_heap_t *));
+    store = store_base = (slong *) TMP_ALLOC(2*len3*sizeof(slong));
 
     /* space for flagged heap indicies */
     hind = (slong *) TMP_ALLOC(len3*sizeof(slong));
@@ -342,7 +342,7 @@ slong _fmpz_mpoly_divides_monagan_pearce(fmpz ** poly1, ulong ** exp1,
     next_loc = len3 + 4;   /* something bigger than heap can ever be */
     heap = (mpoly_heap_s *) TMP_ALLOC((len3 + 1)*sizeof(mpoly_heap_s));
     chain = (mpoly_heap_t *) TMP_ALLOC(len3*sizeof(mpoly_heap_t));
-    store = store_base = (slong *) TMP_ALLOC(2*len3*sizeof(mpoly_heap_t *));
+    store = store_base = (slong *) TMP_ALLOC(2*len3*sizeof(slong));
 
     /* array of exponent vectors, each of "N" words */
     exps = (ulong *) TMP_ALLOC(len3*N*sizeof(ulong));

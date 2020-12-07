@@ -8,7 +8,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include <stdio.h>
@@ -38,23 +38,26 @@ _fq_ctx_init_conway(fq_ctx_t ctx, const fmpz_t p, slong d, const char *var)
         /* Same degree? */
         if (d == flint_conway_polynomials[position+1])
         {
+            fmpz_mod_ctx_t ctxp;
             fmpz_mod_poly_t mod;
             slong i;
 
-            fmpz_mod_poly_init(mod, p);
+            fmpz_mod_ctx_init(ctxp, p);
+            fmpz_mod_poly_init(mod, ctxp);
 
             /* Copy the polynomial */
 
             for (i = 0; i < d; i++)
             {
                 int coeff = flint_conway_polynomials[position+2+i];
-                fmpz_mod_poly_set_coeff_ui(mod, i, coeff);
+                fmpz_mod_poly_set_coeff_ui(mod, i, coeff, ctxp);
             }
-            fmpz_mod_poly_set_coeff_ui(mod, d, 1);
+            fmpz_mod_poly_set_coeff_ui(mod, d, 1, ctxp);
 
-            fq_ctx_init_modulus(ctx, mod, var);
+            fq_ctx_init_modulus(ctx, mod, ctxp, var);
 
-            fmpz_mod_poly_clear(mod);
+            fmpz_mod_poly_clear(mod, ctxp);
+            fmpz_mod_ctx_clear(ctxp);
             return 1;
         }
     }

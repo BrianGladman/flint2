@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #ifndef FLINT_H
@@ -40,11 +40,11 @@
 #define FLINT_INLINE static __inline__
 #endif
 
-#if HAVE_GC
+#if FLINT_USES_GC
 #include "gc.h"
 #endif
 
-#if WANT_ASSERT
+#if FLINT_WANT_ASSERT
 #include <assert.h>
 #endif
 
@@ -55,9 +55,9 @@
 /* flint version number */
 
 #define __FLINT_VERSION 2
-#define __FLINT_VERSION_MINOR 6
-#define __FLINT_VERSION_PATCHLEVEL 3
-#define FLINT_VERSION "2.6.3"
+#define __FLINT_VERSION_MINOR 7
+#define __FLINT_VERSION_PATCHLEVEL 0
+#define FLINT_VERSION "2.7.0"
 #define __FLINT_RELEASE (__FLINT_VERSION * 10000 + \
                          __FLINT_VERSION_MINOR * 100 + \
                          __FLINT_VERSION_PATCHLEVEL)
@@ -156,7 +156,7 @@ FLINT_DLL void flint_set_abort(FLINT_NORETURN void (*func)(void));
 
 #define flint_bitcnt_t ulong
 
-#if HAVE_TLS
+#if FLINT_USES_TLS
 #if __STDC_VERSION__ >= 201112L
 #define FLINT_TLS_PREFIX _Thread_local
 #elif defined(_MSC_VER)
@@ -247,7 +247,7 @@ void flint_rand_free(flint_rand_s * state)
     flint_free(state);
 }
 
-#if HAVE_GC
+#if FLINT_USES_GC
 #define FLINT_GC_INIT() GC_init()
 #else
 #define FLINT_GC_INIT()
@@ -267,7 +267,7 @@ void flint_rand_free(flint_rand_s * state)
  */
 typedef __mpfr_struct flint_mpfr;
 
-#if WANT_ASSERT
+#if FLINT_WANT_ASSERT
 #define FLINT_ASSERT(param) assert(param)
 #else
 #define FLINT_ASSERT(param)
@@ -299,6 +299,27 @@ typedef __mpfr_struct flint_mpfr;
         __txxx = x; \
         x = y; \
         y = __txxx; \
+    } while (0)
+
+#define SLONG_SWAP(A, B)    \
+    do {                    \
+        slong __t_m_p_ = A; \
+        A = B;              \
+        B = __t_m_p_;       \
+    } while (0)
+
+#define ULONG_SWAP(A, B)    \
+    do {                    \
+        ulong __t_m_p_ = A; \
+        A = B;              \
+        B = __t_m_p_;       \
+    } while (0)
+
+#define MP_LIMB_SWAP(A, B)      \
+    do {                        \
+        mp_limb_t __t_m_p_ = A; \
+        A = B;                  \
+        B = __t_m_p_;           \
     } while (0)
 
 #define r_shift(in, shift) \
@@ -354,6 +375,9 @@ mp_limb_t FLINT_BIT_COUNT(mp_limb_t x)
          (xxx)[ixxx] = yyy; \
    } while (0)
 
+/* common usage of flint_malloc */
+#define FLINT_ARRAY_ALLOC(n, T) (T *) flint_malloc((n)*sizeof(T))
+
 /* temporary allocation */
 #define TMP_INIT \
    typedef struct __tmp_struct { \
@@ -366,7 +390,7 @@ mp_limb_t FLINT_BIT_COUNT(mp_limb_t x)
 #define TMP_START \
    __tmp_root = NULL
 
-#if WANT_ASSERT
+#if FLINT_WANT_ASSERT
 #define TMP_ALLOC(size) \
    (__tpx = (__tmp_t *) alloca(sizeof(__tmp_t)), \
        __tpx->next = __tmp_root, \

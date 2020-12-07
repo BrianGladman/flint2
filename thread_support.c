@@ -7,7 +7,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "flint.h"
@@ -24,7 +24,7 @@ int flint_get_num_threads()
 
 void flint_set_num_threads(int num_threads)
 {
-#if !HAVE_PTHREAD
+#if !FLINT_USES_PTHREAD
     num_threads = 1;
 #endif
     _flint_num_workers = num_threads - 1;
@@ -52,7 +52,7 @@ int flint_set_num_workers(int num_workers)
 {
     int old_num_workers;
 
-#if !HAVE_PTHREAD
+#if !FLINT_USES_PTHREAD
     num_workers = 0;
 #endif
 

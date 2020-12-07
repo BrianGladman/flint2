@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "fq_nmod_mpoly.h"
@@ -42,7 +42,7 @@ int fq_nmod_mpoly_compose_fq_nmod_mpoly(fq_nmod_mpoly_t A,
         }
         else
         {
-            if (!fq_nmod_is_one(C[i]->coeffs + 0, ctxAC->fqctx))
+            if (!_n_fq_is_one(C[i]->coeffs, fq_nmod_ctx_degree(ctxAC->fqctx)))
                 goto matrix_no_good;
 
             mpoly_compose_mat_fill_column(M, C[i]->exps, C[i]->bits, i,

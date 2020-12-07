@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "nmod_mpoly.h"
@@ -167,6 +167,118 @@ void fmpz_mpolyu_one(fmpz_mpolyu_t A, const fmpz_mpoly_ctx_t uctx)
 }
 
 
+int fmpz_equal_upto_unit(
+    const fmpz_t a,
+    const fmpz_t b)
+{
+    if (fmpz_equal(a, b))
+        return 1;
+
+    if (fmpz_cmpabs(a, b) == 0)
+        return -1;
+
+    return 0;
+}
+
+int fmpz_mpoly_equal_upto_unit(
+    const fmpz_mpoly_t A,
+    const fmpz_mpoly_t B,
+    const fmpz_mpoly_ctx_t ctx)
+{
+    int res;
+    slong i, n = A->length;
+
+    if (A->length != B->length)
+        return 0;
+
+    if (A->length < 1)
+        return 1;
+
+    if (mpoly_monomials_cmp(A->exps, A->bits, B->exps, B->bits, n, ctx->minfo) != 0)
+        return 0;
+
+    i = 0;
+
+    res = fmpz_equal_upto_unit(A->coeffs + i, B->coeffs + i);
+    if (res == 0)
+        return 0;
+
+    for (i++; i < n; i++)
+    {
+        int res2 = fmpz_equal_upto_unit(A->coeffs + i, B->coeffs + i);
+        if (res2 == 0 || res != res2)
+            return 0;
+    }
+
+    return res;
+}
+
+
+int fmpz_mpolyu_equal_upto_unit(const fmpz_mpolyu_t A, const fmpz_mpolyu_t B,
+                                                   const fmpz_mpoly_ctx_t ctx)
+{
+    int res;
+    slong i;
+
+    if (A->length != B->length)
+        return 0;
+
+    if (A->length < 1)
+        return 1;
+
+    for (i = 0; i < A->length; i++)
+    {
+        if (A->exps[i] != B->exps[i])
+            return 0;
+    }
+
+    i = 0;
+
+    res = fmpz_mpoly_equal_upto_unit(A->coeffs + i, B->coeffs + i, ctx);
+    if (res == 0)
+        return 0;
+
+    for (i++; i < A->length; i++)
+    {
+        int res2 = fmpz_mpoly_equal_upto_unit(A->coeffs + i, B->coeffs + i, ctx);
+        if (res2 == 0 || res != res2)
+            return 0;
+    }
+
+    return res;
+}
+
+void fmpz_mpolyu_inner_degrees_si(
+    slong * degs,
+    const fmpz_mpolyu_t A,
+    const fmpz_mpoly_ctx_t ctx)
+{
+    slong i, j, * t;
+    TMP_INIT;
+
+    if (A->length < 1)
+    {
+        for (j = 0; j < ctx->minfo->nvars; j++)
+            degs[j] = -1;
+        return;
+    }
+
+    TMP_START;
+
+    t = (slong *) TMP_ALLOC(ctx->minfo->nvars*sizeof(slong));
+    
+    fmpz_mpoly_degrees_si(degs, A->coeffs + 0, ctx);
+
+    for (i = 0; i < A->length; i++)
+    {
+        fmpz_mpoly_degrees_si(t, A->coeffs + i, ctx);
+        for (j = 0; j < ctx->minfo->nvars; j++)
+            degs[j] = FLINT_MAX(degs[j], t[j]);
+    }
+
+    TMP_END;
+}
+
 void fmpz_mpolyu_set(fmpz_mpolyu_t A, const fmpz_mpolyu_t B,
                                                    const fmpz_mpoly_ctx_t uctx)
 {
@@ -272,10 +384,6 @@ create_new: /* new at position i */
 }
 
 
-
-
-
-
 /*
     Convert B to A using the variable permutation perm.
     The uctx (m vars) should be the context of A.
@@ -354,7 +462,7 @@ void fmpz_mpoly_to_mpoly_perm_deflate_threaded_pool(
 typedef struct
 {
     volatile slong index;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_t mutex;
 #endif
     slong length;
@@ -373,12 +481,12 @@ static void _worker_sort(void * varg)
 
 get_next_index:
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_lock(&arg->mutex);
 #endif
     i = arg->index;
     arg->index++;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_unlock(&arg->mutex);
 #endif
 
@@ -657,7 +765,7 @@ void fmpz_mpoly_to_mpolyu_perm_deflate_threaded_pool(
         {
             _sort_arg_t arg;
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
             pthread_mutex_init(&arg->mutex, NULL);
 #endif
 	    arg->index = 0;
@@ -675,7 +783,7 @@ void fmpz_mpoly_to_mpolyu_perm_deflate_threaded_pool(
                 thread_pool_wait(global_thread_pool, handles[i]);
             }
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
             pthread_mutex_destroy(&arg->mutex);
 #endif
 	}
@@ -1139,7 +1247,7 @@ void fmpz_mpoly_to_mpolyuu_perm_deflate_threaded_pool(
         {
             _sort_arg_t arg;
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
             pthread_mutex_init(&arg->mutex, NULL);
 #endif
             arg->index = 0;
@@ -1157,7 +1265,7 @@ void fmpz_mpoly_to_mpolyuu_perm_deflate_threaded_pool(
                 thread_pool_wait(global_thread_pool, handles[i]);
             }
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
             pthread_mutex_destroy(&arg->mutex);
 #endif
 	}

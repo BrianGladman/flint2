@@ -6,16 +6,20 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include <stdlib.h>
 #include <string.h>
 #include "fq_nmod_mpoly.h"
 
-int fq_nmod_mpoly_fprint_pretty(FILE * file, const fq_nmod_mpoly_t A,
-                             const char ** x_in, const fq_nmod_mpoly_ctx_t ctx)
+int fq_nmod_mpoly_fprint_pretty(
+    FILE * file,
+    const fq_nmod_mpoly_t A,
+    const char ** x_in,
+    const fq_nmod_mpoly_ctx_t ctx)
 {
+    slong d = fq_nmod_ctx_degree(ctx->fqctx);
     slong len = A->length;
     ulong * exp = A->exps;
     slong bits = A->bits;
@@ -47,7 +51,7 @@ int fq_nmod_mpoly_fprint_pretty(FILE * file, const fq_nmod_mpoly_t A,
         }
     }
 
-    exponents = (fmpz *) TMP_ALLOC(ctx->minfo->nvars*sizeof(ulong));
+    exponents = (fmpz *) TMP_ALLOC(ctx->minfo->nvars*sizeof(fmpz));
     for (i = 0; i < ctx->minfo->nvars; i++)
         fmpz_init(exponents + i);
    
@@ -61,7 +65,7 @@ int fq_nmod_mpoly_fprint_pretty(FILE * file, const fq_nmod_mpoly_t A,
 
         r = flint_fprintf(file, "(");
         CHECK_r
-        r = fq_nmod_fprint_pretty(file, A->coeffs + i, ctx->fqctx);
+        r = n_fq_fprint_pretty(file, A->coeffs + d*i, ctx->fqctx);
         CHECK_r
         r = flint_fprintf(file, ")");
         CHECK_r

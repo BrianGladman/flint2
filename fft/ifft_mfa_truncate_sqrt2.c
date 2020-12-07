@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "gmp.h"
@@ -261,7 +261,7 @@ typedef struct
     mp_limb_t ** t1;
     mp_limb_t ** t2;
     mp_limb_t * temp;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_t * mutex;
 #endif
 }
@@ -282,12 +282,12 @@ _ifft_outer1_worker(void * arg_ptr)
 
     while (1)
     {
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
         pthread_mutex_lock(arg.mutex);
 #endif
         i = *arg.i;
         end = *arg.i = FLINT_MIN(i + 16, n1);
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
         pthread_mutex_unlock(arg.mutex);
 #endif
 
@@ -332,12 +332,12 @@ _ifft_outer2_worker(void * arg_ptr)
 
     while (1)
     {
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
         pthread_mutex_lock(arg.mutex);
 #endif
 	i = *arg.i;
         end = *arg.i = FLINT_MIN(i + 16, n1);
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
         pthread_mutex_unlock(arg.mutex);
 #endif
 
@@ -424,7 +424,7 @@ void ifft_mfa_truncate_sqrt2_outer(mp_limb_t ** ii, mp_size_t n, flint_bitcnt_t 
     flint_bitcnt_t depth = 0;
     flint_bitcnt_t depth2 = 0;
     flint_bitcnt_t limbs = (w*n)/FLINT_BITS;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_t mutex;
 #endif
     slong num_threads;
@@ -434,7 +434,7 @@ void ifft_mfa_truncate_sqrt2_outer(mp_limb_t ** ii, mp_size_t n, flint_bitcnt_t 
     while ((UWORD(1)<<depth) < n2) depth++;
     while ((UWORD(1)<<depth2) < n1) depth2++;
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_init(&mutex, NULL);
 #endif
 
@@ -464,7 +464,7 @@ void ifft_mfa_truncate_sqrt2_outer(mp_limb_t ** ii, mp_size_t n, flint_bitcnt_t 
        args[i].t1 = t1 + i;
        args[i].t2 = t2 + i;
        args[i].temp = temp[i];
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
        args[i].mutex = &mutex;       
 #endif
     }
@@ -503,7 +503,7 @@ void ifft_mfa_truncate_sqrt2_outer(mp_limb_t ** ii, mp_size_t n, flint_bitcnt_t 
 
     flint_free(args);
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_destroy(&mutex);
 #endif
 }

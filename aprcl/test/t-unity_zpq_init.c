@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include <stdio.h>
@@ -34,7 +34,8 @@ int main(void)
         p = n_randprime(state, 2 + n_randint(state, 16), 0);
         q = n_randprime(state, 2 + n_randint(state, 16), 0);
 
-        fmpz_randtest_not_zero(n, state, 200);
+        fmpz_randtest_unsigned(n, state, 200);
+        fmpz_add_ui(n, n, 1);
 
         unity_zpq_init(f, q, p, n);
         unity_zpq_clear(f);

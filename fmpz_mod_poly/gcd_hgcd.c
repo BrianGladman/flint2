@@ -8,7 +8,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include <stdlib.h>
@@ -91,12 +91,12 @@ slong _fmpz_mod_poly_gcd_hgcd(fmpz *G, const fmpz *A, slong lenA,
     return lenG;
 }
 
-void fmpz_mod_poly_gcd_hgcd(fmpz_mod_poly_t G, 
-                             const fmpz_mod_poly_t A, const fmpz_mod_poly_t B)
+void fmpz_mod_poly_gcd_hgcd(fmpz_mod_poly_t G, const fmpz_mod_poly_t A,
+                             const fmpz_mod_poly_t B, const fmpz_mod_ctx_t ctx)
 {
     if (A->length < B->length)
     {
-        fmpz_mod_poly_gcd_hgcd(G, B, A);
+        fmpz_mod_poly_gcd_hgcd(G, B, A, ctx);
     }
     else /* lenA >= lenB >= 0 */
     {
@@ -106,39 +106,39 @@ void fmpz_mod_poly_gcd_hgcd(fmpz_mod_poly_t G,
 
         if (lenA == 0) /* lenA = lenB = 0 */
         {
-            fmpz_mod_poly_zero(G);
+            fmpz_mod_poly_zero(G, ctx);
         } 
         else if (lenB == 0) /* lenA > lenB = 0 */
         {
-            fmpz_mod_poly_make_monic(G, A);
+            fmpz_mod_poly_make_monic(G, A, ctx);
         }
         else /* lenA >= lenB >= 1 */
         {
             if (G == A || G == B)
             {
-                fmpz_mod_poly_init2(tG, &A->p, FLINT_MIN(lenA, lenB));
+                fmpz_mod_poly_init2(tG, FLINT_MIN(lenA, lenB), ctx);
                 g = tG->coeffs;
             }
             else
             {
-                fmpz_mod_poly_fit_length(G, FLINT_MIN(lenA, lenB));
+                fmpz_mod_poly_fit_length(G, FLINT_MIN(lenA, lenB), ctx);
                 g = G->coeffs;
             }
 
             lenG = _fmpz_mod_poly_gcd_hgcd(g, A->coeffs, lenA,
-                                               B->coeffs, lenB, &A->p);
+                                   B->coeffs, lenB, fmpz_mod_ctx_modulus(ctx));
 
             if (G == A || G == B)
             {
-                fmpz_mod_poly_swap(tG, G);
-                fmpz_mod_poly_clear(tG);
+                fmpz_mod_poly_swap(tG, G, ctx);
+                fmpz_mod_poly_clear(tG, ctx);
             }
             G->length = lenG;
 
             if (G->length == 1)
                 fmpz_one(G->coeffs + 0);
             else
-                fmpz_mod_poly_make_monic(G, G);
+                fmpz_mod_poly_make_monic(G, G, ctx);
         }
     }
 }

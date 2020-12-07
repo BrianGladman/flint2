@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "aprcl.h"
@@ -32,12 +32,12 @@ unity_zp_sqr7(unity_zp f, const unity_zp g, fmpz_t * t)
     */
 
     /* set xi */
-    fmpz_mod_poly_get_coeff_fmpz(t[0], g->poly, 0);
-    fmpz_mod_poly_get_coeff_fmpz(t[1], g->poly, 1);
-    fmpz_mod_poly_get_coeff_fmpz(t[2], g->poly, 2);
-    fmpz_mod_poly_get_coeff_fmpz(t[3], g->poly, 3);
-    fmpz_mod_poly_get_coeff_fmpz(t[4], g->poly, 4);
-    fmpz_mod_poly_get_coeff_fmpz(t[5], g->poly, 5);
+    fmpz_mod_poly_get_coeff_fmpz(t[0], g->poly, 0, g->ctx);
+    fmpz_mod_poly_get_coeff_fmpz(t[1], g->poly, 1, g->ctx);
+    fmpz_mod_poly_get_coeff_fmpz(t[2], g->poly, 2, g->ctx);
+    fmpz_mod_poly_get_coeff_fmpz(t[3], g->poly, 3, g->ctx);
+    fmpz_mod_poly_get_coeff_fmpz(t[4], g->poly, 4, g->ctx);
+    fmpz_mod_poly_get_coeff_fmpz(t[5], g->poly, 5, g->ctx);
 
     fmpz_sub(t[6], t[0], t[1]);             /*  m1 = x0 - x1    */
     fmpz_sub(t[7], t[1], t[2]);             /*  m2 = x1 - x2    */

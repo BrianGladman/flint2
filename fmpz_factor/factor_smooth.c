@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include <gmp.h>
@@ -46,6 +46,24 @@ int _is_prime(const fmpz_t n, int proved)
     	return fmpz_is_probabprime(n);
 }
 
+void remove_found_factors(fmpz_factor_t factor, fmpz_t n, fmpz_t f)
+{
+    slong i;
+    fmpz_factor_t fac;
+
+    fmpz_tdiv_q(n, n, f);
+
+    fmpz_factor_init(fac);
+    fmpz_factor_no_trial(fac, f);
+
+    for (i = 0; i < fac->num; i++)
+        fac->exp[i] += fmpz_remove(n, n, fac->p + i);
+
+    _fmpz_factor_concat(factor, fac, 1);
+
+    fmpz_factor_clear(fac);
+}
+
 int fmpz_factor_smooth(fmpz_factor_t factor, const fmpz_t n,
 		                                        slong bits, int proved)
 {
@@ -57,7 +75,7 @@ int fmpz_factor_smooth(fmpz_factor_t factor, const fmpz_t n,
     slong found;
     slong trial_stop;
     slong * idx;
-    slong i, b, bits2;
+    slong i, b, bits2, istride;
     const mp_limb_t * primes;
     int ret = 0;
 
@@ -204,17 +222,25 @@ int fmpz_factor_smooth(fmpz_factor_t factor, const fmpz_t n,
                 bits = FLINT_MIN(bits, 100);
                 bits2 = (bits + 1)/2;
 
-                /* tuning is in increments of 2 bits, start with 16 bits */
-                for (i = 9 + (bits2 % 3); i <= bits2; i += 3)
+                /* tuning is in increments of 2 bits */
+                istride = 3;
+                /* start with 18-22 bits, advance by 6 bits at a time */
+                for (i = 9 + (bits2 % 3); i <= bits2; i += istride)
                 {
                     found = fmpz_factor_ecm(f, ecm_tuning[i][2],
                             ecm_tuning[i][1], ecm_tuning[i][1]*100, state, n2);
 
                     if (found != 0)
                     {
-                        fmpz_tdiv_q(n2, n2, f);
+                        /* make sure all prime divisors in factor are removed from n2 */
+                        remove_found_factors(factor, n2, f);
 
-                        fmpz_factor_no_trial(factor, f);
+                        if (fmpz_is_one(n2))
+                        {
+                            ret = 1;
+
+                            break;
+                        }
 
                         /* if what remains is below the bound, just factor it */
                         if (fmpz_sizeinbase(n2, 2) < bits)
@@ -235,7 +261,7 @@ int fmpz_factor_smooth(fmpz_factor_t factor, const fmpz_t n,
                             break;
                         }
 
-                        i--; /* redo with the same parameters if factor found */
+                        i -= istride; /* redo with the same parameters if factor found */
                     }
                 }    
 

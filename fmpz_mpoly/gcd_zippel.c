@@ -6,18 +6,11 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "nmod_mpoly.h"
 #include "fmpz_mpoly.h"
-
-
-void nmod_mpoly_ctx_change_modulus(nmod_mpoly_ctx_t ctx, mp_limb_t modulus)
-{
-    nmodf_ctx_clear(ctx->ffinfo);
-    nmodf_ctx_init(ctx->ffinfo, modulus);
-}
 
 /*
     Find a bound on the bits of the coefficients of gcd(A,B).
@@ -182,8 +175,8 @@ choose_prime_outer:
     degbound = Gp->exps[0];
 
     t = nmod_mpolyu_leadcoeff(Gp, ctxp);
-    t = nmod_inv(t, ctxp->ffinfo->mod);
-    t = nmod_mul(t, gammap, ctxp->ffinfo->mod);
+    t = nmod_inv(t, ctxp->mod);
+    t = nmod_mul(t, gammap, ctxp->mod);
     nmod_mpolyu_scalar_mul_nmod(Gp, t, ctxp);
 
     if (Gp->length == 1 && Gp->exps[0] == 0)
@@ -247,8 +240,8 @@ choose_prime_inner:
         goto choose_prime_inner;
 
     t = nmod_mpolyu_leadcoeff(Gp, ctxp);
-    t = nmod_inv(t, ctxp->ffinfo->mod);
-    t = nmod_mul(t, gammap, ctxp->ffinfo->mod);
+    t = nmod_inv(t, ctxp->mod);
+    t = nmod_mul(t, gammap, ctxp->mod);
     nmod_mpolyu_scalar_mul_nmod(Gp, t, ctxp);
 
     changed = fmpz_mpolyu_interp_mcrt_p(&coeffbits, H, ctx, modulus, Gp, ctxp);

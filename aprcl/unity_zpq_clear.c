@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "aprcl.h"
@@ -18,12 +18,12 @@ unity_zpq_clear(unity_zpq f)
 
     for (i = 0; i < f->p; i++)
     {
-        fmpz_mod_poly_clear(f->polys[i]);
+        fmpz_mod_poly_clear(f->polys[i], f->ctx);
     }
 
     f->p = 0;
     f->q = 0;
 
-    fmpz_clear(f->n);
+    fmpz_mod_ctx_clear(f->ctx);
     flint_free(f->polys);
 }

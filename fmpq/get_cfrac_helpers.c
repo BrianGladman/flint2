@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "gmp.h"
@@ -49,7 +49,7 @@ static void _fmpq_ball_print(const _fmpq_ball_t x)
 #endif
 
 
-#if WANT_ASSERT
+#if FLINT_WANT_ASSERT
 
 static int _fmpq_ball_is_ordered(const _fmpq_ball_t x)
 {
@@ -382,7 +382,7 @@ static slong _uiui_hgcd(
 
 fixed:
 
-#if WANT_ASSERT
+#if FLINT_WANT_ASSERT
 
     /* should be ok */
 
@@ -446,7 +446,7 @@ fix:
     m22 = t2;
     det *= -1;
 
-#if WANT_ASSERT
+#if FLINT_WANT_ASSERT
     umul_ppmm(t1,t0, a0, q); t1 += a1*q;
     add_ssaaaa(t1,t0, t1,t0, b1,b0);
     b0 = a0;
@@ -866,7 +866,7 @@ static void _hgcd_step(
         a/b = [[q1 1][1 0]] * ... * [[qn 1][1 0]](a'/b')
 
     The qi are written to s, and M is multiplied on the right. This is an
-    inplace operation, so (M, xa/xb) is the input ball M^-1(a/(b+1), (a+1)/b)
+    in-place operation, so (M, xa/xb) is the input ball M^-1(a/(b+1), (a+1)/b)
     and output ball M^-1(a'/(b'+1), (a'+1)/b').
 */
 void _fmpq_hgcd(_fmpq_cfrac_list_t s, _fmpz_mat22_t M, fmpz_t xa, fmpz_t xb)
@@ -874,7 +874,7 @@ void _fmpq_hgcd(_fmpq_cfrac_list_t s, _fmpz_mat22_t M, fmpz_t xa, fmpz_t xb)
     flint_bitcnt_t k, km, shift;
     fmpz_t ya, yb;
     _fmpz_mat22_t N;
-#if WANT_ASSERT
+#if FLINT_WANT_ASSERT
     fmpz_t xa_org, xb_org;
     fmpz_init_set(xa_org, xa);
     fmpz_init_set(xb_org, xb);
@@ -963,7 +963,7 @@ split:
 
 cleanup:
 
-#if WANT_ASSERT
+#if FLINT_WANT_ASSERT
     FLINT_ASSERT(_hgcd_ok(M, xa, xb));
     fmpz_mul(ya, M->_11, xa);
     fmpz_addmul(ya, M->_12, xb);
@@ -1008,7 +1008,7 @@ void _fmpq_ball_get_cfrac(_fmpq_cfrac_list_t s, _fmpz_mat22_t M, int needM,
     fmpz_t q, r;
     _fmpq_ball_t y;
     _fmpz_mat22_t N;
-#if WANT_ASSERT
+#if FLINT_WANT_ASSERT
     _fmpq_ball_t xorg;
     _fmpq_ball_init(xorg);
     xorg->exact = x->exact;
@@ -1299,7 +1299,7 @@ chop:
 
 cleanup:
 
-#if WANT_ASSERT
+#if FLINT_WANT_ASSERT
     FLINT_ASSERT(!needM || (_fmpq_ball_apply_mat22_inv(y, M, xorg), 
                                                        _fmpq_ball_equal(y, x)));
     _fmpq_ball_clear(xorg);

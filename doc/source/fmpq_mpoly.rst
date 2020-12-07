@@ -262,7 +262,7 @@ Container operations
     If a term index is negative or not strictly less than the length of the polynomial, the function will throw.
     The mutating functions here are not guaranteed to leave the polynomial in reduced form (see :func:`fmpq_mpoly_is_canonical` for a definition of reduced).
     This means that even if nonzero terms with distinct exponents have been constructed in the correct order, a call to :func:`fmpq_mpoly_reduce` is necessary to ensure that the polynomial is in canonical form.
-    As with the ``fmpz_mpoly`` module, a call to :func:`fmpq_mpoly_sort_terms` followed by a call to :func:`fmpq_mpoly_combine_like_terms` should leave the polynomial in canoncial form.
+    As with the ``fmpz_mpoly`` module, a call to :func:`fmpq_mpoly_sort_terms` followed by a call to :func:`fmpq_mpoly_combine_like_terms` should leave the polynomial in canonical form.
 
 .. function:: fmpq * fmpq_mpoly_content_ref(fmpq_mpoly_t A, const fmpq_mpoly_ctx_t ctx)
 
@@ -396,22 +396,22 @@ Addition/Subtraction
               void fmpq_mpoly_add_ui(fmpq_mpoly_t A, const fmpq_mpoly_t B, ulong c, const fmpq_mpoly_ctx_t ctx)
               void fmpq_mpoly_add_si(fmpq_mpoly_t A, const fmpq_mpoly_t B, slong c, const fmpq_mpoly_ctx_t ctx)
 
-    Set ``A`` to ``B`` plus ``c``.
+    Set `A` to `B` plus `c`.
 
 .. function:: void fmpq_mpoly_sub_fmpq(fmpq_mpoly_t A, const fmpq_mpoly_t B, const fmpq_t c, const fmpq_mpoly_ctx_t ctx)
               void fmpq_mpoly_sub_fmpz(fmpq_mpoly_t A, const fmpq_mpoly_t B, const fmpz_t c, const fmpq_mpoly_ctx_t ctx)
               void fmpq_mpoly_sub_ui(fmpq_mpoly_t A, const fmpq_mpoly_t B, ulong c, const fmpq_mpoly_ctx_t ctx)
               void fmpq_mpoly_sub_si(fmpq_mpoly_t A, const fmpq_mpoly_t B, slong c, const fmpq_mpoly_ctx_t ctx)
 
-    Set ``A`` to ``B`` minus ``c``.
+    Set `A` to `B` minus `c`.
 
 .. function:: void fmpq_mpoly_add(fmpq_mpoly_t A, const fmpq_mpoly_t B, const fmpq_mpoly_t C, const fmpq_mpoly_ctx_t ctx)
 
-    Set ``A`` to ``B`` plus ``C``.
+    Set `A` to `B` plus `C`.
 
 .. function:: void fmpq_mpoly_sub(fmpq_mpoly_t A, const fmpq_mpoly_t B, const fmpq_mpoly_t C, const fmpq_mpoly_ctx_t ctx)
 
-    Set ``A`` to ``B`` minus ``C``.
+    Set `A` to `B` minus `C`.
 
 
 Scalar operations
@@ -420,26 +420,26 @@ Scalar operations
 
 .. function:: void fmpq_mpoly_neg(fmpq_mpoly_t A, const fmpq_mpoly_t B, const fmpq_mpoly_ctx_t ctx)
     
-    Set ``A`` to `-```B``.
+    Set `A` to `-B`.
 
 .. function:: void fmpq_mpoly_scalar_mul_fmpq(fmpq_mpoly_t A, const fmpq_mpoly_t B, const fmpq_t c, const fmpq_mpoly_ctx_t ctx)
               void fmpq_mpoly_scalar_mul_fmpz(fmpq_mpoly_t A, const fmpq_mpoly_t B, const fmpz_t c, const fmpq_mpoly_ctx_t ctx)
               void fmpq_mpoly_scalar_mul_ui(fmpq_mpoly_t A, const fmpq_mpoly_t B, ulong c, const fmpq_mpoly_ctx_t ctx)
               void fmpq_mpoly_scalar_mul_si(fmpq_mpoly_t A, const fmpq_mpoly_t B, slong c, const fmpq_mpoly_ctx_t ctx)
 
-    Set ``A`` to ``B`` times `c`.
+    Set `A` to `B` times `c`.
 
 .. function:: void fmpq_mpoly_scalar_div_fmpq(fmpq_mpoly_t A, const fmpq_mpoly_t B, const fmpq_t c, const fmpq_mpoly_ctx_t ctx)
               void fmpq_mpoly_scalar_div_fmpz(fmpq_mpoly_t A, const fmpq_mpoly_t B, const fmpz_t c, const fmpq_mpoly_ctx_t ctx)
               void fmpq_mpoly_scalar_div_ui(fmpq_mpoly_t A, const fmpq_mpoly_t B, ulong c, const fmpq_mpoly_ctx_t ctx)
               void fmpq_mpoly_scalar_div_si(fmpq_mpoly_t A, const fmpq_mpoly_t B, slong c, const fmpq_mpoly_ctx_t ctx)
 
-    Set ``A`` to ``B`` divided by `c`.
+    Set `A` to `B` divided by `c`.
 
 .. function:: void fmpq_mpoly_make_monic(fmpq_mpoly_t A, fmpq_mpoly_t B, const fmpq_mpoly_ctx_t ctx)
 
-    Set ``A`` to ``B`` divided by the leading coefficient of ``B``.
-    This throws if ``B`` is zero.
+    Set `A` to `B` divided by the leading coefficient of `B`.
+    This throws if `B` is zero.
 
     All of these functions run quickly if ``A`` and ``B`` are aliased.
 
@@ -450,11 +450,11 @@ Differentiation/Integration
 
 .. function:: void fmpq_mpoly_derivative(fmpq_mpoly_t A, const fmpq_mpoly_t B, slong var, const fmpq_mpoly_ctx_t ctx)
 
-    Set ``A`` to the derivative of ``B`` with respect to the  variable of index ``var``.
+    Set `A` to the derivative of `B` with respect to the variable of index ``var``.
 
 .. function:: void fmpq_mpoly_integral(fmpq_mpoly_t A, const fmpq_mpoly_t B, slong var, const fmpq_mpoly_ctx_t ctx)
 
-    Set ``A`` to the integral with the fewest number of terms of ``B`` with respect to the variable of index ``var``.
+    Set `A` to the integral with the fewest number of terms of `B` with respect to the variable of index ``var``.
 
 
 Evaluation
@@ -498,7 +498,7 @@ Multiplication
 
 .. function:: void fmpq_mpoly_mul(fmpq_mpoly_t A, const fmpq_mpoly_t B, const fmpq_mpoly_t C, const fmpq_mpoly_ctx_t ctx)
 
-    Set ``A`` to ``B`` times ``C``.
+    Set `A` to `B` times `C`.
 
 
 Powering
@@ -508,12 +508,12 @@ Powering
 
 .. function:: int fmpq_mpoly_pow_fmpz(fmpq_mpoly_t A, const fmpq_mpoly_t B, const fmpz_t k, const fmpq_mpoly_ctx_t ctx)
 
-    Set ``A`` to ``B`` raised to the `k`-th power.
+    Set `A` to `B` raised to the `k`-th power.
     Return `1` for success and `0` for failure.
 
 .. function:: int fmpq_mpoly_pow_ui(fmpq_mpoly_t A, const fmpq_mpoly_t B, ulong k, const fmpq_mpoly_ctx_t ctx)
 
-    Set ``A`` to ``B`` raised to the `k`-th power.
+    Set `A` to `B` raised to the `k`-th power.
     Return `1` for success and `0` for failure.
 
 
@@ -552,6 +552,11 @@ Greatest Common Divisor
     Set ``M`` to the GCD of the terms of ``A``.
     If ``A`` is zero, ``M`` will be zero. Otherwise, ``M`` will be a monomial with coefficient one.
 
+.. function:: int fmpq_mpoly_content_vars(fmpq_mpoly_t g, const fmpq_mpoly_t A, slong * vars, slong vars_length, const fmpq_mpoly_ctx_t ctx)
+
+    Set ``g`` to the GCD of the cofficients of ``A`` when viewed as a polynomial in the variables ``vars``.
+    Return ``1`` for success and ``0`` for failure. Upon succcess, ``g`` will be independent of the variables ``vars``.
+
 .. function:: int fmpq_mpoly_gcd(fmpq_mpoly_t G, const fmpq_mpoly_t A, const fmpq_mpoly_t B, const fmpq_mpoly_ctx_t ctx)
               int fmpq_mpoly_gcd_threaded(fmpq_mpoly_t G, const fmpq_mpoly_t A, const fmpq_mpoly_t B, const fmpq_mpoly_ctx_t ctx, slong thread_limit)
 
@@ -561,6 +566,19 @@ Greatest Common Divisor
 .. function:: int fmpq_mpoly_gcd_cofactors(fmpq_mpoly_t G, fmpq_mpoly_t Abar, fmpq_mpoly_t Bbar, const fmpq_mpoly_t A, const fmpq_mpoly_t B, const fmpq_mpoly_ctx_t ctx)
 
     Do the operation of :func:`fmpq_mpoly_gcd` and also compute ``Abar = A/G`` and ``Bbar = B/G`` if successful.
+
+
+Square Root
+--------------------------------------------------------------------------------
+
+.. function:: int fmpq_mpoly_sqrt(fmpq_mpoly_t Q, const fmpq_mpoly_t A, const fmpq_mpoly_ctx_t ctx)
+
+    If `A` is a perfect square return `1` and set `Q` to the square root
+    with positive leading coefficient. Otherwise return `0` and set `Q` to zero.
+
+.. function:: int fmpq_mpoly_is_square(const fmpq_mpoly_t A, const fmpq_mpoly_ctx_t ctx)
+
+    Return `1` if `A` is a perfect square, otherwise return `0`.
 
 
 Univariate Functions

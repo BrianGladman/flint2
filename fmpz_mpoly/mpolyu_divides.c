@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "fmpz_mpoly.h"
@@ -517,7 +517,7 @@ int fmpz_mpolyuu_divides(
     next_loc = Blen + 4;   /* something bigger than heap can ever be */
     heap = (mpoly_heap1_s *) TMP_ALLOC((Blen + 1)*sizeof(mpoly_heap1_s));
     chain = (mpoly_heap_t *) TMP_ALLOC(Blen*sizeof(mpoly_heap_t));
-    store = store_base = (slong *) TMP_ALLOC(2*Blen*sizeof(mpoly_heap_t *));
+    store = store_base = (slong *) TMP_ALLOC(2*Blen*sizeof(slong));
 
     /* space for flagged heap indicies */
     hind = (slong *) TMP_ALLOC(Blen*sizeof(slong));

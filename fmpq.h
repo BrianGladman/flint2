@@ -7,7 +7,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #ifndef FMPQ_H
@@ -343,6 +343,16 @@ fmpq_gcd(fmpq_t res, const fmpq_t op1, const fmpq_t op2)
 {
     _fmpq_gcd(fmpq_numref(res), fmpq_denref(res), fmpq_numref(op1), 
               fmpq_denref(op1), fmpq_numref(op2), fmpq_denref(op2));
+}
+
+FLINT_DLL void _fmpq_gcd_cofactors(fmpz_t ng, fmpz_t dg, fmpz_t A, fmpz_t B,
+           const fmpz_t na, const fmpz_t da, const fmpz_t nb, const fmpz_t db);
+
+FMPQ_INLINE void
+fmpq_gcd_cofactors(fmpq_t g, fmpz_t A, fmpz_t B, const fmpq_t a, const fmpq_t b)
+{
+    _fmpq_gcd_cofactors(fmpq_numref(g), fmpq_denref(g), A, B,
+               fmpq_numref(a), fmpq_denref(a), fmpq_numref(b), fmpq_denref(b));
 }
 
 FLINT_DLL int _fmpq_reconstruct_fmpz(fmpz_t num, fmpz_t den, const fmpz_t a, const fmpz_t m);

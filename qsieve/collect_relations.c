@@ -8,7 +8,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "qsieve.h"
@@ -369,14 +369,14 @@ slong qsieve_evaluate_candidate(qs_t qs_inf, ulong i, unsigned char * sieve, qs_
 
          poly->num_factors = num_factors;
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
          pthread_mutex_lock(&qs_inf->mutex);
 #endif
 	 qsieve_write_to_file(qs_inf, 1, Y, poly);
          
          qs_inf->full_relation++;
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
          pthread_mutex_unlock(&qs_inf->mutex);
 #endif
          relations++;
@@ -413,7 +413,7 @@ slong qsieve_evaluate_candidate(qs_t qs_inf, ulong i, unsigned char * sieve, qs_
 
                   poly->num_factors = num_factors;
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
                   pthread_mutex_lock(&qs_inf->mutex);
 #endif
                   /* store this partial in file */
@@ -424,7 +424,7 @@ slong qsieve_evaluate_candidate(qs_t qs_inf, ulong i, unsigned char * sieve, qs_
 
                   qsieve_add_to_hashtable(qs_inf, prime);
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
                   pthread_mutex_unlock(&qs_inf->mutex);
 #endif
 
@@ -509,7 +509,7 @@ static void qsieve_collect_relations_worker(void * varg)
 
     while (1)
     {
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
         pthread_mutex_lock(&qs_inf->mutex);
 #endif
         j = qs_inf->index_j;
@@ -521,7 +521,7 @@ static void qsieve_collect_relations_worker(void * varg)
                 qsieve_init_poly_next(qs_inf, j);
             qsieve_poly_copy(thread_poly, qs_inf);
         }
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
         pthread_mutex_unlock(&qs_inf->mutex);
 #endif
 

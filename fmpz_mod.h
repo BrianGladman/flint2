@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #ifndef FMPZ_MOD_H
@@ -62,6 +62,8 @@ typedef fmpz_mod_ctx_struct fmpz_mod_ctx_t[1];
 
 FLINT_DLL void fmpz_mod_ctx_init(fmpz_mod_ctx_t ctx, const fmpz_t n);
 
+FLINT_DLL void fmpz_mod_ctx_init_ui(fmpz_mod_ctx_t ctx, ulong n);
+
 FLINT_DLL void fmpz_mod_ctx_clear(fmpz_mod_ctx_t ctx);
 
 FMPZ_MOD_INLINE const fmpz * fmpz_mod_ctx_modulus(const fmpz_mod_ctx_t ctx)
@@ -70,6 +72,8 @@ FMPZ_MOD_INLINE const fmpz * fmpz_mod_ctx_modulus(const fmpz_mod_ctx_t ctx)
 }
 
 FLINT_DLL void fmpz_mod_ctx_set_modulus(fmpz_mod_ctx_t ctx, const fmpz_t n);
+
+FLINT_DLL void fmpz_mod_ctx_set_modulus_ui(fmpz_mod_ctx_t ctx, ulong n);
 
 FLINT_DLL int fmpz_mod_is_canonical(const fmpz_t a,  const fmpz_mod_ctx_t ctx);
 

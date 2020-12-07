@@ -6,27 +6,26 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "nmod_mpoly.h"
 
-void nmod_mpoly_get_term(nmod_mpoly_t M, const nmod_mpoly_t A,
-                                           slong i, const nmod_mpoly_ctx_t ctx)
+void nmod_mpoly_get_term(
+    nmod_mpoly_t M,
+    const nmod_mpoly_t A,
+    slong i,
+    const nmod_mpoly_ctx_t ctx)
 {
-    slong N;
     flint_bitcnt_t bits = A->bits;
+    slong N = mpoly_words_per_exp(bits, ctx->minfo);
 
-    if ((ulong) i >= (ulong) A->length)
+    if (i >= (ulong) A->length)
     {
-        flint_throw(FLINT_ERROR, "Index out of range in fmpz_mpoly_get_term");
+        flint_throw(FLINT_ERROR, "nmod_mpoly_get_term: index out of range");
     }
 
-    nmod_mpoly_fit_length(M, 1, ctx);
-    nmod_mpoly_fit_bits(M, bits, ctx);
-    M->bits = bits;
-
-    N = mpoly_words_per_exp(bits, ctx->minfo);
+    nmod_mpoly_fit_length_reset_bits(M, 1, bits, ctx);
 
     mpoly_monomial_set(M->exps + N*0, A->exps + N*i, N);
     M->coeffs[0] = A->coeffs[i];

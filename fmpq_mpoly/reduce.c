@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "fmpq_mpoly.h"
@@ -19,7 +19,7 @@ void fmpq_mpoly_reduce(fmpq_mpoly_t A, const fmpq_mpoly_ctx_t ctx)
 {
     fmpz_t g;
 
-    if (A->zpoly->length == 0)
+    if (A->zpoly->length < 1)
     {
         fmpq_zero(A->content);
         return;
@@ -34,14 +34,13 @@ void fmpq_mpoly_reduce(fmpq_mpoly_t A, const fmpq_mpoly_ctx_t ctx)
 
     fmpz_init(g);
     _fmpz_vec_content(g, A->zpoly->coeffs, A->zpoly->length);
+
     if (fmpz_sgn(A->zpoly->coeffs + 0) < 0)
-    {
         fmpz_neg(g, g);
-    }
 
     if (fmpz_is_zero(g))
     {
-        /* bail if A->zpoly has only zeros stored (A->zpoly not canoncial) */
+        /* bail if A->zpoly has only zeros stored (A->zpoly not canonical) */
         fmpq_one(A->content);
     }
     else if (fmpz_is_pm1(g))

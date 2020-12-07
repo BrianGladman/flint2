@@ -1,12 +1,13 @@
 /*
     Copyright (C) 2013 Mike Hansen
+    Copyright (C) 2020 Daniel Schultz
 
     This file is part of FLINT.
 
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "fq_zech.h"
@@ -18,6 +19,7 @@ fq_zech_get_fq_nmod(fq_nmod_t rop, const fq_zech_t op, const fq_zech_ctx_t ctx)
     mp_limb_t q, r;
     
     nmod_poly_fit_length(rop, fq_zech_ctx_degree(ctx));
+    nmod_poly_zero(rop);
 
     q = ctx->eval_table[op->value];
     i = 0;
@@ -28,5 +30,4 @@ fq_zech_get_fq_nmod(fq_nmod_t rop, const fq_zech_t op, const fq_zech_ctx_t ctx)
         i ++;
     }
     nmod_poly_set_coeff_ui(rop, i, q);
-
 }

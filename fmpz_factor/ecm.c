@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 /* Outer wrapper for ECM 
@@ -59,16 +59,16 @@ fmpz_factor_ecm(fmpz_t f, mp_limb_t curves, mp_limb_t B1, mp_limb_t B2,
     const mp_limb_t *prime_array;
     n_size = fmpz_size(n_in);
 
-    fmpz_factor_ecm_init(ecm_inf, n_size);
-
-    TMP_START;
-    
     if (n_size == 1)
     {
         ret = n_factor_ecm(&P, curves, B1, B2, state, fmpz_get_ui(n_in));
         fmpz_set_ui(f, P);
         return ret;
     }
+
+    fmpz_factor_ecm_init(ecm_inf, n_size);
+
+    TMP_START;
 
     n      = TMP_ALLOC(n_size * sizeof(mp_limb_t));
     mpsig  = TMP_ALLOC(n_size * sizeof(mp_limb_t));

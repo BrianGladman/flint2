@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include <stdlib.h>
@@ -27,7 +27,7 @@ typedef struct
    const fmpz * ginv;
    fmpz ** res;
    const fmpz * p;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
    pthread_mutex_t * mutex;
 #endif
 } fmpz_powers_preinv_arg_t;
@@ -44,12 +44,12 @@ _fmpz_mod_poly_powers_mod_preinv_worker(void * arg_ptr)
 
     while (1)
     {
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
         pthread_mutex_lock(arg.mutex);
 #endif
 	j = *arg.j + k;
         *arg.j = j;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
         pthread_mutex_unlock(arg.mutex);
 #endif
 
@@ -87,7 +87,7 @@ _fmpz_mod_poly_powers_mod_preinv_threaded_pool(fmpz ** res, const fmpz * f,
 {
     slong i, k, shared_j = 0;
     fmpz_powers_preinv_arg_t * args;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_t mutex;
 #endif
 
@@ -147,12 +147,12 @@ _fmpz_mod_poly_powers_mod_preinv_threaded_pool(fmpz ** res, const fmpz * f,
         args[i].ginv    = ginv;
         args[i].res     = res;
         args[i].p       = p;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
         args[i].mutex   = &mutex;
 #endif
     }
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_init(&mutex, NULL);
 #endif
 
@@ -165,7 +165,7 @@ _fmpz_mod_poly_powers_mod_preinv_threaded_pool(fmpz ** res, const fmpz * f,
     for (i = 0; i < num_threads; i++)
         thread_pool_wait(global_thread_pool, threads[i]);
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_destroy(&mutex);
 #endif
 
@@ -174,7 +174,8 @@ _fmpz_mod_poly_powers_mod_preinv_threaded_pool(fmpz ** res, const fmpz * f,
 
 void
 fmpz_mod_poly_powers_mod_bsgs(fmpz_mod_poly_struct * res,
-		     const fmpz_mod_poly_t f, slong n, const fmpz_mod_poly_t g)
+    	     const fmpz_mod_poly_t f, slong n, const fmpz_mod_poly_t g,
+                                                      const fmpz_mod_ctx_t ctx)
 {
     slong i;
 
@@ -183,63 +184,63 @@ fmpz_mod_poly_powers_mod_bsgs(fmpz_mod_poly_struct * res,
     thread_pool_handle * threads;
     slong num_threads;
 
-    if (fmpz_mod_poly_length(g) == 0)
+    if (fmpz_mod_poly_length(g, ctx) == 0)
     {
         flint_printf("Exception (fmpz_mod_poly_powers_mod_bsgs). Divide by zero.\n");
         flint_abort();
     }
 
-    if (fmpz_mod_poly_length(f) == 0 || fmpz_mod_poly_length(g) == 1)
+    if (fmpz_mod_poly_length(f, ctx) == 0 || fmpz_mod_poly_length(g, ctx) == 1)
     {
         if (n > 0)
-           fmpz_mod_poly_one(res + 0);
+           fmpz_mod_poly_one(res + 0, ctx);
 
         for (i = 1; i < n; i++)
-           fmpz_mod_poly_zero(res + i);
+           fmpz_mod_poly_zero(res + i, ctx);
 
         return;
     }
 
-    if (fmpz_mod_poly_length(f) >= fmpz_mod_poly_length(g))
+    if (fmpz_mod_poly_length(f, ctx) >= fmpz_mod_poly_length(g, ctx))
     {
         fmpz_mod_poly_t q, r;
 
-        fmpz_mod_poly_init(q, &f->p);
-        fmpz_mod_poly_init(r, &f->p);
+        fmpz_mod_poly_init(q, ctx);
+        fmpz_mod_poly_init(r, ctx);
 
-        fmpz_mod_poly_divrem(q, r, f, g);
-        fmpz_mod_poly_powers_mod_naive(res, r, n, g);
+        fmpz_mod_poly_divrem(q, r, f, g, ctx);
+        fmpz_mod_poly_powers_mod_naive(res, r, n, g, ctx);
 
-        fmpz_mod_poly_clear(q);
-        fmpz_mod_poly_clear(r);
+        fmpz_mod_poly_clear(q, ctx);
+        fmpz_mod_poly_clear(r, ctx);
 
         return;
     }
 
     res_arr = (fmpz **) flint_malloc(n*sizeof(fmpz *));
-    fmpz_mod_poly_init(ginv, &g->p);
+    fmpz_mod_poly_init(ginv, ctx);
 
     for (i = 0; i < n; i++)
     {
-       fmpz_mod_poly_fit_length(res + i, fmpz_mod_poly_length(g) - 1);
+       fmpz_mod_poly_fit_length(res + i, fmpz_mod_poly_length(g, ctx) - 1, ctx);
        res_arr[i] = res[i].coeffs;
-       _fmpz_mod_poly_set_length(res + i, fmpz_mod_poly_length(g) - 1);
+       _fmpz_mod_poly_set_length(res + i, fmpz_mod_poly_length(g, ctx) - 1);
     }
 
-    fmpz_mod_poly_reverse(ginv, g, fmpz_mod_poly_length(g));
-    fmpz_mod_poly_inv_series(ginv, ginv, fmpz_mod_poly_length(g));
+    fmpz_mod_poly_reverse(ginv, g, fmpz_mod_poly_length(g, ctx), ctx);
+    fmpz_mod_poly_inv_series(ginv, ginv, fmpz_mod_poly_length(g, ctx), ctx);
 
     num_threads = flint_request_threads(&threads, flint_get_num_threads());
 
     _fmpz_mod_poly_powers_mod_preinv_threaded_pool(res_arr, f->coeffs,
-		       f->length, n, g->coeffs, g->length, ginv->coeffs,
-		                    ginv->length, &g->p, threads, num_threads);
+    	       f->length, n, g->coeffs, g->length, ginv->coeffs, ginv->length,
+                              fmpz_mod_ctx_modulus(ctx), threads, num_threads);
 
     flint_give_back_threads(threads, num_threads);
 
     for (i = 0; i < n; i++)
        _fmpz_mod_poly_normalise(res + i);
     
-    fmpz_mod_poly_clear(ginv);
+    fmpz_mod_poly_clear(ginv, ctx);
     flint_free(res_arr);
 }

@@ -8,7 +8,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #ifndef FQ_H
@@ -37,7 +37,7 @@ typedef fmpz_poly_struct fq_struct;
 
 typedef struct
 {
-    fmpz p;
+    fmpz_mod_ctx_t ctxp;
 
     int sparse_modulus;
     int is_conway; /* whether field was initialized with the Flint Conway tables  (assures primitivity) */
@@ -55,15 +55,17 @@ fq_ctx_struct;
 
 typedef fq_ctx_struct fq_ctx_t[1];
 
-FLINT_DLL void fq_ctx_init(fq_ctx_t ctx, const fmpz_t p, slong d, const char *var);
+FLINT_DLL void fq_ctx_init(fq_ctx_t ctx, const fmpz_t p, slong d,
+                                                              const char *var);
 
-FLINT_DLL int _fq_ctx_init_conway(fq_ctx_t ctx, const fmpz_t p, slong d, const char *var);
+FLINT_DLL int _fq_ctx_init_conway(fq_ctx_t ctx, const fmpz_t p, slong d,
+                                                              const char *var);
 
-FLINT_DLL void fq_ctx_init_conway(fq_ctx_t ctx, const fmpz_t p, slong d, const char *var);
+FLINT_DLL void fq_ctx_init_conway(fq_ctx_t ctx, const fmpz_t p, slong d,
+                                                              const char *var);
 
-FLINT_DLL void fq_ctx_init_modulus(fq_ctx_t ctx,
-                         fmpz_mod_poly_t modulus,
-                         const char *var);
+FLINT_DLL void fq_ctx_init_modulus(fq_ctx_t ctx, const fmpz_mod_poly_t modulus,
+                                   const fmpz_mod_ctx_t ctxp, const char *var);
 
 FLINT_DLL void fq_ctx_randtest(fq_ctx_t ctx, flint_rand_t state);
 
@@ -81,12 +83,14 @@ FQ_INLINE slong fq_ctx_degree(const fq_ctx_t ctx)
     return ctx->modulus->length - 1;
 }
 
-#define fq_ctx_prime(ctx)  (&((ctx)->p))
+FQ_INLINE const fmpz * fq_ctx_prime(const fq_ctx_t ctx)
+{
+    return fmpz_mod_ctx_modulus(ctx->ctxp);
+}
 
 FQ_INLINE void fq_ctx_order(fmpz_t f, const fq_ctx_t ctx)
 {
-    fmpz_set(f, fq_ctx_prime(ctx));
-    fmpz_pow_ui(f, f, fq_ctx_degree(ctx));
+    fmpz_pow_ui(f, fq_ctx_prime(ctx), fq_ctx_degree(ctx));
 }
 
 FQ_INLINE int fq_ctx_fprint(FILE * file, const fq_ctx_t ctx)
@@ -109,7 +113,7 @@ FQ_INLINE int fq_ctx_fprint(FILE * file, const fq_ctx_t ctx)
     if (r <= 0)
         return r;
 
-    r = fmpz_mod_poly_fprint_pretty(file, ctx->modulus, "X");
+    r = fmpz_mod_poly_fprint_pretty(file, ctx->modulus, "X", ctx->ctxp);
     if (r <= 0)
         return r;
 
@@ -227,15 +231,9 @@ FLINT_DLL void fq_mul_si(fq_t rop, const fq_t op, slong x, const fq_ctx_t ctx);
 
 FLINT_DLL void fq_mul_ui(fq_t rop, const fq_t op, ulong x, const fq_ctx_t ctx);
 
-FLINT_DLL void fq_div(fq_t rop, const fq_t op1,
-		                           const fq_t op2, const fq_ctx_t ctx);
-
 FLINT_DLL void fq_sqr(fq_t rop, const fq_t op, const fq_ctx_t ctx);
 
 FLINT_DLL void fq_inv(fq_t rop, const fq_t op1, const fq_ctx_t ctx);
-
-FLINT_DLL void fq_gcdinv(fq_t rop, fq_t inv,
-		                            const fq_t op, const fq_ctx_t ctx);
 
 FLINT_DLL void _fq_pow(fmpz *rop, const fmpz *op, slong len, const fmpz_t e,
              const fq_ctx_t ctx);
@@ -264,6 +262,8 @@ FLINT_DLL void fq_randtest_not_zero(fq_t rop, flint_rand_t state, const fq_ctx_t
 
 FLINT_DLL void fq_rand(fq_t rop, flint_rand_t state, const fq_ctx_t ctx);
 
+FLINT_DLL void fq_rand_not_zero(fq_t rop, flint_rand_t state, const fq_ctx_t ctx);
+
 
 /* Comparison ****************************************************************/
 
@@ -281,8 +281,6 @@ FQ_INLINE int fq_is_one(const fq_t op, const fq_ctx_t ctx)
 {
     return fmpz_poly_is_one(op);
 }
-
-FLINT_DLL int fq_is_invertible(const fq_t op, const fq_ctx_t ctx);
 
 /* Assignments and conversions ***********************************************/
 

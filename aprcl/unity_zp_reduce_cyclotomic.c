@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "aprcl.h"
@@ -45,7 +45,7 @@ _unity_zp_reduce_cyclotomic_divmod(unity_zp f)
 
     _fmpz_mod_poly_normalise(f->poly);
     _fmpz_vec_scalar_mod_fmpz(f->poly->coeffs,
-            f->poly->coeffs, f->poly->length, f->n);
+               f->poly->coeffs, f->poly->length, fmpz_mod_ctx_modulus(f->ctx));
     _fmpz_mod_poly_normalise(f->poly);
 }
 
@@ -72,7 +72,8 @@ _unity_zp_reduce_cyclotomic(unity_zp f)
                     f->poly->coeffs + ind, f->poly->coeffs + i);
 
             if (fmpz_cmp_ui(f->poly->coeffs + ind, 0) < 0)
-                fmpz_add(f->poly->coeffs + ind, f->poly->coeffs + ind, f->n);
+                fmpz_add(f->poly->coeffs + ind, f->poly->coeffs + ind,
+                                                 fmpz_mod_ctx_modulus(f->ctx));
         }
 
         fmpz_set_ui(f->poly->coeffs + i, 0);

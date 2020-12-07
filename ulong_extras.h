@@ -9,7 +9,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #ifndef ULONG_EXTRAS_H
@@ -126,6 +126,25 @@ FLINT_DLL void n_cleanup_primes(void);
 
 FLINT_DLL const ulong * n_primes_arr_readonly(ulong n);
 FLINT_DLL const double * n_prime_inverses_arr_readonly(ulong n);
+
+/* Checked arithmetic ********************************************************/
+
+ULONG_EXTRAS_INLINE int n_mul_checked(ulong * a, ulong b, ulong c)
+{
+	ulong ahi, alo;
+	umul_ppmm(ahi, alo, b, c);
+	*a = alo;
+	return 0 != ahi;
+}
+
+ULONG_EXTRAS_INLINE int n_add_checked(ulong * a, ulong b, ulong c)
+{
+    int of = b + c < b;
+    *a = b + c;
+    return of;
+}
+
+/*****************************************************************************/
 
 FLINT_DLL ulong n_randlimb(flint_rand_t state);
 

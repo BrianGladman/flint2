@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "nmod_mpoly.h"
@@ -165,16 +165,17 @@ int nmod_mpoly_divides(
         if (A->length == 0 || nmod_mpoly_ctx_modulus(ctx) == 1)
         {
             nmod_mpoly_set(Q, A, ctx);
-	    return 1;
-	} else
-	    flint_throw(FLINT_DIVZERO, "Exception in nmod_mpoly_divides_threaded: "
-                                                   "Cannot divide by zero.\n");
+	        return 1;
+	    }
+        else
+        {
+    	    flint_throw(FLINT_DIVZERO, "nmod_mpoly_divides: divide by zero.");
+        }
     }
 
-    if (1 != n_gcd(B->coeffs[0], ctx->ffinfo->mod.n))
+    if (1 != n_gcd(B->coeffs[0], ctx->mod.n))
     {
-        flint_throw(FLINT_IMPINV, "Exception in nmod_mpoly_divides_threaded: "
-                                       "Cannot invert leading coefficient.\n");
+        flint_throw(FLINT_IMPINV, "nmod_mpoly_divides: leading coefficient is not invertible.");
     }
 
     thread_limit = A->length/1024;

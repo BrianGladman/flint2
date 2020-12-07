@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include "string.h"
@@ -31,7 +31,7 @@ _chunk_struct;
 
 typedef struct
 {
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_t mutex;
 #endif
     volatile int idx;
@@ -87,12 +87,12 @@ static void _nmod_mpoly_mul_array_threaded_worker_LEX(void * varg)
     for (j = 0; j < 3*base->array_size; j++)
         coeff_array[j] = 0;
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_lock(&base->mutex);
 #endif
     Pi = base->idx;
     base->idx = Pi + 1;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_unlock(&base->mutex);
 #endif
 
@@ -114,8 +114,7 @@ static void _nmod_mpoly_mul_array_threaded_worker_LEX(void * varg)
             }
         }
 
-        umul_ppmm(t1, t0, base->ctx->ffinfo->mod.n - 1,
-                          base->ctx->ffinfo->mod.n - 1);
+        umul_ppmm(t1, t0, base->ctx->mod.n - 1, base->ctx->mod.n - 1);
         umul_ppmm(t2, t1, t1, len);
         umul_ppmm(u1, u0, t0, len);
         add_sssaaaaaa(t2, t1, t0,  t2, t1, UWORD(0),  UWORD(0), u1, u0);
@@ -193,12 +192,12 @@ static void _nmod_mpoly_mul_array_threaded_worker_LEX(void * varg)
                     base->array_size, Pl - Pi - 1, base->ctx);
         }
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
         pthread_mutex_lock(&base->mutex);
 #endif
 	Pi = base->idx;
         base->idx = Pi + 1;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
         pthread_mutex_unlock(&base->mutex);
 #endif
     }
@@ -253,8 +252,7 @@ void _nmod_mpoly_mul_array_chunked_threaded_LEX(
     perm = (slong *) TMP_ALLOC(Pl*sizeof(slong));
     for (Pi = 0; Pi < Pl; Pi++)
     {
-        nmod_mpoly_init2((Pchunks + Pi)->poly, 8, ctx);
-        nmod_mpoly_fit_bits((Pchunks + Pi)->poly, P->bits, ctx);
+        nmod_mpoly_init3((Pchunks + Pi)->poly, 8, P->bits, ctx);
         (Pchunks + Pi)->work = 0;
         perm[Pi] = Pi;
         for (i = 0, j = Pi; i < Al && j >= 0; i++, j--)
@@ -299,7 +297,7 @@ void _nmod_mpoly_mul_array_chunked_threaded_LEX(
     args = (_worker_arg_struct *) TMP_ALLOC(base->nthreads
                                                   *sizeof(_worker_arg_struct));
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_init(&base->mutex, NULL);
 #endif
     for (i = 0; i < num_handles; i++)
@@ -317,7 +315,7 @@ void _nmod_mpoly_mul_array_chunked_threaded_LEX(
     {
         thread_pool_wait(global_thread_pool, handles[i]);
     }
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_destroy(&base->mutex);
 #endif
 
@@ -325,8 +323,8 @@ void _nmod_mpoly_mul_array_chunked_threaded_LEX(
     Plen = 0;
     for (Pi = 0; Pi < Pl; Pi++)
     {
-        _nmod_mpoly_fit_length(&P->coeffs, &P->exps, &P->alloc,
-                                                Plen + (Pchunks + Pi)->len, 1);
+        _nmod_mpoly_fit_length(&P->coeffs, &P->coeffs_alloc,
+                      &P->exps, &P->exps_alloc, 1, Plen + (Pchunks + Pi)->len);
 
         FLINT_ASSERT((Pchunks + Pi)->poly->coeffs != NULL);
         FLINT_ASSERT((Pchunks + Pi)->poly->exps != NULL);
@@ -427,9 +425,7 @@ int _nmod_mpoly_mul_array_threaded_pool_LEX(
     }
     else
     {
-        nmod_mpoly_fit_length(A, B->length + C->length - 1, ctx);
-        nmod_mpoly_fit_bits(A, exp_bits, ctx);
-        A->bits = exp_bits;
+        nmod_mpoly_fit_length_reset_bits(A, B->length + C->length - 1, exp_bits, ctx);
         _nmod_mpoly_mul_array_chunked_threaded_LEX(A, C, B, mults, ctx,
                                                          handles, num_handles);
     }
@@ -480,12 +476,12 @@ static void _nmod_mpoly_mul_array_threaded_worker_DEG(void * varg)
     for (j = 0; j < 3*base->array_size; j++)
         coeff_array[j] = 0;
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_lock(&base->mutex);
 #endif
     Pi = base->idx;
     base->idx = Pi + 1;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_unlock(&base->mutex);
 #endif
 
@@ -507,8 +503,7 @@ static void _nmod_mpoly_mul_array_threaded_worker_DEG(void * varg)
             }
         }
 
-        umul_ppmm(t1, t0, base->ctx->ffinfo->mod.n - 1,
-                          base->ctx->ffinfo->mod.n - 1);
+        umul_ppmm(t1, t0, base->ctx->mod.n - 1, base->ctx->mod.n - 1);
         umul_ppmm(t2, t1, t1, len);
         umul_ppmm(u1, u0, t0, len);
         add_sssaaaaaa(t2, t1, t0,  t2, t1, UWORD(0),  UWORD(0), u1, u0);
@@ -576,12 +571,12 @@ static void _nmod_mpoly_mul_array_threaded_worker_DEG(void * varg)
                        coeff_array, Pl - Pi - 1, base->nvars, base->degb, base->ctx);
         }
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
 	pthread_mutex_lock(&base->mutex);
 #endif
         Pi = base->idx;
         base->idx = Pi + 1;
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
         pthread_mutex_unlock(&base->mutex);
 #endif
     }
@@ -639,8 +634,7 @@ void _nmod_mpoly_mul_array_chunked_threaded_DEG(
     perm = (slong *) TMP_ALLOC(Pl*sizeof(slong));
     for (Pi = 0; Pi < Pl; Pi++)
     {
-        nmod_mpoly_init2((Pchunks + Pi)->poly, 8, ctx);
-        nmod_mpoly_fit_bits((Pchunks + Pi)->poly, P->bits, ctx);
+        nmod_mpoly_init3((Pchunks + Pi)->poly, 8, P->bits, ctx);
         (Pchunks + Pi)->work = 0;
         perm[Pi] = Pi;
         for (i = 0, j = Pi; i < Al && j >= 0; i++, j--)
@@ -686,7 +680,7 @@ void _nmod_mpoly_mul_array_chunked_threaded_DEG(
     args = (_worker_arg_struct *) TMP_ALLOC(base->nthreads
                                                   *sizeof(_worker_arg_struct));
 
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_init(&base->mutex, NULL);
 #endif
     for (i = 0; i < num_handles; i++)
@@ -705,7 +699,7 @@ void _nmod_mpoly_mul_array_chunked_threaded_DEG(
     {
         thread_pool_wait(global_thread_pool, handles[i]);
     }
-#if HAVE_PTHREAD
+#if FLINT_USES_PTHREAD
     pthread_mutex_destroy(&base->mutex);
 #endif
 
@@ -713,8 +707,8 @@ void _nmod_mpoly_mul_array_chunked_threaded_DEG(
     Plen = 0;
     for (Pi = 0; Pi < Pl; Pi++)
     {
-        _nmod_mpoly_fit_length(&P->coeffs, &P->exps, &P->alloc,
-                                                Plen + (Pchunks + Pi)->len, 1);
+        _nmod_mpoly_fit_length(&P->coeffs, &P->coeffs_alloc,
+                      &P->exps, &P->exps_alloc, 1, Plen + (Pchunks + Pi)->len);
 
         FLINT_ASSERT((Pchunks + Pi)->poly->coeffs != NULL);
         FLINT_ASSERT((Pchunks + Pi)->poly->exps != NULL);
@@ -803,9 +797,7 @@ int _nmod_mpoly_mul_array_threaded_pool_DEG(
     }
     else
     {
-        nmod_mpoly_fit_length(A, B->length + C->length - 1, ctx);
-        nmod_mpoly_fit_bits(A, exp_bits, ctx);
-        A->bits = exp_bits;
+        nmod_mpoly_fit_length_reset_bits(A, B->length + C->length - 1, exp_bits, ctx);
         _nmod_mpoly_mul_array_chunked_threaded_DEG(A, C, B, deg, ctx,
                                                          handles, num_handles);
     }

@@ -7,7 +7,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #include <stdlib.h>
@@ -97,13 +97,16 @@ void _fmpz_poly_factor_zassenhaus(fmpz_poly_factor_t final_fac,
     flint_printf("|f = "), fmpz_poly_print(f), flint_printf("\n");
     #endif
 
-    if (lenF == 2)
+    if (lenF < 5)
     {
-        fmpz_poly_factor_insert(final_fac, f, exp);
-    }
-    else if (lenF == 3)
-    {
-        _fmpz_poly_factor_quadratic(final_fac, f, exp);
+        if (lenF < 3)
+            fmpz_poly_factor_insert(final_fac, f, exp);
+        else if (lenF == 3)
+            _fmpz_poly_factor_quadratic(final_fac, f, exp);
+        else
+            _fmpz_poly_factor_cubic(final_fac, f, exp);
+
+        return;
     }
     else
     {

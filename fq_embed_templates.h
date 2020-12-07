@@ -6,7 +6,7 @@
     FLINT is free software: you can redistribute it and/or modify it under
     the terms of the GNU Lesser General Public License (LGPL) as published
     by the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.  See <http://www.gnu.org/licenses/>.
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
 */
 
 #ifdef T
@@ -35,13 +35,6 @@ FLINT_DLL void _TEMPLATE(T, embed_gens_allombert)(TEMPLATE(T, t) gen_sub,
                                                   const TEMPLATE(T, ctx_t) sup_ctx);
 
 /* Convert to-from column vectors */
-FLINT_DLL void TEMPLATE4(T, get, B, mat)(TEMPLATE(B, mat_t) col,
-                                         const TEMPLATE(T, t) a,
-                                         const TEMPLATE(T, ctx_t) ctx);
-FLINT_DLL void TEMPLATE4(T, set, B, mat)(TEMPLATE(T, t) a,
-                                         const TEMPLATE(B, mat_t) col,
-                                         const TEMPLATE(T, ctx_t) ctx);
-
 FLINT_DLL void TEMPLATE(T, embed_matrices)(TEMPLATE(B, mat_t) embed,
                                            TEMPLATE(B, mat_t) project,
                                            const TEMPLATE(T, t) gen_sub,
@@ -86,17 +79,6 @@ FLINT_DLL void TEMPLATE(T, embed_mono_to_dual_matrix)(TEMPLATE(B, mat_t) res,
                                                 const TEMPLATE(T, ctx_t) ctx);
 FLINT_DLL void TEMPLATE(T, embed_dual_to_mono_matrix)(TEMPLATE(B, mat_t) res,
                                                 const TEMPLATE(T, ctx_t) ctx);
-
-FQ_EMBED_TEMPLATES_INLINE
-void TEMPLATE(T, modulus_pow_series_inv)(TEMPLATE(B, poly_t) res,
-                                         const TEMPLATE(T, ctx_t) ctx,
-                                         slong trunc)
-{
-    TEMPLATE(B, poly_reverse)(res, 
-                              TEMPLATE(T, ctx_modulus)(ctx), 
-                              TEMPLATE(T, ctx_degree)(ctx) + 1);
-    TEMPLATE(B, poly_inv_series)(res, res, trunc);
-}
 
 #ifdef __cplusplus
 }
