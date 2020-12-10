@@ -262,9 +262,9 @@ Matrix-scalar arithmetic
     Sets `B = cA`, where the scalar `c` is assumed to be reduced
     modulo the modulus. Dimensions of `A` and `B` must be identical.
 
-.. function:: void nmod_mat_scalar_mul_add(nmod_mat_t dest, const nmod_mat_t X, const mp_limb_t b, const nmod_mat_t Y)
+.. function:: void nmod_mat_scalar_addmul_ui(nmod_mat_t dest, const nmod_mat_t X, const nmod_mat_t Y, const mp_limb_t b)
 
-    Sets `dest = X + bY`, where the scalar `c` is assumed to be reduced
+    Sets `dest = X + bY`, where the scalar `b` is assumed to be reduced
     modulo the modulus. Dimensions of dest, X and Y must be identical.
     dest can be aliased with X or Y.
 
@@ -478,6 +478,17 @@ Nonsingular square solving
 
     The matrix `A` must be square.
 
+.. function:: int nmod_mat_can_solve_inner(slong * rank, slong * perm, slong * pivots, nmod_mat_t X, const nmod_mat_t A, const nmod_mat_t B)
+
+    As for `nmod_mat_can_solve()` except that if `rank` is not `NULL` the
+    value it points to will be set to the rank of `A`. If `perm` is not `NULL`
+    then it must be a valid initialised permutation whose length is the number
+    of rows of `A`. After the function call it will be set to the row
+    permutation given by LU decomposition of `A`. If `pivots` is not `NULL`
+    then it must an initialised vector. Only the first `*rank` of these will be
+    set by the function call. They are set to the columns of the pivots chosen
+    by the LU decomposition of `A`.
+
 .. function:: int nmod_mat_can_solve(nmod_mat_t X, nmod_mat_t A, nmod_mat_t B)
 
     Solves the matrix-matrix equation `AX = B` over `\mathbb{Z} / p \mathbb{Z}` where `p`
@@ -607,7 +618,6 @@ Transforms
 
 Characteristic polynomial
 --------------------------------------------------------------------------------
-
 
 .. function:: void nmod_mat_charpoly_danilevsky(nmod_poly_t p, const nmod_mat_t M)
 
