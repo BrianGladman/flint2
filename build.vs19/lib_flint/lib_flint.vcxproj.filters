@@ -1120,6 +1120,9 @@
     <ClCompile Include="..\..\fmpq_mat\add.c">
       <Filter>Source Files\fmpq_mat</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpq_mat\can_solve_multi_mod.c">
+      <Filter>Source Files\fmpq_mat</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpq_mat\charpoly.c">
       <Filter>Source Files\fmpq_mat</Filter>
     </ClCompile>
@@ -2620,6 +2623,9 @@
     <ClCompile Include="..\..\fmpz_mat\add.c">
       <Filter>Source Files\fmpz_mat</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mat\can_solve_multi_mod_den.c">
+      <Filter>Source Files\fmpz_mat</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mat\charpoly_berkowitz.c">
       <Filter>Source Files\fmpz_mat</Filter>
     </ClCompile>
@@ -3268,6 +3274,9 @@
     <ClCompile Include="..\..\fmpz_mod_poly\gcdinv_f.c">
       <Filter>Source Files\fmpz_mod_poly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_poly\gen.c">
+      <Filter>Source Files\fmpz_mod_poly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mod_poly\get_fmpz_poly.c">
       <Filter>Source Files\fmpz_mod_poly</Filter>
     </ClCompile>
@@ -3338,6 +3347,9 @@
       <Filter>Source Files\fmpz_mod_poly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_mod_poly\powmod_fmpz_binexp_preinv.c">
+      <Filter>Source Files\fmpz_mod_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_poly\powmod_linear_fmpz_preinv.c">
       <Filter>Source Files\fmpz_mod_poly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_mod_poly\powmod_ui_binexp.c">
@@ -8482,10 +8494,10 @@
     <ClCompile Include="..\..\nmod_mat\rref.c">
       <Filter>Source Files\nmod_mat</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\nmod_mat\scalar_mul.c">
+    <ClCompile Include="..\..\nmod_mat\scalar_addmul_ui.c">
       <Filter>Source Files\nmod_mat</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\nmod_mat\scalar_mul_add.c">
+    <ClCompile Include="..\..\nmod_mat\scalar_mul.c">
       <Filter>Source Files\nmod_mat</Filter>
     </ClCompile>
     <ClCompile Include="..\..\nmod_mat\set.c">

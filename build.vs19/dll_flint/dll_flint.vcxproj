@@ -542,6 +542,7 @@
     <ClCompile Include="..\..\fmpq\sub_ui.c" />
     <ClCompile Include="..\..\fmpq\submul.c" />
     <ClCompile Include="..\..\fmpq_mat\add.c" />
+    <ClCompile Include="..\..\fmpq_mat\can_solve_multi_mod.c" />
     <ClCompile Include="..\..\fmpq_mat\charpoly.c" />
     <ClCompile Include="..\..\fmpq_mat\clear.c" />
     <ClCompile Include="..\..\fmpq_mat\concat_horizontal.c" />
@@ -1042,6 +1043,7 @@
     <ClCompile Include="..\..\fmpz_lll\wrapper_with_removal_knapsack.c" />
     <ClCompile Include="..\..\fmpz_mat\CRT_ui.c" />
     <ClCompile Include="..\..\fmpz_mat\add.c" />
+    <ClCompile Include="..\..\fmpz_mat\can_solve_multi_mod_den.c" />
     <ClCompile Include="..\..\fmpz_mat\charpoly_berkowitz.c" />
     <ClCompile Include="..\..\fmpz_mat\charpoly_modular.c" />
     <ClCompile Include="..\..\fmpz_mat\chol_d.c" />
@@ -1258,6 +1260,7 @@
     <ClCompile Include="..\..\fmpz_mod_poly\gcdinv_euclidean.c" />
     <ClCompile Include="..\..\fmpz_mod_poly\gcdinv_euclidean_f.c" />
     <ClCompile Include="..\..\fmpz_mod_poly\gcdinv_f.c" />
+    <ClCompile Include="..\..\fmpz_mod_poly\gen.c" />
     <ClCompile Include="..\..\fmpz_mod_poly\get_fmpz_poly.c" />
     <ClCompile Include="..\..\fmpz_mod_poly\hgcd.c" />
     <ClCompile Include="..\..\fmpz_mod_poly\init.c" />
@@ -1282,6 +1285,7 @@
     <ClCompile Include="..\..\fmpz_mod_poly\powers_mod_naive.c" />
     <ClCompile Include="..\..\fmpz_mod_poly\powmod_fmpz_binexp.c" />
     <ClCompile Include="..\..\fmpz_mod_poly\powmod_fmpz_binexp_preinv.c" />
+    <ClCompile Include="..\..\fmpz_mod_poly\powmod_linear_fmpz_preinv.c" />
     <ClCompile Include="..\..\fmpz_mod_poly\powmod_ui_binexp.c" />
     <ClCompile Include="..\..\fmpz_mod_poly\powmod_ui_binexp_preinv.c" />
     <ClCompile Include="..\..\fmpz_mod_poly\powmod_x_fmpz_preinv.c" />
@@ -2996,8 +3000,8 @@
     <ClCompile Include="..\..\nmod_mat\rank.c" />
     <ClCompile Include="..\..\nmod_mat\reduce_row.c" />
     <ClCompile Include="..\..\nmod_mat\rref.c" />
+    <ClCompile Include="..\..\nmod_mat\scalar_addmul_ui.c" />
     <ClCompile Include="..\..\nmod_mat\scalar_mul.c" />
-    <ClCompile Include="..\..\nmod_mat\scalar_mul_add.c" />
     <ClCompile Include="..\..\nmod_mat\set.c" />
     <ClCompile Include="..\..\nmod_mat\similarity.c" />
     <ClCompile Include="..\..\nmod_mat\solve.c" />
