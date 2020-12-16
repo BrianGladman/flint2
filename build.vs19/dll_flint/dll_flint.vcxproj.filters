@@ -251,9 +251,6 @@
     <ClInclude Include="..\..\fq_zech_mpoly.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\fq_zech_mpoly\fq_zech_mpoly.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\fq_zech_mpoly_factor.h">
       <Filter>Header Files</Filter>
     </ClInclude>

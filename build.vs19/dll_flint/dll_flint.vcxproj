@@ -251,7 +251,6 @@
     <ClInclude Include="..\..\fq_zech_embed.h" />
     <ClInclude Include="..\..\fq_zech_mat.h" />
     <ClInclude Include="..\..\fq_zech_mpoly.h" />
-    <ClInclude Include="..\..\fq_zech_mpoly\fq_zech_mpoly.h" />
     <ClInclude Include="..\..\fq_zech_mpoly_factor.h" />
     <ClInclude Include="..\..\fq_zech_poly.h" />
     <ClInclude Include="..\..\fq_zech_poly_factor.h" />
