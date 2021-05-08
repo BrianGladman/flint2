@@ -223,6 +223,16 @@ Conversion
     Sets `f` to `g`.  This is done simply by lifting the coefficients
     of `g` taking representatives `[0, p) \subset \mathbf{Z}`.
 
+.. function:: void fmpz_mod_poly_get_nmod_poly(nmod_poly_t f, const fmpz_mod_poly_t g)
+
+   Sets `f` to `g` assuming the modulus of both polynomials is the same (no
+   checking is performed).
+
+.. function:: void fmpz_mod_poly_set_nmod_poly(fmpz_mod_poly_t f, const nmod_poly_t g)
+
+   Sets `f` to `g` assuming the modulus of both polynomials is the same (no
+   checking is performed).
+
 
 Comparison
 --------------------------------------------------------------------------------
@@ -470,19 +480,16 @@ Products
 
     Sets ``(poly, n + 1)`` to the monic polynomial which is the product
     of `(x - x_0)(x - x_1) \cdots (x - x_{n-1})`, the roots `x_i` being
-    given by ``xs``. The coefficients reduced modulo ``f``.
+    given by ``xs``. It is required that the roots are canonical.
 
-    Aliasing of the input and output is not allowed. It is required that
-    ``poly`` is reduced modulo ``f``.
+    Aliasing of the input and output is not allowed.
 
 
-.. function:: void fmpz_mod_poly_product_roots_fmpz_vec(fmpz_poly_t poly, const fmpz * xs, slong n, fmpz_t f, const fmpz_mod_ctx_t ctx)
+.. function:: void fmpz_mod_poly_product_roots_fmpz_vec(fmpz_mod_poly_t poly, const fmpz * xs, slong n, fmpz_t f, const fmpz_mod_ctx_t ctx)
 
     Sets ``poly`` to the monic polynomial which is the product
     of `(x - x_0)(x - x_1) \cdots (x - x_{n-1})`, the roots `x_i` being
-    given by ``xs``. The coefficients reduced modulo ``f``.
-
-    It is required that ``poly`` is reduced modulo ``f``.
+    given by ``xs``. It is required that the roots are canonical.
 
 
 .. function:: int fmpz_mod_poly_find_distinct_nonzero_roots(fmpz * roots, const fmpz_mod_poly_t A, const fmpz_mod_ctx_t ctx)

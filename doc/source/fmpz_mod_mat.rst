@@ -79,6 +79,11 @@ Basic manipulation                                                              
 
     Efficiently swap the matrices ``mat1`` and ``mat2``.
 
+.. function:: void fmpz_mod_mat_swap_entrywise(fmpz_mod_mat_t mat1, fmpz_mod_mat_t mat2)
+
+    Swaps two matrices by swapping the individual entries rather than swapping
+    the contents of the structs.
+
 .. function:: int fmpz_mod_mat_is_empty(const fmpz_mod_mat_t mat)
 
     Return `1` if ``mat`` has either zero rows or columns.
@@ -165,6 +170,17 @@ Set and transpose
 
     Set ``B`` to the transpose of ``A``.
 
+
+Conversions
+-------------------------------------------------------------------------------
+
+.. function:: void fmpz_mod_mat_set_fmpz_mat(fmpz_mod_mat_t A, const fmpz_mat_t B)
+
+    Set ``A`` to the matrix ``B`` reducing modulo the modulus of ``A``.
+
+.. function::  void fmpz_mod_mat_get_fmpz_mat(fmpz_mat_t A, const fmpz_mod_mat_t B)
+
+    Set ``A`` to a lift of ``B``.
 
 Addition and subtraction
 -------------------------------------------------------------------------------

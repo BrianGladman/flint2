@@ -29,7 +29,7 @@ or ``--with-mpir=/path/to/mpir`` and ``--with-mpfr=/path/to/mpfr``, e.g.
 
 .. code-block:: bash
 
-   ./configure --with-gmp=/home/user1/local/lib --with-mpfr=/home/user1/local/lib
+   ./configure --with-gmp=/home/user1/local --with-mpfr=/home/user1/local
 
 FLINT can also build against a source build of GMP/MPIR and MPFR. Though
 programs using FLINT may require GMP/MPIR and MPFR to be installed (via
@@ -135,6 +135,12 @@ Now to use FLINT, simply include the appropriate header files for the FLINT
 modules you wish to use in your C program.  Then compile your program,
 linking against the FLINT library, GMP/MPIR, MPFR and pthreads with the
 options ``-lflint -lmpfr -lgmp -lpthread``.
+
+To uninstall FLINT with GNU make, type:
+
+.. code-block:: bash
+
+    make uninstall
 
 Note that you may have to set ``LD_LIBRARY_PATH`` or equivalent for your
 system to let the linker know where to find these libraries. Please refer to

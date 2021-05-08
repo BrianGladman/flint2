@@ -15,9 +15,11 @@ BUILD_DIRS = aprcl ulong_extras long_extras perm fmpz fmpz_vec fmpz_poly \
    fq fq_vec fq_mat fq_poly fq_poly_factor fq_embed \
    fq_nmod fq_nmod_vec fq_nmod_mat fq_nmod_poly fq_nmod_poly_factor fq_nmod_embed \
    fq_zech fq_zech_vec fq_zech_mat fq_zech_poly fq_zech_poly_factor fq_zech_embed \
-   fmpz_mod_mat mpoly fmpz_mpoly fmpq_mpoly nmod_mpoly fq_nmod_mpoly fmpz_mod_mpoly \
-   thread_pool fmpz_mod \
-   n_poly fmpz_mpoly_factor fmpq_mpoly_factor nmod_mpoly_factor fq_nmod_mpoly_factor fq_zech_mpoly fq_zech_mpoly_factor \
+   fmpz_mod_mat mpoly fmpz_mpoly fmpq_mpoly nmod_mpoly fq_nmod_mpoly \
+   thread_pool fmpz_mod fmpz_mod_vec fmpz_mod_mpoly fmpz_mod_mpoly_factor \
+   n_poly fmpz_mpoly_factor fmpq_mpoly_factor nmod_mpoly_factor \
+   fq_nmod_mpoly_factor fq_zech_mpoly fq_zech_mpoly_factor fq_default \
+   fq_default_poly fq_default_poly_factor fq_default_mat \
    $(EXTRA_BUILD_DIRS)
 
 TEMPLATE_DIRS = fq_vec_templates fq_mat_templates fq_poly_templates \
@@ -79,8 +81,8 @@ distclean: clean
 	rm -f flint-config.h config.log fft_tuning.h fmpz-conversions.h Makefile fmpz/fmpz.c
 
 dist:
-	git archive --format tar --prefix flint-2.7.0/ origin/flint-2.7 > ../flint-2.7.0.tar; gzip ../flint-2.7.0.tar
-	git archive --format zip --prefix flint-2.7.0/ origin/flint-2.7 > ../flint-2.7.0.zip 
+	git archive --format tar --prefix flint-2.8.0/ origin/flint-2.8 > ../flint-2.8.0.tar; gzip ../flint-2.8.0.tar
+	git archive --format zip --prefix flint-2.8.0/ origin/flint-2.8 > ../flint-2.8.0.zip 
 
 profile: library $(PROF_SOURCES) $(EXT_PROF_SOURCES) build/profiler.o
 	mkdir -p build/profile
@@ -217,6 +219,12 @@ install: library
 	$(AT)if [ "$(OS)" = "Darwin" ] && [ "$(FLINT_SHARED)" -eq "1" ]; then \
 		install_name_tool -id "$(PREFIX)/$(LIBDIR)/$(FLINT_LIB)" "$(DESTDIR)$(PREFIX)/$(LIBDIR)/$(FLINT_LIBNAME)"; \
 	fi
+
+uninstall:
+	rm -rf "$(DESTDIR)$(PREFIX)/include/flint"
+	rm -rf "$(DESTDIR)$(PREFIX)/$(LIBDIR)/$(FLINT_LIB)"
+	rm -rf $(shell ls $(DESTDIR)$(PREFIX)/$(LIBDIR)/$(FLINT_LIBNAME)*)
+	rm -rf "$(DESTDIR)$(PREFIX)/$(LIBDIR)/libflint.a"
 
 build:
 	mkdir -p build

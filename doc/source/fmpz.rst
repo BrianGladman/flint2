@@ -201,6 +201,10 @@ Conversion
     and low limbs, otherwise `*low` is set to the low limb and `*hi` is set
     to 0.
 
+.. function:: mp_limb_t fmpz_get_nmod(const fmpz_t f, nmod_t mod)
+
+    Returns `f` modulo ``mod.n``.
+
 .. function:: double fmpz_get_d(const fmpz_t f)
 
     Returns `f` as a ``double``, rounding down towards zero if
@@ -291,18 +295,37 @@ Conversion
     ``2*FLINT_BITS`` bits, interpreted as a signed two's complement
     integer with ``3 * FLINT_BITS`` bits.
 
-.. function:: void fmpz_set_ui_array(fmpz_t out, const ulong * in, slong in_len)
+.. function:: void fmpz_set_ui_array(fmpz_t out, const ulong * in, slong n)
 
     Sets ``out`` to the nonnegative integer
-    ``in[0] + in[1]*X  + ... + in[in_len - 1]*X^(in_len - 1)``
-    where ``X = 2^FLINT_BITS``. It is assumed that ``in_len > 0``.
+    ``in[0] + in[1]*X  + ... + in[n - 1]*X^(n - 1)``
+    where ``X = 2^FLINT_BITS``. It is assumed that ``n > 0``.
 
-.. function:: void fmpz_get_ui_array(ulong * out, slong out_len, const fmpz_t in)
+.. function:: void fmpz_set_signed_ui_array(fmpz_t out, const ulong * in, slong n)
+
+    Sets ``out`` to the integer represented in ``in[0], ..., in[n - 1]``
+    as a signed two's complement integer with ``n * FLINT_BITS`` bits.
+    It is assumed that ``n > 0``. The function operates as a call to
+    :func:`fmpz_set_ui_array` followed by a symmetric remainder modulo
+    `2^(n*FLINT\_BITS)`.
+
+.. function:: void fmpz_get_ui_array(ulong * out, slong n, const fmpz_t in)
 
     Assuming that the nonnegative integer ``in`` can be represented in the
-    form ``out[0] + out[1]*X + ... + out[out_len - 1]*X^(out_len - 1)``,
+    form ``out[0] + out[1]*X + ... + out[n - 1]*X^(n - 1)``,
     where `X = 2^{FLINT\_BITS}`, sets the corresponding elements of ``out``
-    so that this is true. It is assumed that ``out_len > 0``.
+    so that this is true. It is assumed that ``n > 0``.
+
+.. function::void fmpz_get_signed_ui_array(ulong * out, slong n, const fmpz_t in)
+
+    Retrieves the value of `in` modulo `2^{n * FLINT\_BITS}` and puts the `n`
+    words of the result in ``out[0], ..., out[n-1]``. This will give a signed
+    two's complement representation of `in` (assuming `in` doesn't overflow the array).
+
+.. function::void fmpz_get_signed_uiui(ulong * hi, ulong * lo, const fmpz_t in)
+
+    Retrieves the value of `in` modulo `2^{2 * FLINT\_BITS}` and puts the high
+    and low words into ``*hi`` and ``*lo`` respectively.
 
 .. function:: void fmpz_set_mpz(fmpz_t f, const mpz_t x)
 
@@ -581,6 +604,11 @@ Comparison
     Returns a negative value if `\lvert f\rvert < \lvert g\rvert`, positive value if 
     `\lvert g\rvert < \lvert f \rvert`, otherwise returns `0`.
 
+.. function:: int fmpz_cmp2abs(const fmpz_t f, const fmpz_t g)
+
+    Returns a negative value if `\lvert f\rvert < \lvert 2g\rvert`, positive value if 
+    `\lvert 2g\rvert < \lvert f \rvert`, otherwise returns `0`.
+
 .. function:: int fmpz_equal(const fmpz_t f, const fmpz_t g)
 
     Returns `1` if `f` is equal to `g`, otherwise returns `0`.
@@ -603,8 +631,7 @@ Comparison
 
 .. function:: int fmpz_is_pm1(const fmpz_t f)
 
-    Returns `1` if `f` is equal to one or minus one, otherwise returns 
-    `0`.
+    Returns `1` if `f` is equal to one or minus one, otherwise returns `0`.
 
 .. function:: int fmpz_is_even(const fmpz_t f)
 
@@ -628,65 +655,42 @@ Basic arithmetic
     Sets `f_1` to the absolute value of `f_2`.
 
 .. function:: void fmpz_add(fmpz_t f, const fmpz_t g, const fmpz_t h)
+              void fmpz_add_ui(fmpz_t f, const fmpz_t g, ulong h)
+              void fmpz_add_si(fmpz_t f, const fmpz_t g, slong h)
 
     Sets `f` to `g + h`.
 
-.. function:: void fmpz_add_ui(fmpz_t f, const fmpz_t g, ulong x)
-
-    Sets `f` to `g + x` where `x` is an ``ulong``.
-
-.. function:: void fmpz_add_si(fmpz_t f, const fmpz_t g, slong x)
-
-    Sets `f` to `g + x` where `x` is an ``slong``.
-
 .. function:: void fmpz_sub(fmpz_t f, const fmpz_t g, const fmpz_t h)
+              void fmpz_sub_ui(fmpz_t f, const fmpz_t g, ulong h)
+              void fmpz_sub_si(fmpz_t f, const fmpz_t g, slong h)
 
     Sets `f` to `g - h`.
 
-.. function:: void fmpz_sub_ui(fmpz_t f, const fmpz_t g, ulong x)
-
-    Sets `f` to `g - x` where `x` is an ``ulong``.
-
-.. function:: void fmpz_sub_si(fmpz_t f, const fmpz_t g, slong x)
-
-    Sets `f` to `g - x` where `x` is an ``slong``.
-
 .. function:: void fmpz_mul(fmpz_t f, const fmpz_t g, const fmpz_t h)
+              void fmpz_mul_ui(fmpz_t f, const fmpz_t g, ulong h)
+              void fmpz_mul_si(fmpz_t f, const fmpz_t g, slong h)
 
     Sets `f` to `g \times h`.
 
-.. function:: void fmpz_mul_si(fmpz_t f, const fmpz_t g, slong x)
-
-    Sets `f` to `g \times x` where `x` is a ``slong``.
-
-.. function:: void fmpz_mul_ui(fmpz_t f, const fmpz_t g, ulong x)
-
-    Sets `f` to `g \times x` where `x` is an ``ulong``.
-
 .. function:: void fmpz_mul2_uiui(fmpz_t f, const fmpz_t g, ulong x, ulong y)
 
-    Sets `f` to `g \times x \times y` where `x` and `y` are of type
-    ``ulong``.
+    Sets `f` to `g \times x \times y` where `x` and `y` are of type ``ulong``.
 
 .. function:: void fmpz_mul_2exp(fmpz_t f, const fmpz_t g, ulong e)
 
     Sets `f` to `g \times 2^e`.
 
 .. function:: void fmpz_addmul(fmpz_t f, const fmpz_t g, const fmpz_t h)
+              void fmpz_addmul_ui(fmpz_t f, const fmpz_t g, ulong h)
+              void fmpz_addmul_si(fmpz_t f, const fmpz_t g, slong h)
 
     Sets `f` to `f + g \times h`.
 
-.. function:: void fmpz_addmul_ui(fmpz_t f, const fmpz_t g, ulong x)
-
-    Sets `f` to `f + g \times x` where `x` is an ``ulong``.
-
 .. function:: void fmpz_submul(fmpz_t f, const fmpz_t g, const fmpz_t h)
+              void fmpz_submul_ui(fmpz_t f, const fmpz_t g, ulong h)
+              void fmpz_submul_si(fmpz_t f, const fmpz_t g, slong h)
 
     Sets `f` to `f - g \times h`.
-
-.. function:: void fmpz_submul_ui(fmpz_t f, const fmpz_t g, ulong x)
-
-    Sets `f` to `f - g \times x` where `x` is an ``ulong``.
 
 .. function:: void fmpz_fmma(fmpz_t f, const fmpz_t a, const fmpz_t b, const fmpz_t c, const fmpz_t d)
 
@@ -1013,6 +1017,11 @@ Greatest common divisor
     result is always positive, even if one of `g` and `h` is
     negative.
 
+.. function:: void fmpz_gcd3(fmpz_t f, const fmpz_t a, const fmpz_t b, const fmpz_t c)
+
+    Sets `f` to the greatest common divisor of `a`, `b` and `c`.
+    This is equivalent to calling ``fmpz_gcd`` twice, but may be faster.
+
 .. function:: void fmpz_lcm(fmpz_t f, const fmpz_t g, const fmpz_t h)
 
     Sets `f` to the least common multiple of `g` and `h`.  The 
@@ -1089,10 +1098,13 @@ Modular arithmetic
 
     Sets `f` to `-g \pmod{h}`, assuming `g` is reduced modulo `h`.
 
-.. function:: int fmpz_jacobi(const fmpz_t a, const fmpz_t p)
+.. function:: int fmpz_jacobi(const fmpz_t a, const fmpz_t n)
 
-    Computes the Jacobi symbol of `a` modulo `p`, where `p` is a prime
-    and `a` is reduced modulo `p`.
+    Computes the Jacobi symbol `\left(\frac{a}{n}\right)` for any `a` and odd positive `n`.
+
+.. function:: int fmpz_kronecker(const fmpz_t a, const fmpz_t n)
+
+    Computes the Kronecker symbol `\left(\frac{a}{n}\right)` for any `a` and any `n`.
 
 .. function:: void fmpz_divides_mod_list(fmpz_t xstart, fmpz_t xstride, fmpz_t xlength, const fmpz_t a, const fmpz_t b, const fmpz_t n)
 

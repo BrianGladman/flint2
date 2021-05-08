@@ -11,7 +11,7 @@ Types, macros and constants
 
 .. type:: fmpz_mpoly_struct
 
-    Context structure for ``fmpz_mpoly``.
+    A structure holding a multivariate integer polynomial.
 
 .. type:: fmpz_mpoly_t
 
@@ -19,7 +19,7 @@ Types, macros and constants
 
 .. type:: fmpz_mpoly_ctx_struct
 
-    A structure holding a multivariate integer polynomial.
+    Context structure for ``fmpz_mpoly``.
 
 .. type:: fmpz_mpoly_ctx_t
 
@@ -601,14 +601,11 @@ Greatest Common Divisor
     Do the operation of :func:`fmpz_mpoly_gcd` and also compute ``Abar = A/G`` and ``Bbar = B/G`` if successful.
 
 .. function:: int fmpz_mpoly_gcd_brown(fmpz_mpoly_t G, const fmpz_mpoly_t A, const fmpz_mpoly_t B, const fmpz_mpoly_ctx_t ctx)
-              int fmpz_mpoly_gcd_brown_threaded(fmpz_mpoly_t G, const fmpz_mpoly_t A, const fmpz_mpoly_t B, const fmpz_mpoly_ctx_t ctx)
+              int fmpz_mpoly_gcd_hensel(fmpz_mpoly_t G, const fmpz_mpoly_t A, const fmpz_mpoly_t B, const fmpz_mpoly_ctx_t ctx)
+              int fmpz_mpoly_gcd_zippel(fmpz_mpoly_t G, const fmpz_mpoly_t A, const fmpz_mpoly_t B, const fmpz_mpoly_ctx_t ctx)
+              int fmpz_mpoly_gcd_zippel2(fmpz_mpoly_t G, const fmpz_mpoly_t A, const fmpz_mpoly_t B, const fmpz_mpoly_ctx_t ctx)
 
-    Try to set ``G`` to the GCD of ``A`` and ``B`` using Brown's algorithm.
-    The first version always uses one thread.
-
-.. function:: int fmpz_mpoly_gcd_zippel(fmpz_mpoly_t G, const fmpz_mpoly_t A, const fmpz_mpoly_t B, const fmpz_mpoly_ctx_t ctx)
-
-    Try to set ``G`` to the GCD of ``A`` and ``B`` using Zippel's interpolation algorithm to interpolate coefficients from univariate images in the most significant variable.
+    Try to set ``G`` to the GCD of ``A`` and ``B`` using various algorithms.
 
 
 Square Root

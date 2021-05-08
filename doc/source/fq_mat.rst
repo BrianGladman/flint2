@@ -67,9 +67,18 @@ Basic properties and manipulation
     Swaps two matrices. The dimensions of ``mat1`` and ``mat2``
     are allowed to be different.
 
+.. function:: void fq_mat_swap_entrywise(fq_mat_t mat1, fq_mat_t mat2)
+
+    Swaps two matrices by swapping the individual entries rather than swapping
+    the contents of the structs.
+
 .. function:: void fq_mat_zero(fq_mat_t mat, const fq_ctx_t ctx)
 
     Sets all entries of ``mat`` to 0.
+
+.. function:: void fq_mat_one(fq_mat_t mat, const fq_ctx_t ctx)
+
+    Sets all the diagonal entries of ``mat`` to 1 and all other entries to 0.
 
 .. function:: void fq_mat_swap_rows(fq_mat_t mat, slong * perm, slong r, slong s)
     
@@ -92,6 +101,19 @@ Basic properties and manipulation
     Swaps columns ``i`` and ``c - i`` of ``mat`` for ``0 <= i < c/2``, where
     ``c`` is the number of columns of ``mat``. If ``perm`` is non-``NULL``, the
     permutation of the columns will also be applied to ``perm``.
+
+
+Conversions
+--------------------------------------------------------------------------------
+
+.. function:: void fq_mat_set_nmod_mat(fq_mat_t mat1, const nmod_mat_t mat2, const fq_ctx_t ctx)
+
+    Sets the matrix ``mat1`` to the matrix ``mat2``.
+
+.. function:: void fq_mat_set_fmpz_mod_mat(fq_mat_t mat1, const fmpz_mod_mat_t mat2, const fq_ctx_t ctx)
+
+    Sets the matrix ``mat1`` to the matrix ``mat2``.
+
 
 Concatenate
 --------------------------------------------------------------------------------
@@ -220,8 +242,13 @@ Comparison
 
 .. function:: int fq_mat_is_zero(const fq_mat_t mat, const fq_ctx_t ctx)
 
-    Returns a non-zero value if all entries ``mat`` are zero, and
+    Returns a non-zero value if all entries of ``mat`` are zero, and
     otherwise returns zero.
+
+.. function:: int fq_mat_is_one(const fq_mat_t mat, const fq_ctx_t ctx)
+
+    Returns a non-zero value if all entries ``mat`` are zero except the
+    diagonal entries which must be one, otherwise returns zero..
 
 .. function:: int fq_mat_is_empty(const fq_mat_t mat, const fq_ctx_t ctx)
 

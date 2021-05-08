@@ -47,6 +47,11 @@ Basic assignment and manipulation
     Swaps two matrices. The dimensions of ``mat1`` and ``mat2`` 
     are allowed to be different.
 
+.. function:: void fmpz_mat_swap_entrywise(fmpz_mat_t mat1, fmpz_mat_t mat2)
+
+    Swaps two matrices by swapping the individual entries rather than swapping
+    the contents of the structs.
+
 .. function:: fmpz * fmpz_mat_entry(fmpz_mat_t mat, slong i, slong j)
 
     Returns a reference to the entry of ``mat`` at row `i` and column `j`.
@@ -511,7 +516,7 @@ Matrix multiplication
     `C` is not allowed to be aliased with `A` or `B`. Uses Strassen
     multiplication (the Strassen-Winograd variant).
 
-.. function:: void _fmpz_mat_mul_multi_mod(fmpz_mat_t C, const fmpz_mat_t A, const fmpz_mat_t B, flint_bitcnt_t bits)
+.. function:: void _fmpz_mat_mul_multi_mod(fmpz_mat_t C, const fmpz_mat_t A, const fmpz_mat_t B, int sign, flint_bitcnt_t bits)
               void fmpz_mat_mul_multi_mod(fmpz_mat_t C, const fmpz_mat_t A, const fmpz_mat_t B)
 
     Sets ``C`` to the matrix product `C = AB` computed using a multimodular 
@@ -519,15 +524,21 @@ Matrix multiplication
     and reconstructed using the Chinese Remainder Theorem. This generally
     becomes more efficient than classical multiplication for large matrices.
 
-    The ``bits`` parameter is a bound for the bit size of largest 
-    element of `C`, or twice the absolute value of the largest element 
-    if any elements of `C` are negative. The function
+    The absolute value of the elements of `C` should be `< 2^{\text{bits}}`,
+    and ``sign`` should be `0` if the entries of `C` are known to be nonnegative
+    and `1` otherwise. The function
     :func:`fmpz_mat_mul_multi_mod` calculates a rigorous bound automatically.
     If the default bound is too pessimistic, :func:`_fmpz_mat_mul_multi_mod`
     can be used with a custom bound.
 
     The matrices must have compatible dimensions for matrix multiplication.
     No aliasing is allowed.
+
+.. function:: int fmpz_mat_mul_blas(fmpz_mat_t C, const fmpz_mat_t A, const fmpz_mat_t B)
+
+    Tries to set `C = AB` using BLAS and returns `1` for success and `0` for failure.
+    Dimensions must be compatible for matrix multiplication. No aliasing is allowed.
+    This function currently will fail if the matrices are empty, their dimensions are too large, or their max bits size is over one million bits.
 
 .. function:: void fmpz_mat_sqr(fmpz_mat_t B, const fmpz_mat_t A)
 
@@ -550,6 +561,18 @@ Matrix multiplication
     Sets ``B`` to the matrix ``A`` raised to the power ``e``,
     where ``A`` must be a square matrix. Aliasing is allowed.
 
+
+.. function:: int _fmpz_mat_mul_small(fmpz_mat_t C, const fmpz_mat_t A, const fmpz_mat_t B)
+
+    This internal function sets `C` to the matrix product `C = A B` computed
+    using classical matrix algorithm assuming that all entries of `A` and `B`
+    are small, that is, have bits ` \le FLINT\_BITS - 2`. No aliasing is allowed.
+
+.. function:: void _fmpz_mat_mul_double_word(fmpz_mat_t C, const fmpz_mat_t A, const fmpz_mat_t B)
+
+    This function is only for internal use and assumes that either:
+        - the entries of `A` and `B` are all nonnegative and strictly less than `2^{2*FLINT_BITS}`, or
+        - the entries of `A` and `B` are all strictly less than `2^{2*FLINT_BITS - 1}` in absolute value.
 
 
 Inverse

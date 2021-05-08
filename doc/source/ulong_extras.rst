@@ -39,7 +39,7 @@ Random functions
     the given limit. If zero is passed as a parameter, an entire random
     limb is returned.
 
-.. function:: ulong n_urandint(flint_rant_t state, ulong limit)
+.. function:: ulong n_urandint(flint_rand_t state, ulong limit)
     
     Returns a uniformly pseudo random number up to but not including
     the given limit. If zero is passed as a parameter, an entire
@@ -90,15 +90,21 @@ Basic arithmetic
 
 .. function:: ulong n_flog(ulong n, ulong b)
 
-    Returns `\lfloor\log_b x\rfloor`.
+    Returns `\lfloor\log_b n\rfloor`.
 
-    Assumes that `x \geq 1` and `b \geq 2`.
+    Assumes that `n \geq 1` and `b \geq 2`.
 
 .. function:: ulong n_clog(ulong n, ulong b)
 
-    Returns `\lceil\log_b x\rceil`.
+    Returns `\lceil\log_b n\rceil`.
 
-    Assumes that `x \geq 1` and `b \geq 2`.
+    Assumes that `n \geq 1` and `b \geq 2`.
+
+.. function:: ulong n_clog_2exp(ulong n, ulong b)
+
+    Returns `\lceil\log_b 2^n\rceil`.
+
+    Assumes that `b \geq 2`.
 
 
 Miscellaneous
@@ -382,12 +388,7 @@ Jacobi and Kronecker symbols
 
 .. function:: int n_jacobi(mp_limb_signed_t x, ulong y)
 
-    Computes the Jacobi symbol of `x \bmod{y}`.  Assumes that `y` is positive 
-    and odd, and for performance reasons that `\gcd(x, y) = 1`.
-
-    This is just a straightforward application of the law of quadratic
-    reciprocity. For performance, divisions are replaced with some 
-    comparisons and subtractions where possible.
+    Computes the Jacobi symbol `\left(\frac{x}{y}\right)` for any x and odd `y`.
 
 .. function:: int n_jacobi_unsigned(ulong x, ulong y)
 
