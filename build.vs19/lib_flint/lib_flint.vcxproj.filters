@@ -24,8 +24,10 @@
     <Filter Include="Source Files\fmpz_mod" />
     <Filter Include="Source Files\fmpz_mod_mat" />
     <Filter Include="Source Files\fmpz_mod_mpoly" />
+    <Filter Include="Source Files\fmpz_mod_mpoly_factor" />
     <Filter Include="Source Files\fmpz_mod_poly" />
     <Filter Include="Source Files\fmpz_mod_poly_factor" />
+    <Filter Include="Source Files\fmpz_mod_vec" />
     <Filter Include="Source Files\fmpz_mpoly" />
     <Filter Include="Source Files\fmpz_mpoly_factor" />
     <Filter Include="Source Files\fmpz_poly" />
@@ -34,6 +36,10 @@
     <Filter Include="Source Files\fmpz_poly_q" />
     <Filter Include="Source Files\fmpz_vec" />
     <Filter Include="Source Files\fq" />
+    <Filter Include="Source Files\fq_default" />
+    <Filter Include="Source Files\fq_default_mat" />
+    <Filter Include="Source Files\fq_default_poly" />
+    <Filter Include="Source Files\fq_default_poly_factor" />
     <Filter Include="Source Files\fq_embed" />
     <Filter Include="Source Files\fq_mat" />
     <Filter Include="Source Files\fq_nmod" />
@@ -170,10 +176,16 @@
     <ClInclude Include="..\..\fmpz_mod_mpoly.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\fmpz_mod_mpoly_factor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\fmpz_mod_poly.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\fmpz_mod_poly_factor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fmpz_mod_vec.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\fmpz_mpoly.h">
@@ -198,6 +210,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\fq.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fq_default.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fq_default_mat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fq_default_poly.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fq_default_poly_factor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\fq_embed.h">
@@ -1345,9 +1369,6 @@
     <ClCompile Include="..\..\fmpq_mpoly\gcd_cofactors.c">
       <Filter>Source Files\fmpq_mpoly</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\fmpq_mpoly\geobuckets.c">
-      <Filter>Source Files\fmpq_mpoly</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\fmpq_mpoly\get_coeff_fmpq_fmpz.c">
       <Filter>Source Files\fmpq_mpoly</Filter>
     </ClCompile>
@@ -1624,6 +1645,9 @@
     <ClCompile Include="..\..\fmpq_poly\get_coeff_fmpq.c">
       <Filter>Source Files\fmpq_poly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpq_poly\get_coeff_fmpz.c">
+      <Filter>Source Files\fmpq_poly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpq_poly\get_coeff_mpq.c">
       <Filter>Source Files\fmpq_poly</Filter>
     </ClCompile>
@@ -1861,6 +1885,9 @@
     <ClCompile Include="..\..\fmpq_poly\sin_series.c">
       <Filter>Source Files\fmpq_poly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpq_poly\sinh_cosh_series.c">
+      <Filter>Source Files\fmpq_poly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpq_poly\sinh_series.c">
       <Filter>Source Files\fmpq_poly</Filter>
     </ClCompile>
@@ -1936,6 +1963,9 @@
     <ClCompile Include="..\..\fmpz\addmul.c">
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz\addmul_si.c">
+      <Filter>Source Files\fmpz</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz\addmul_ui.c">
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
@@ -1990,6 +2020,9 @@
     <ClCompile Include="..\..\fmpz\cmp.c">
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz\cmp2abs.c">
+      <Filter>Source Files\fmpz</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz\cmp_si.c">
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
@@ -2009,6 +2042,9 @@
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz\complement.c">
+      <Filter>Source Files\fmpz</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz\deprecated.c">
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz\divexact.c">
@@ -2110,6 +2146,9 @@
     <ClCompile Include="..\..\fmpz\gcd.c">
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz\gcd3.c">
+      <Filter>Source Files\fmpz</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz\gcdinv.c">
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
@@ -2131,7 +2170,16 @@
     <ClCompile Include="..\..\fmpz\get_mpz.c">
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz\get_nmod.c">
+      <Filter>Source Files\fmpz</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz\get_si.c">
+      <Filter>Source Files\fmpz</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz\get_signed_ui_array.c">
+      <Filter>Source Files\fmpz</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz\get_signed_uiui.c">
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz\get_str.c">
@@ -2191,6 +2239,9 @@
     <ClCompile Include="..\..\fmpz\jacobi.c">
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz\kronecker.c">
+      <Filter>Source Files\fmpz</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz\lcm.c">
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
@@ -2230,10 +2281,34 @@
     <ClCompile Include="..\..\fmpz\mul_ui.c">
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz\multi_CRT.c">
+      <Filter>Source Files\fmpz</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz\multi_CRT_clear.c">
+      <Filter>Source Files\fmpz</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz\multi_CRT_init.c">
+      <Filter>Source Files\fmpz</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz\multi_CRT_precomp.c">
+      <Filter>Source Files\fmpz</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz\multi_CRT_precompute.c">
+      <Filter>Source Files\fmpz</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz\multi_CRT_ui.c">
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\fmpz\multi_crt.c">
+    <ClCompile Include="..\..\fmpz\multi_mod_clear.c">
+      <Filter>Source Files\fmpz</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz\multi_mod_init.c">
+      <Filter>Source Files\fmpz</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz\multi_mod_precomp.c">
+      <Filter>Source Files\fmpz</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz\multi_mod_precompute.c">
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz\multi_mod_ui.c">
@@ -2323,6 +2398,9 @@
     <ClCompile Include="..\..\fmpz\set_mpz.c">
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz\set_signed_ui_array.c">
+      <Filter>Source Files\fmpz</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz\set_signed_uiui.c">
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
@@ -2366,6 +2444,9 @@
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz\submul.c">
+      <Filter>Source Files\fmpz</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz\submul_si.c">
       <Filter>Source Files\fmpz</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz\submul_ui.c">
@@ -2797,13 +2878,22 @@
     <ClCompile Include="..\..\fmpz_mat\mul.c">
       <Filter>Source Files\fmpz_mat</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mat\mul_blas.c">
+      <Filter>Source Files\fmpz_mat</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mat\mul_classical.c">
       <Filter>Source Files\fmpz_mat</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_mat\mul_classical_inline.c">
       <Filter>Source Files\fmpz_mat</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mat\mul_double_word.c">
+      <Filter>Source Files\fmpz_mat</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mat\mul_multi_mod.c">
+      <Filter>Source Files\fmpz_mat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mat\mul_small.c">
       <Filter>Source Files\fmpz_mat</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_mat\mul_strassen.c">
@@ -3019,6 +3109,12 @@
     <ClCompile Include="..\..\fmpz_mod\add.c">
       <Filter>Source Files\fmpz_mod</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod\add_fmpz.c">
+      <Filter>Source Files\fmpz_mod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod\addmul.c">
+      <Filter>Source Files\fmpz_mod</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mod\ctx_clear.c">
       <Filter>Source Files\fmpz_mod</Filter>
     </ClCompile>
@@ -3034,6 +3130,9 @@
     <ClCompile Include="..\..\fmpz_mod\divides.c">
       <Filter>Source Files\fmpz_mod</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod\equal_fmpz.c">
+      <Filter>Source Files\fmpz_mod</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mod\inlines.c">
       <Filter>Source Files\fmpz_mod</Filter>
     </ClCompile>
@@ -3043,7 +3142,13 @@
     <ClCompile Include="..\..\fmpz_mod\is_canonical.c">
       <Filter>Source Files\fmpz_mod</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod\is_invertible.c">
+      <Filter>Source Files\fmpz_mod</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mod\mul.c">
+      <Filter>Source Files\fmpz_mod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod\mul_fmpz.c">
       <Filter>Source Files\fmpz_mod</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_mod\neg.c">
@@ -3058,6 +3163,12 @@
     <ClCompile Include="..\..\fmpz_mod\pow_ui.c">
       <Filter>Source Files\fmpz_mod</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod\rand.c">
+      <Filter>Source Files\fmpz_mod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod\set_fmpz.c">
+      <Filter>Source Files\fmpz_mod</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mod\set_modulus.c">
       <Filter>Source Files\fmpz_mod</Filter>
     </ClCompile>
@@ -3067,10 +3178,16 @@
     <ClCompile Include="..\..\fmpz_mod\sub.c">
       <Filter>Source Files\fmpz_mod</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod\sub_fmpz.c">
+      <Filter>Source Files\fmpz_mod</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mod_mat\add.c">
       <Filter>Source Files\fmpz_mod_mat</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_mod_mat\clear.c">
+      <Filter>Source Files\fmpz_mod_mat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mat\get_fmpz_mat.c">
       <Filter>Source Files\fmpz_mod_mat</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_mod_mat\howell_form.c">
@@ -3109,6 +3226,9 @@
     <ClCompile Include="..\..\fmpz_mod_mat\scalar_mul_ui.c">
       <Filter>Source Files\fmpz_mod_mat</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mat\set_fmpz_mat.c">
+      <Filter>Source Files\fmpz_mod_mat</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mod_mat\sqr.c">
       <Filter>Source Files\fmpz_mod_mat</Filter>
     </ClCompile>
@@ -3127,20 +3247,419 @@
     <ClCompile Include="..\..\fmpz_mod_mat\window_init.c">
       <Filter>Source Files\fmpz_mod_mat</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\add.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\add_fmpz.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\clear.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\cmp.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\combine_like_terms.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\compose_fmpz_mod_mpoly.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\compose_fmpz_mod_mpoly_geobucket.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\compose_mat.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\content_vars.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mod_mpoly\ctx_clear.c">
       <Filter>Source Files\fmpz_mod_mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_mod_mpoly\ctx_init.c">
       <Filter>Source Files\fmpz_mod_mpoly</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\fmpz_mod_mpoly\interp.c">
+    <ClCompile Include="..\..\fmpz_mod_mpoly\ctx_init_rand.c">
       <Filter>Source Files\fmpz_mod_mpoly</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\fmpz_mod_mpoly\mpolyn_gcd_brown.c">
+    <ClCompile Include="..\..\fmpz_mod_mpoly\deflate.c">
       <Filter>Source Files\fmpz_mod_mpoly</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\fmpz_mod_mpoly\mpolyn_mpolyun.c">
+    <ClCompile Include="..\..\fmpz_mod_mpoly\deflation.c">
       <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\derivative.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\div.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\div_monagan_pearce.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\divides.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\divides_dense.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\divides_monagan_pearce.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\divrem.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\divrem_ideal.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\divrem_ideal_monagan_pearce.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\divrem_monagan_pearce.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\equal.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\equal_fmpz.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\evaluate_all_fmpz.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\evaluate_one.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\fit_length.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\fit_length_fit_bits.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\fit_length_reset_bits.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\fprint_pretty.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\gcd.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\gcd_brown.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\gcd_cofactors.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\gcd_hensel.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\gcd_subresultant.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\gcd_zippel.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\gcd_zippel2.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\gen.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\geobuckets.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\get_coeff_fmpz_fmpz.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\get_coeff_fmpz_monomial.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\get_coeff_fmpz_ui.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\get_coeff_vars_ui.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\get_fmpz.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\get_set_is_fmpz_mod_poly.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\get_set_nmod_mpoly.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\get_str_pretty.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\get_term.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\get_term_coeff_fmpz.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\get_term_exp_fmpz.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\get_term_exp_si.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\get_term_exp_ui.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\get_term_monomial.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\get_term_var_exp_si.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\get_term_var_exp_ui.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\inflate.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\init.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\is_canonical.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\is_fmpz.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\lead_coeff_vars.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\make_monic.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\mul.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\mul_dense.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\mul_johnson.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\neg.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\pow_fmpz.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\pow_rmul.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\pow_ui.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\push_term_fmpz_fmpz.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\push_term_fmpz_ui.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\quadratic_root.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\randtest_bits.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\randtest_bound.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\randtest_bounds.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\repack_bits.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\resize.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\scalar_addmul_fmpz.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\scalar_mul_fmpz.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\set.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\set_coeff_fmpz_fmpz.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\set_coeff_fmpz_monomial.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\set_coeff_fmpz_ui.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\set_fmpz.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\set_str_pretty.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\set_term_coeff_fmpz.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\set_term_exp_fmpz.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\set_term_exp_ui.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\sort_terms.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\sqrt_heap.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\sub.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\sub_fmpz.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\term_content.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\to_from_nmod_poly.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly\univar.c">
+      <Filter>Source Files\fmpz_mod_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\bpoly_factor_smprime.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\bpoly_hlift.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\clear.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\cmp.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\compression.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\eval.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\expand.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\factor.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\factor_content.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\factor_squarefree.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\fit_length.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\fmpz_mod_bpoly.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\fmpz_mod_mat_extras.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\fmpz_mod_poly_extras.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\fmpz_mod_poly_vec.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\fmpz_mod_pow_cache.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\gcd_algo.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\gcd_brown.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\gcd_hensel.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\gcd_zippel.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\gcd_zippel2.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\get_set_lead0.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\interp.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\irred_smprime_wang.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\irred_smprime_zassenhaus.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\irred_smprime_zippel.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\lcc_wang.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\mpoly_hlift.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\mpoly_hlift_zippel.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\mpoly_pfrac.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\mpolyn.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\mpolyn_divides.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\mpolyu.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\mpolyv.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\polyu3_mod_hlift.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\polyun.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\print_pretty.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\realloc.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\set_nmod_mpoly_factor.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\sort.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\stack.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_mpoly_factor\zip_helpers.c">
+      <Filter>Source Files\fmpz_mod_mpoly_factor</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_mod_poly\add.c">
       <Filter>Source Files\fmpz_mod_poly</Filter>
@@ -3277,6 +3796,9 @@
     <ClCompile Include="..\..\fmpz_mod_poly\get_fmpz_poly.c">
       <Filter>Source Files\fmpz_mod_poly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_poly\get_nmod_poly.c">
+      <Filter>Source Files\fmpz_mod_poly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mod_poly\hgcd.c">
       <Filter>Source Files\fmpz_mod_poly</Filter>
     </ClCompile>
@@ -3296,6 +3818,9 @@
       <Filter>Source Files\fmpz_mod_poly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_mod_poly\invmod_f.c">
+      <Filter>Source Files\fmpz_mod_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_poly\is_canonical.c">
       <Filter>Source Files\fmpz_mod_poly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_mod_poly\make_monic.c">
@@ -3415,6 +3940,9 @@
     <ClCompile Include="..\..\fmpz_mod_poly\set_fmpz_poly.c">
       <Filter>Source Files\fmpz_mod_poly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_poly\set_nmod_poly.c">
+      <Filter>Source Files\fmpz_mod_poly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mod_poly\set_trunc.c">
       <Filter>Source Files\fmpz_mod_poly</Filter>
     </ClCompile>
@@ -3529,6 +4057,27 @@
     <ClCompile Include="..\..\fmpz_mod_poly_factor\set.c">
       <Filter>Source Files\fmpz_mod_poly_factor</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_vec\dot.c">
+      <Filter>Source Files\fmpz_mod_vec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_vec\mul.c">
+      <Filter>Source Files\fmpz_mod_vec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_vec\neg.c">
+      <Filter>Source Files\fmpz_mod_vec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_vec\scalar_div_fmpz_mod.c">
+      <Filter>Source Files\fmpz_mod_vec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_vec\scalar_mul_fmpz_mod.c">
+      <Filter>Source Files\fmpz_mod_vec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_vec\set_fmpz_vec.c">
+      <Filter>Source Files\fmpz_mod_vec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mod_vec\sub.c">
+      <Filter>Source Files\fmpz_mod_vec</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mpoly\add.c">
       <Filter>Source Files\fmpz_mpoly</Filter>
     </ClCompile>
@@ -3631,6 +4180,12 @@
     <ClCompile Include="..\..\fmpz_mpoly\evaluate_all.c">
       <Filter>Source Files\fmpz_mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly\evaluate_all_fmpz_mod.c">
+      <Filter>Source Files\fmpz_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly\evaluate_all_nmod.c">
+      <Filter>Source Files\fmpz_mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mpoly\evaluate_one.c">
       <Filter>Source Files\fmpz_mpoly</Filter>
     </ClCompile>
@@ -3646,22 +4201,19 @@
     <ClCompile Include="..\..\fmpz_mpoly\gcd.c">
       <Filter>Source Files\fmpz_mpoly</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\fmpz_mpoly\gcd_berlekamp_massey.c">
-      <Filter>Source Files\fmpz_mpoly</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\fmpz_mpoly\gcd_berlekamp_massey_threaded.c">
-      <Filter>Source Files\fmpz_mpoly</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\fmpz_mpoly\gcd_brown.c">
-      <Filter>Source Files\fmpz_mpoly</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\fmpz_mpoly\gcd_brown_threaded.c">
       <Filter>Source Files\fmpz_mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_mpoly\gcd_cofactors.c">
       <Filter>Source Files\fmpz_mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly\gcd_hensel.c">
+      <Filter>Source Files\fmpz_mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mpoly\gcd_zippel.c">
+      <Filter>Source Files\fmpz_mpoly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly\gcd_zippel2.c">
       <Filter>Source Files\fmpz_mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_mpoly\gen.c">
@@ -3787,9 +4339,6 @@
     <ClCompile Include="..\..\fmpz_mpoly\neg.c">
       <Filter>Source Files\fmpz_mpoly</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\fmpz_mpoly\parse_pretty.c">
-      <Filter>Source Files\fmpz_mpoly</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\fmpz_mpoly\pow_fmpz.c">
       <Filter>Source Files\fmpz_mpoly</Filter>
     </ClCompile>
@@ -3889,6 +4438,9 @@
     <ClCompile Include="..\..\fmpz_mpoly\set_si.c">
       <Filter>Source Files\fmpz_mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly\set_str_pretty.c">
+      <Filter>Source Files\fmpz_mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mpoly\set_term_coeff_fmpz.c">
       <Filter>Source Files\fmpz_mpoly</Filter>
     </ClCompile>
@@ -3961,6 +4513,24 @@
     <ClCompile Include="..\..\fmpz_mpoly_factor\fit_length.c">
       <Filter>Source Files\fmpz_mpoly_factor</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\gcd_algo.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\gcd_brown.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\gcd_brown_threaded.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\gcd_hensel.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\gcd_zippel.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\gcd_zippel2.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mpoly_factor\get_set_is_fmpz_poly.c">
       <Filter>Source Files\fmpz_mpoly_factor</Filter>
     </ClCompile>
@@ -3994,7 +4564,13 @@
     <ClCompile Include="..\..\fmpz_mpoly_factor\mpoly_pfrac.c">
       <Filter>Source Files\fmpz_mpoly_factor</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\mpolyl.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fmpz_mpoly_factor\mpolyv.c">
+      <Filter>Source Files\fmpz_mpoly_factor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fmpz_mpoly_factor\poly_pfrac.c">
       <Filter>Source Files\fmpz_mpoly_factor</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fmpz_mpoly_factor\print_pretty.c">
@@ -5278,6 +5854,42 @@
     <ClCompile Include="..\..\fq\trace.c">
       <Filter>Source Files\fq</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_default\ctx_init_modulus.c">
+      <Filter>Source Files\fq_default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_default\ctx_init_modulus_nmod.c">
+      <Filter>Source Files\fq_default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_default\ctx_modulus.c">
+      <Filter>Source Files\fq_default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_default\get_fmpz_mod_poly.c">
+      <Filter>Source Files\fq_default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_default\get_fmpz_poly.c">
+      <Filter>Source Files\fq_default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_default\inlines.c">
+      <Filter>Source Files\fq_default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_default\set_fmpz_mod_poly.c">
+      <Filter>Source Files\fq_default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_default\set_fmpz_poly.c">
+      <Filter>Source Files\fq_default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_default_mat\inlines.c">
+      <Filter>Source Files\fq_default_mat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_default_poly\inlines.c">
+      <Filter>Source Files\fq_default_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_default_poly\set_fmpz_poly.c">
+      <Filter>Source Files\fq_default_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_default_poly_factor\inlines.c">
+      <Filter>Source Files\fq_default_poly_factor</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_embed\composition_matrix.c">
       <Filter>Source Files\fq_embed</Filter>
     </ClCompile>
@@ -5326,6 +5938,9 @@
     <ClCompile Include="..\..\fq_mat\inv.c">
       <Filter>Source Files\fq_mat</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_mat\is_one.c">
+      <Filter>Source Files\fq_mat</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_mat\is_zero.c">
       <Filter>Source Files\fq_mat</Filter>
     </ClCompile>
@@ -5356,6 +5971,9 @@
     <ClCompile Include="..\..\fq_mat\nullspace.c">
       <Filter>Source Files\fq_mat</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_mat\one.c">
+      <Filter>Source Files\fq_mat</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_mat\randops.c">
       <Filter>Source Files\fq_mat</Filter>
     </ClCompile>
@@ -5384,6 +6002,12 @@
       <Filter>Source Files\fq_mat</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_mat\set.c">
+      <Filter>Source Files\fq_mat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_mat\set_fmpz_mod_mat.c">
+      <Filter>Source Files\fq_mat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_mat\set_nmod_mat.c">
       <Filter>Source Files\fq_mat</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_mat\similarity.c">
@@ -5593,6 +6217,9 @@
     <ClCompile Include="..\..\fq_nmod_mat\inv.c">
       <Filter>Source Files\fq_nmod_mat</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mat\is_one.c">
+      <Filter>Source Files\fq_nmod_mat</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_nmod_mat\is_zero.c">
       <Filter>Source Files\fq_nmod_mat</Filter>
     </ClCompile>
@@ -5623,6 +6250,9 @@
     <ClCompile Include="..\..\fq_nmod_mat\nullspace.c">
       <Filter>Source Files\fq_nmod_mat</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mat\one.c">
+      <Filter>Source Files\fq_nmod_mat</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_nmod_mat\randops.c">
       <Filter>Source Files\fq_nmod_mat</Filter>
     </ClCompile>
@@ -5651,6 +6281,12 @@
       <Filter>Source Files\fq_nmod_mat</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_nmod_mat\set.c">
+      <Filter>Source Files\fq_nmod_mat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mat\set_fmpz_mod_mat.c">
+      <Filter>Source Files\fq_nmod_mat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mat\set_nmod_mat.c">
       <Filter>Source Files\fq_nmod_mat</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_nmod_mat\similarity.c">
@@ -5983,6 +6619,9 @@
     <ClCompile Include="..\..\fq_nmod_mpoly\set_coeff_fq_nmod_ui.c">
       <Filter>Source Files\fq_nmod_mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_nmod_mpoly\set_fmpz.c">
+      <Filter>Source Files\fq_nmod_mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_nmod_mpoly\set_fq_nmod.c">
       <Filter>Source Files\fq_nmod_mpoly</Filter>
     </ClCompile>
@@ -5999,9 +6638,6 @@
       <Filter>Source Files\fq_nmod_mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_nmod_mpoly\set_term_exp_ui.c">
-      <Filter>Source Files\fq_nmod_mpoly</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\fq_nmod_mpoly\set_ui.c">
       <Filter>Source Files\fq_nmod_mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_nmod_mpoly\setform.c">
@@ -7168,6 +7804,12 @@
     <ClCompile Include="..\..\fq_zech_mat\inlines.c">
       <Filter>Source Files\fq_zech_mat</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mat\inv.c">
+      <Filter>Source Files\fq_zech_mat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mat\is_one.c">
+      <Filter>Source Files\fq_zech_mat</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_zech_mat\is_zero.c">
       <Filter>Source Files\fq_zech_mat</Filter>
     </ClCompile>
@@ -7198,6 +7840,9 @@
     <ClCompile Include="..\..\fq_zech_mat\nullspace.c">
       <Filter>Source Files\fq_zech_mat</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mat\one.c">
+      <Filter>Source Files\fq_zech_mat</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\fq_zech_mat\randops.c">
       <Filter>Source Files\fq_zech_mat</Filter>
     </ClCompile>
@@ -7226,6 +7871,12 @@
       <Filter>Source Files\fq_zech_mat</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_zech_mat\set.c">
+      <Filter>Source Files\fq_zech_mat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mat\set_fmpz_mod_mat.c">
+      <Filter>Source Files\fq_zech_mat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fq_zech_mat\set_nmod_mat.c">
       <Filter>Source Files\fq_zech_mat</Filter>
     </ClCompile>
     <ClCompile Include="..\..\fq_zech_mat\similarity.c">
@@ -7909,6 +8560,9 @@
     <ClCompile Include="..\..\long_extras\inlines.c">
       <Filter>Source Files\long_extras</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\long_extras\kronecker.c">
+      <Filter>Source Files\long_extras</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\long_extras\randint.c">
       <Filter>Source Files\long_extras</Filter>
     </ClCompile>
@@ -8149,6 +8803,9 @@
     <ClCompile Include="..\..\mpoly\exp_bits_required.c">
       <Filter>Source Files\mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\mpoly\fill_marks.c">
+      <Filter>Source Files\mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\mpoly\gcd_info.c">
       <Filter>Source Files\mpoly</Filter>
     </ClCompile>
@@ -8233,6 +8890,9 @@
     <ClCompile Include="..\..\mpoly\pack_vec.c">
       <Filter>Source Files\mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\mpoly\parse_pretty.c">
+      <Filter>Source Files\mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\mpoly\randbits_fmpz.c">
       <Filter>Source Files\mpoly</Filter>
     </ClCompile>
@@ -8260,6 +8920,9 @@
     <ClCompile Include="..\..\mpoly\test_irreducible.c">
       <Filter>Source Files\mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\mpoly\to_from_mpolyl.c">
+      <Filter>Source Files\mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\mpoly\total_degree.c">
       <Filter>Source Files\mpoly</Filter>
     </ClCompile>
@@ -8267,9 +8930,6 @@
       <Filter>Source Files\mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\mpoly\unpack_vec.c">
-      <Filter>Source Files\mpoly</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\mpoly\zipinfo.c">
       <Filter>Source Files\mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\n_poly\n_bpoly.c">
@@ -8356,7 +9016,13 @@
     <ClCompile Include="..\..\n_poly\n_polyu.c">
       <Filter>Source Files\n_poly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_polyu1n_gcd.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\n_poly\n_polyun.c">
+      <Filter>Source Files\n_poly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\n_poly\n_polyun_stack.c">
       <Filter>Source Files\n_poly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\n_poly\n_tpoly.c">
@@ -8863,6 +9529,9 @@
     <ClCompile Include="..\..\nmod_mpoly\set_coeff_ui_ui.c">
       <Filter>Source Files\nmod_mpoly</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\nmod_mpoly\set_fmpz.c">
+      <Filter>Source Files\nmod_mpoly</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\nmod_mpoly\set_str_pretty.c">
       <Filter>Source Files\nmod_mpoly</Filter>
     </ClCompile>
@@ -8879,9 +9548,6 @@
       <Filter>Source Files\nmod_mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\nmod_mpoly\set_term_ui_ui.c">
-      <Filter>Source Files\nmod_mpoly</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\nmod_mpoly\set_ui.c">
       <Filter>Source Files\nmod_mpoly</Filter>
     </ClCompile>
     <ClCompile Include="..\..\nmod_mpoly\setform.c">
@@ -9733,6 +10399,9 @@
     <ClCompile Include="..\..\nmod_vec\dot_ptr.c">
       <Filter>Source Files\nmod_vec</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\nmod_vec\dot_rev.c">
+      <Filter>Source Files\nmod_vec</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\nmod_vec\inlines.c">
       <Filter>Source Files\nmod_vec</Filter>
     </ClCompile>
@@ -10195,6 +10864,12 @@
     <ClCompile Include="..\..\thread_pool\clear.c">
       <Filter>Source Files\thread_pool</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\thread_pool\distribute_work.c">
+      <Filter>Source Files\thread_pool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\thread_pool\find_work.c">
+      <Filter>Source Files\thread_pool</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\thread_pool\get_size.c">
       <Filter>Source Files\thread_pool</Filter>
     </ClCompile>
@@ -10247,6 +10922,9 @@
       <Filter>Source Files\ulong_extras</Filter>
     </ClCompile>
     <ClCompile Include="..\..\ulong_extras\clog.c">
+      <Filter>Source Files\ulong_extras</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ulong_extras\clog_2exp.c">
       <Filter>Source Files\ulong_extras</Filter>
     </ClCompile>
     <ClCompile Include="..\..\ulong_extras\compute_primes.c">
