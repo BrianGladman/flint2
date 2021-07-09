@@ -211,6 +211,18 @@ FLINT_DLL void nmod_mat_addmul(nmod_mat_t D, const nmod_mat_t C,
 FLINT_DLL void nmod_mat_submul(nmod_mat_t D, const nmod_mat_t C,
                                 const nmod_mat_t A, const nmod_mat_t B);
 
+FLINT_DLL void nmod_mat_mul_nmod_vec(mp_limb_t * c, const nmod_mat_t A,
+                                              const mp_limb_t * b, slong blen);
+
+FLINT_DLL void nmod_mat_mul_nmod_vec_ptr(mp_limb_t * const * c,
+                  const nmod_mat_t A, const mp_limb_t * const * b, slong blen);
+
+FLINT_DLL void nmod_mat_nmod_vec_mul(mp_limb_t * c, const mp_limb_t * a,
+                                               slong alen, const nmod_mat_t B);
+
+FLINT_DLL void nmod_mat_nmod_vec_mul_ptr(mp_limb_t * const * c,
+                  const mp_limb_t * const * a, slong alen, const nmod_mat_t B);
+
 /* Exponent */
 
 FLINT_DLL void _nmod_mat_pow(nmod_mat_t dest, const nmod_mat_t mat, ulong pow);
@@ -224,6 +236,9 @@ FLINT_DLL mp_limb_t nmod_mat_trace(const nmod_mat_t mat);
 
 FLINT_DLL mp_limb_t _nmod_mat_det(nmod_mat_t A);
 FLINT_DLL mp_limb_t nmod_mat_det(const nmod_mat_t A);
+
+FLINT_DLL mp_limb_t _nmod_mat_det_howell(nmod_mat_t A);
+FLINT_DLL mp_limb_t nmod_mat_det_howell(const nmod_mat_t A);
 
 /* Rank */
 

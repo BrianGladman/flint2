@@ -432,7 +432,7 @@ Matrix-scalar arithmetic
               void fmpz_mat_scalar_mul_ui(fmpz_mat_t B, const fmpz_mat_t A, ulong c)
               void fmpz_mat_scalar_mul_fmpz(fmpz_mat_t B, const fmpz_mat_t A, const fmpz_t c)
 
-    Set ``A = B*c`` where ``B`` is an ``fmpz_mat_t`` and ``c``
+    Set ``B = A*c`` where ``A`` is an ``fmpz_mat_t`` and ``c``
     is a scalar respectively of type ``slong``, ``ulong``,
     or ``fmpz_t``. The dimensions of ``A`` and ``B`` must
     be compatible.
@@ -441,7 +441,7 @@ Matrix-scalar arithmetic
               void fmpz_mat_scalar_addmul_ui(fmpz_mat_t B, const fmpz_mat_t A, ulong c)
               void fmpz_mat_scalar_addmul_fmpz(fmpz_mat_t B, const fmpz_mat_t A, const fmpz_t c)
 
-    Set ``A = A + B*c`` where ``B`` is an ``fmpz_mat_t`` and ``c``
+    Set ``B = B + A*c`` where ``A`` is an ``fmpz_mat_t`` and ``c``
     is a scalar respectively of type ``slong``, ``ulong``,
     or ``fmpz_t``. The dimensions of ``A`` and ``B`` must
     be compatible.
@@ -450,7 +450,7 @@ Matrix-scalar arithmetic
               void fmpz_mat_scalar_submul_ui(fmpz_mat_t B, const fmpz_mat_t A, ulong c)
               void fmpz_mat_scalar_submul_fmpz(fmpz_mat_t B, const fmpz_mat_t A, const fmpz_t c)
 
-    Set ``A = A - B*c`` where ``B`` is an ``fmpz_mat_t`` and ``c``
+    Set ``B = B - A*c`` where ``A`` is an ``fmpz_mat_t`` and ``c``
     is a scalar respectively of type ``slong``, ``ulong``,
     or ``fmpz_t``. The dimensions of ``A`` and ``B`` must
     be compatible.
@@ -458,7 +458,7 @@ Matrix-scalar arithmetic
 .. function:: void fmpz_mat_scalar_addmul_nmod_mat_ui(fmpz_mat_t B, const nmod_mat_t A, ulong c)
               void fmpz_mat_scalar_addmul_nmod_mat_fmpz(fmpz_mat_t B, const nmod_mat_t A, const fmpz_t c)
 
-    Set ``A = A + B*c`` where ``B`` is an ``nmod_mat_t`` and ``c``
+    Set ``B = B + A*c`` where ``A`` is an ``nmod_mat_t`` and ``c``
     is a scalar respectively of type ``ulong`` or ``fmpz_t``.
     The dimensions of ``A`` and ``B`` must be compatible.
 
@@ -573,6 +573,20 @@ Matrix multiplication
     This function is only for internal use and assumes that either:
         - the entries of `A` and `B` are all nonnegative and strictly less than `2^{2*FLINT_BITS}`, or
         - the entries of `A` and `B` are all strictly less than `2^{2*FLINT_BITS - 1}` in absolute value.
+
+.. function:: void fmpz_mat_mul_fmpz_vec(fmpz * c, const fmpz_mat_t A, const fmpz * b, slong blen)
+              void fmpz_mat_mul_fmpz_vec_ptr(fmpz * const * c, const fmpz_mat_t A, const fmpz * const * b, slong blen)
+
+    Compute a matrix-vector product of ``A`` and ``(b, blen)`` and store the result in ``c``.
+    The vector ``(b, blen)`` is either truncated or zero-extended to the number of columns of ``A``.
+    The number entries written to ``c`` is always equal to the number of rows of ``A``.
+
+.. function:: void fmpz_mat_fmpz_vec_mul(fmpz * c, const fmpz * a, slong alen, const fmpz_mat_t B)
+              void fmpz_mat_fmpz_vec_mul_ptr(fmpz * const * c, const fmpz * const * a, slong alen, const fmpz_mat_t B)
+
+    Compute a vector-matrix product of ``(a, alen)`` and ``B`` and and store the result in ``c``.
+    The vector ``(a, alen)`` is either truncated or zero-extended to the number of rows of ``B``.
+    The number entries written to ``c`` is always equal to the number of columns of ``B``.
 
 
 Inverse
@@ -859,10 +873,17 @@ allowed between arguments.
     Uses fraction-free LU decomposition followed by fraction-free
     forward and back substitution.
 
-.. function:: void fmpz_mat_solve_fflu_precomp(fmpz_mat_t X, const slong * perm, const fmpz_mat_t FFLU, const fmpz_mat_t B)
+.. function:: int fmpz_mat_solve_fflu_precomp(fmpz_mat_t X, const slong * perm, const fmpz_mat_t FFLU, const fmpz_mat_t B)
 
     Performs fraction-free forward and back substitution given a precomputed
-    fraction-free LU decomposition and corresponding permutation.
+    fraction-free LU decomposition and corresponding permutation. If no
+    impossible division is encountered, the function returns `1`. This does not
+    mean the system has a solution, however a return value of `0` can only
+    occur if the system is insoluble.
+
+    If the return value is `1` and `r` is the rank of the matrix `A` whose FFLU
+    we have, then the first `r` rows of `p(A)y = p(b)d` hold, where `d` is the
+    denominator of the FFLU. The remaining rows must be checked by the caller.
 
 .. function:: int fmpz_mat_solve_cramer(fmpz_mat_t X, fmpz_t den, const fmpz_mat_t A, const fmpz_mat_t B)
 
@@ -937,6 +958,26 @@ allowed between arguments.
     computed denominator will not generally be minimal.
 
     Uses a Chinese remainder algorithm.
+
+    Note that the matrices `A` and `B` may have any shape as long as they have
+    the same number of rows.
+
+.. function:: fmpz_mat_can_solve_fflu(fmpz_mat_t X, fmpz_t den, const fmpz_mat_t A, const fmpz_mat_t B)
+
+    Returns `1` if the system `AX = B` can be solved. If so it computes
+    (``X``, ``den``) such that `AX = B \times \operatorname{den}`. The
+    computed denominator will not generally be minimal.
+
+    Uses a fraction free LU decomposition algorithm.
+
+    Note that the matrices `A` and `B` may have any shape as long as they have
+    the same number of rows.
+
+.. function:: int fmpz_mat_can_solve(fmpz_mat_t X, fmpz_t den, const fmpz_mat_t A, const fmpz_mat_t B)
+
+    Returns `1` if the system `AX = B` can be solved. If so it computes
+    (``X``, ``den``) such that `AX = B \times \operatorname{den}`. The
+    computed denominator will not generally be minimal.
 
     Note that the matrices `A` and `B` may have any shape as long as they have
     the same number of rows.
